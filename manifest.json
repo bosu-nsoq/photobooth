@@ -1,0 +1,25 @@
+{
+  "name": "WNTK Photos",
+  "short_name": "WNTK Photos",
+  "description": "แอปสำหรับเก็บภาพความทรงจำของทุกช่วงเวลา",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFF7FA",
+  "theme_color": "#FF6B9D",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/Hx10w2k6/Photobooth.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.postimg.cc/Hx10w2k6/Photobooth.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
