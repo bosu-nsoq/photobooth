@@ -7,7 +7,7 @@
 - **คำอธิบาย:** แอปสำหรับเก็บภาพความทรงจำของทุกช่วงเวลา
 - **Favicon / App Icon:** `https://i.postimg.cc/Hx10w2k6/Photobooth.png`
 - **Google Apps Script ID:** `1zojy-OQ9Sv2_r9BNkWM9M1RQdwWY4CDwQgPX_P_ueCBBx94zoMqk4wyN`
-- **Web App URL:** `https://script.google.com/macros/s/AKfycbxPYLD9JMwjf1B-woGecCDnFAkAlgJfjfO6Dq8taFJGReA7_CO0MbfmrZkopxQtzKnz8w/exec`
+- **Web App URL:** `https://script.google.com/macros/s/AKfycbyDyrIfE5QXCH4D5HwIpFpbEhvhmYWyTUSHEWOwnEJVZIYpf3fAP-XkUMUREYiRzWoMmQ/exec`
 
 ## โครงสร้าง Google Drive (`Code.gs`)
 เมื่อรัน `initPhotoboothDrive` ใน Apps Script ระบบจะสร้างโครงสร้างใน Google Drive อัตโนมัติ:
