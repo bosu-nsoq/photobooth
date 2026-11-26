@@ -48,33 +48,38 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
+      height: 100dvh;
       margin: 0;
+      overflow: hidden;
+    }
+
+    body {
       font-family: 'Mali', sans-serif;
       background: radial-gradient(circle at top left, #FFEBF4 0%, #FFF8FC 45%, #F4F0FF 100%);
       color: var(--text);
-      min-height: 100dvh;
-      overflow-x: hidden;
-      transition: padding-bottom 0.2s ease;
-    }
-
-    body.tray-open {
-      padding-bottom: 42dvh;
+      display: flex;
+      flex-direction: column;
     }
 
     button, input, select {
       font-family: inherit;
     }
 
+    .kbd-focus {
+      outline: 3px solid var(--accent) !important;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 5px rgba(124, 92, 252, 0.2) !important;
+    }
+
     /* ============ Responsive Single-Line Header ============ */
     .app-header {
-      position: sticky;
-      top: 0;
+      flex-shrink: 0;
       z-index: 40;
       background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(14px);
       border-bottom: 1.5px solid var(--border);
-      padding: 8px 14px;
+      padding: 7px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -84,22 +89,22 @@
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       min-width: 0;
       flex-shrink: 0;
     }
 
     .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
       object-fit: cover;
-      box-shadow: 0 4px 10px rgba(255, 93, 158, 0.25);
+      box-shadow: 0 3px 8px rgba(255, 93, 158, 0.25);
       flex-shrink: 0;
     }
 
     .brand-title {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--primary-dark);
       white-space: nowrap;
@@ -109,7 +114,7 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       flex-shrink: 1;
       min-width: 0;
     }
@@ -119,7 +124,7 @@
       color: var(--primary-dark);
       padding: 4px 10px;
       border-radius: 999px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       white-space: nowrap;
       display: inline-block;
@@ -128,7 +133,7 @@
 
     #staff-display {
       white-space: nowrap;
-      font-size: 12.5px;
+      font-size: 12px;
       padding: 4px 10px;
       max-width: none;
       overflow: visible;
@@ -139,18 +144,18 @@
       border: 1.5px solid var(--border);
       background: #fff;
       color: var(--text);
-      border-radius: 14px;
-      padding: 7px 11px;
-      font-size: 14px;
+      border-radius: 13px;
+      padding: 6px 10px;
+      font-size: 13.5px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
-      min-height: 38px;
-      transition: transform 0.14s, background 0.14s;
+      gap: 4px;
+      min-height: 36px;
+      transition: transform 0.12s, background 0.12s;
     }
 
     .icon-btn:hover { background: var(--bg-soft); }
@@ -162,39 +167,59 @@
     }
 
     @media (max-width: 480px) {
-      .app-header { padding: 7px 10px; gap: 6px; }
-      .brand-logo { width: 28px; height: 28px; }
-      .brand-title { font-size: 14.5px; white-space: nowrap; }
+      .app-header { padding: 6px 10px; gap: 5px; }
+      .brand-logo { width: 26px; height: 26px; }
+      .brand-title { font-size: 14px; white-space: nowrap; }
       .user-pill, #staff-display {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 90px;
-        font-size: 11px;
+        max-width: 84px;
+        font-size: 10.5px;
         padding: 3px 7px;
       }
-      .icon-btn { padding: 6px 9px; font-size: 15px; min-height: 34px; }
+      .icon-btn { padding: 5px 8px; font-size: 14px; min-height: 33px; }
       .app-header .icon-btn span.btn-label { display: none; }
     }
 
-    /* ============ Main Container & Compact Stepper ============ */
+    /* ============ Single-Screen App Shell (No Scrolling Needed) ============ */
     .container {
-      max-width: 720px;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      max-width: 680px;
       margin: 0 auto;
-      padding: 10px 10px 28px;
+      padding: 8px 10px 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: padding-bottom 0.2s ease;
+    }
+
+    body.tray-open .container {
+      padding-bottom: 37dvh;
+    }
+
+    #view-studio {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     .stepper {
+      flex-shrink: 0;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .step-chip {
-      padding: 6px 4px;
+      padding: 5px 4px;
       border-radius: 999px;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       background: #fff;
       border: 1.5px solid var(--border);
@@ -210,7 +235,7 @@
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #fff;
       border-color: transparent;
-      box-shadow: 0 4px 12px rgba(255, 93, 158, 0.28);
+      box-shadow: 0 4px 12px rgba(255, 93, 158, 0.26);
     }
 
     .step-chip.done {
@@ -220,17 +245,24 @@
     }
 
     .card {
+      flex: 1;
+      min-height: 0;
       background: var(--card);
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
     }
 
     .section-title {
-      font-size: 16.5px;
+      flex-shrink: 0;
+      font-size: 15.5px;
       font-weight: 700;
-      margin: 0 0 12px;
+      margin: 0 0 8px;
       color: var(--text);
       display: flex;
       align-items: center;
@@ -240,66 +272,70 @@
 
     .hidden { display: none !important; }
 
-    /* ============ Stage 1: Setup ============ */
+    /* ============ Stage 1: Setup (Fits 1 Mobile Screen) ============ */
     .layout-grid {
+      flex: 1;
+      min-height: 0;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 14px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+      align-content: center;
     }
 
-    @media (max-width: 600px) {
-      .layout-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 600px) {
+      .layout-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
     .layout-card {
       border: 2px solid var(--border);
-      border-radius: 18px;
-      padding: 12px 8px;
+      border-radius: 16px;
+      padding: 10px 6px;
       text-align: center;
       cursor: pointer;
       background: #FFFDFE;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      transition: transform 0.14s, border-color 0.14s;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.12s, border-color 0.12s;
     }
-
     .layout-card:active { transform: scale(0.97); }
     .layout-card.selected {
       border-color: var(--primary);
       background: var(--primary-soft);
-      box-shadow: 0 6px 16px rgba(255, 93, 158, 0.2);
+      box-shadow: 0 6px 14px rgba(255, 93, 158, 0.2);
     }
 
     .mini-strip {
-      width: 40px; height: 58px;
+      width: 34px; height: 50px;
       background: #fff; border: 1.5px solid #E5C7D8;
-      border-radius: 6px; padding: 4px;
-      display: grid; gap: 3px;
+      border-radius: 6px; padding: 3px;
+      display: grid; gap: 2.5px;
     }
     .mini-strip.l-1x4 { grid-template-columns: 1fr; grid-template-rows: repeat(4, 1fr); }
     .mini-strip.l-1x3 { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); }
-    .mini-strip.l-2x2 { width: 54px; height: 54px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    .mini-strip.l-1x1 { width: 50px; height: 58px; grid-template-columns: 1fr; grid-template-rows: 1fr 10px; }
+    .mini-strip.l-2x2 { width: 46px; height: 46px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    .mini-strip.l-1x1 { width: 44px; height: 50px; grid-template-columns: 1fr; grid-template-rows: 1fr 9px; }
     .mini-cell { background: linear-gradient(135deg, #FFC2DA, #D8CCFF); border-radius: 2px; }
 
     .quick-chips-row {
+      flex-shrink: 0;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 14px;
+      gap: 7px;
+      margin-bottom: 10px;
     }
 
-    .pill-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill-group { display: flex; flex-wrap: wrap; gap: 7px; }
     .pill-btn {
       border: 1.5px solid var(--border);
       background: #fff; color: var(--text);
       border-radius: 999px;
-      padding: 8px 13px;
-      font-size: 13px; font-weight: 600;
+      padding: 7px 13px;
+      font-size: 12.5px; font-weight: 600;
       cursor: pointer;
     }
     .pill-btn.active {
@@ -307,8 +343,9 @@
     }
 
     .cta-row {
+      flex-shrink: 0;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
       align-items: center;
     }
@@ -316,12 +353,12 @@
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), #FF3F8A);
       color: #fff; border: none; border-radius: 999px;
-      padding: 13px 24px;
-      font-size: 15.5px; font-weight: 700;
+      padding: 11px 20px;
+      font-size: 15px; font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(255, 93, 158, 0.34);
+      box-shadow: 0 7px 18px rgba(255, 93, 158, 0.32);
       display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-      min-height: 48px;
+      min-height: 44px;
       flex: 1;
       max-width: 320px;
     }
@@ -331,40 +368,34 @@
     .btn-secondary {
       background: #fff; color: var(--accent);
       border: 2px solid #D9CEFF; border-radius: 999px;
-      padding: 11px 16px;
-      font-size: 14px; font-weight: 700;
+      padding: 9px 14px;
+      font-size: 13.5px; font-weight: 700;
       cursor: pointer;
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-      min-height: 48px;
+      min-height: 42px;
     }
 
-    /* ============ Stage 2: Clean Mobile Camera (No Bottom Settings Bar) ============ */
+    /* ============ Stage 2: Native Mobile Camera (Shutter + Mini Frames On-Frame) ============ */
+    #stage-2 {
+      padding: 8px;
+    }
+
     .viewfinder-wrap {
+      flex: 1;
+      min-height: 0;
       position: relative;
       background: #1A1325;
-      border-radius: 22px;
+      border-radius: 20px;
       overflow: hidden;
-      aspect-ratio: 4 / 3;
       width: 100%;
-      max-height: 58dvh;
-      margin: 0 auto;
-      box-shadow: 0 12px 28px rgba(45, 34, 53, 0.22);
-      border: 3px solid #fff;
-    }
-
-    @media (max-width: 640px) {
-      .viewfinder-wrap {
-        aspect-ratio: 3 / 4;
-        max-height: 58dvh;
-      }
+      box-shadow: 0 10px 24px rgba(45, 34, 53, 0.22);
+      border: 2.5px solid #fff;
     }
 
     #camera-video {
       position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      pointer-events: none;
+      width: 1px; height: 1px;
+      opacity: 0; pointer-events: none;
     }
 
     #camera-canvas {
@@ -376,33 +407,22 @@
 
     .cam-float-top {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      right: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      pointer-events: none;
-      z-index: 5;
+      top: 10px; left: 10px; right: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+      pointer-events: none; z-index: 5;
     }
 
     .cam-float-actions {
-      display: flex;
-      gap: 6px;
-      pointer-events: auto;
+      display: flex; gap: 6px; pointer-events: auto;
     }
 
     .cam-float-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: none;
+      width: 38px; height: 38px;
+      border-radius: 50%; border: none;
       background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(6px);
       font-size: 17px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
     }
@@ -410,41 +430,96 @@
     .shot-badge {
       background: rgba(255, 255, 255, 0.92);
       color: var(--primary-dark);
-      padding: 5px 12px;
+      padding: 4px 11px;
       border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 12.5px; font-weight: 700;
       pointer-events: auto;
     }
 
     .rec-badge {
+      position: absolute; top: 54px; left: 10px;
+      background: rgba(239, 68, 68, 0.92); color: #fff;
+      padding: 3px 9px; border-radius: 999px;
+      font-size: 10.5px; font-weight: 700;
+      display: flex; align-items: center; gap: 4px; z-index: 5;
+    }
+    .rec-dot { width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* Bottom overlay ON the camera frame (Shutter button + Mini frames) */
+    .cam-bottom-overlay {
       position: absolute;
-      bottom: 12px;
-      right: 12px;
-      background: rgba(239, 68, 68, 0.92);
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      display: flex;
+      left: 0; right: 0; bottom: 0;
+      padding: 14px 12px 14px;
+      background: linear-gradient(to top, rgba(16, 10, 26, 0.62) 0%, rgba(16, 10, 26, 0) 100%);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 5px;
+      gap: 8px;
+      z-index: 6;
     }
 
-    .rec-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: #fff;
-      animation: pulse 1s infinite;
+    .mini-frames-dock {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
     }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .slot-thumb {
+      width: 30px;
+      height: 38px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.22);
+      border: 1.5px dashed rgba(255, 255, 255, 0.65);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: #fff;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .slot-thumb.filled {
+      border-style: solid;
+      border-color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .slot-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .shutter-btn {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 4px solid #FFFFFF;
+      background: rgba(255, 255, 255, 0.22);
+      padding: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      transition: transform 0.12s;
+    }
+
+    .shutter-btn:active { transform: scale(0.91); }
+    .shutter-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .shutter-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FF5D9E, #FF2E7E);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #fff;
+    }
 
     .countdown-overlay {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(20, 12, 32, 0.2);
-      pointer-events: none; z-index: 6;
+      background: rgba(20, 12, 32, 0.22);
+      pointer-events: none; z-index: 7;
     }
-
     .countdown-num {
       font-size: 98px; font-weight: 700; color: #fff;
       text-shadow: 0 6px 25px rgba(255, 93, 158, 0.9);
@@ -454,83 +529,65 @@
 
     .flash-overlay {
       position: absolute; inset: 0; background: #fff;
-      opacity: 0; pointer-events: none; transition: opacity 0.12s ease-out; z-index: 7;
+      opacity: 0; pointer-events: none; transition: opacity 0.12s ease-out; z-index: 8;
     }
     .flash-overlay.active { opacity: 0.95; }
 
-    .slot-thumbs-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin: 10px 0 12px;
-    }
-
-    .slot-thumb {
-      aspect-ratio: 4 / 3;
-      border-radius: 10px;
-      background: var(--bg);
-      border: 2px dashed #E5C7D8;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 700; color: var(--muted);
-      overflow: hidden;
-    }
-    .slot-thumb.filled { border-style: solid; border-color: var(--primary); }
-    .slot-thumb img { width: 100%; height: 100%; object-fit: cover; }
-
-    /* ============ Stage 3: Mobile-First Editor + Live Tray ============ */
+    /* ============ Stage 3: Single-Screen Editor ============ */
     .canvas-stage {
-      background: repeating-conic-gradient(#F8EFF5 0% 25%, #FFFFFF 0% 50%) 50% / 20px 20px;
+      flex: 1;
+      min-height: 0;
+      background: repeating-conic-gradient(#F8EFF5 0% 25%, #FFFFFF 0% 50%) 50% / 18px 18px;
       border: 1.5px solid var(--border);
-      border-radius: 18px;
-      padding: 10px;
+      border-radius: 16px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      overflow: hidden;
     }
 
     #strip-canvas {
       max-width: 100%;
-      max-height: 52dvh;
+      max-height: 100%;
       width: auto;
       height: auto;
+      object-fit: contain;
       border-radius: 10px;
-      box-shadow: 0 10px 24px rgba(45, 34, 53, 0.16);
+      box-shadow: 0 8px 20px rgba(45, 34, 53, 0.15);
       touch-action: none;
       cursor: grab;
-      transition: max-height 0.2s ease;
-    }
-
-    body.tray-open #strip-canvas {
-      max-height: 43dvh;
     }
 
     .floating-sticker-bar {
+      flex-shrink: 0;
       display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-      gap: 8px; background: #fff; border: 1.5px solid var(--border);
-      border-radius: 14px; padding: 6px 10px; width: 100%;
+      gap: 6px; background: #fff; border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 4px 8px; width: 100%;
     }
 
     .editor-dock {
+      flex-shrink: 0;
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 5px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .dock-btn {
       border: 1.5px solid var(--border);
       background: var(--bg);
-      border-radius: 14px;
-      padding: 8px 2px;
-      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      border-radius: 13px;
+      padding: 6px 2px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
       cursor: pointer; color: var(--text);
-      font-size: 10.5px; font-weight: 700;
-      min-height: 52px;
-      justify-content: center;
+      font-size: 10px; font-weight: 700;
+      min-height: 46px;
     }
-    .dock-btn .dock-ico { font-size: 19px; line-height: 1.1; }
+    .dock-btn .dock-ico { font-size: 18px; line-height: 1.1; }
     .dock-btn.magic {
       background: linear-gradient(135deg, #FFF0F6, #EFEAFE);
       border-color: #D9CEFF;
@@ -538,67 +595,102 @@
     }
     .dock-btn:active { background: var(--primary-soft); border-color: var(--primary); }
 
-    /* ============ Stage 4: Result & QR ============ */
-    .preview-pair {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .media-box {
+    /* ============ Stage 4: Result (No GIF Box, Small Photo Frame + QR) ============ */
+    .result-top-bar {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       background: var(--bg);
       border: 1.5px solid var(--border);
       border-radius: 16px;
-      padding: 8px;
-      text-align: center;
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
     }
 
-    .media-box img {
-      max-width: 100%;
-      max-height: 210px;
+    .mini-result-frame {
+      width: 72px;
+      height: 96px;
       border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-
-    .qr-panel {
-      background: linear-gradient(180deg, #FFFFFF, #FFF7FB);
-      border: 2px solid var(--border);
-      border-radius: 20px;
-      padding: 14px;
-      text-align: center;
-    }
-
-    .qr-canvas-box {
-      display: inline-flex;
-      padding: 10px;
       background: #fff;
-      border-radius: 16px;
-      border: 2px solid var(--primary-soft);
-      margin: 10px 0 6px;
-      min-width: 196px;
-      min-height: 196px;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* ============ Gallery ============ */
+    .mini-result-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .result-dl-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .qr-panel {
+      flex: 1;
+      min-height: 0;
+      background: linear-gradient(180deg, #FFFFFF, #FFF7FB);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .qr-canvas-box {
+      display: inline-flex;
+      padding: 8px;
+      background: #fff;
+      border-radius: 14px;
+      border: 2px solid var(--primary-soft);
+      margin: 6px 0 4px;
+      min-width: 166px;
+      min-height: 166px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============ Gallery (Pinned Toolbar, Internal Scroll Grid) ============ */
+    #view-gallery {
+      justify-content: flex-start;
+    }
+
     .gallery-toolbar {
+      flex-shrink: 0;
       display: flex; flex-wrap: wrap; gap: 6px;
       align-items: center; justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .gallery-grid {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
       gap: 10px;
+      align-content: start;
+      padding-right: 2px;
     }
 
     .gallery-item {
       border: 1.5px solid var(--border);
-      border-radius: 16px;
+      border-radius: 14px;
       background: #fff;
       overflow: hidden;
       display: flex; flex-direction: column;
@@ -611,9 +703,9 @@
       overflow: hidden;
     }
     .gallery-thumb img { width: 100%; height: 100%; object-fit: contain; }
-    .gallery-meta { padding: 8px 10px; font-size: 12px; }
+    .gallery-meta { padding: 7px 9px; font-size: 11.5px; }
 
-    /* ============ Popups & Transparent Non-Blocking Live Tray ============ */
+    /* ============ Popups & Non-Blocking Live Tray ============ */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -636,30 +728,27 @@
 
     .modal-backdrop.tray-mode .modal-card {
       pointer-events: auto;
-      max-width: 720px;
+      max-width: 680px;
       border-radius: 24px 24px 0 0;
       border-top: 2px solid var(--border);
       box-shadow: 0 -10px 30px rgba(45, 34, 53, 0.16);
-      max-height: 39dvh;
-      padding: 14px 16px 20px;
-      animation: slideUp 0.18s ease-out;
+      max-height: 36dvh;
+      padding: 12px 14px 18px;
+      animation: slideUp 0.16s ease-out;
     }
 
     @media (max-width: 640px) {
-      .modal-backdrop.sheet-mode {
-        align-items: flex-end;
-        padding: 0;
-      }
+      .modal-backdrop.sheet-mode { align-items: flex-end; padding: 0; }
       .modal-backdrop.sheet-mode .modal-card {
         border-radius: 24px 24px 0 0;
         max-width: 100%;
-        padding: 16px 14px 24px;
-        animation: slideUp 0.18s ease-out;
+        padding: 16px 14px 22px;
+        animation: slideUp 0.16s ease-out;
       }
     }
 
     @keyframes slideUp {
-      from { transform: translateY(36px); opacity: 0; }
+      from { transform: translateY(34px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
 
@@ -670,69 +759,42 @@
       width: 100%;
       max-height: 85dvh;
       overflow-y: auto;
-      padding: 18px;
+      padding: 16px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     }
 
     .swatch-grid {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 6px;
-      margin-bottom: 10px;
+      display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 8px;
     }
 
     .swatch-btn {
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 6px 8px;
-      background: #fff;
-      cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      font-size: 11px; font-weight: 600;
-      flex-shrink: 0;
+      border: 2px solid var(--border); border-radius: 12px; padding: 5px 7px;
+      background: #fff; cursor: pointer; display: flex; flex-direction: column;
+      align-items: center; gap: 3px; font-size: 11px; font-weight: 600; flex-shrink: 0;
     }
     .swatch-btn.active { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255, 93, 158, 0.18); }
-    .swatch-color { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.1); }
+    .swatch-color { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.1); }
 
-    .filter-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
+    .filter-grid { display: flex; flex-wrap: wrap; gap: 6px; }
 
     .sticker-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
-      gap: 6px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 6px;
     }
-
     .sticker-btn {
-      border: 1.5px solid var(--border);
-      background: #fff;
-      border-radius: 12px;
-      padding: 7px 4px;
-      font-size: 20px;
-      cursor: pointer;
+      border: 1.5px solid var(--border); background: #fff; border-radius: 11px;
+      padding: 6px 4px; font-size: 19px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
     }
-    .sticker-text-btn { font-size: 10.5px; font-weight: 700; color: var(--primary-dark); }
+    .sticker-text-btn { font-size: 10px; font-weight: 700; color: var(--primary-dark); }
 
     .modern-input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      font-size: 13.5px;
-      outline: none;
-      background: #fff;
-      color: var(--text);
+      width: 100%; padding: 9px 11px; border: 1.5px solid var(--border);
+      border-radius: 12px; font-size: 13.5px; outline: none; background: #fff; color: var(--text);
     }
 
     .opt-label { font-size: 12.5px; font-weight: 700; margin-bottom: 6px; display: block; color: var(--text); }
     .opt-box { background: var(--bg); border: 1.5px solid var(--border); border-radius: 14px; padding: 11px; }
 
-    /* Clean Thai Date Input */
     .thai-date-wrap { position: relative; flex: 1; display: flex; align-items: center; }
     .thai-date-raw { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
     .thai-date-raw::-webkit-calendar-picker-indicator {
@@ -741,107 +803,134 @@
 
     /* ============ Cute Loading Popup ============ */
     .cute-loader-backdrop {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(255, 240, 246, 0.72);
       backdrop-filter: blur(6px);
       z-index: 120;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
     }
-
     .cute-loader-card {
-      background: #fff;
-      border: 2px solid var(--border);
-      border-radius: 26px;
-      padding: 24px 28px;
-      text-align: center;
+      background: #fff; border: 2px solid var(--border); border-radius: 26px;
+      padding: 22px 26px; text-align: center;
       box-shadow: 0 18px 40px rgba(255, 93, 158, 0.22);
-      max-width: 280px;
-      width: 100%;
+      max-width: 270px; width: 100%;
     }
-
-    .cute-bounce {
-      font-size: 46px;
-      display: inline-block;
-      animation: bounceCute 0.75s infinite alternate ease-in-out;
-    }
-
-    @keyframes bounceCute {
-      from { transform: translateY(0) scale(1); }
-      to { transform: translateY(-10px) scale(1.08); }
-    }
-
-    .cute-dots {
-      display: inline-flex;
-      gap: 6px;
-      margin-top: 10px;
-    }
-
-    .cute-dots span {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--primary);
-      animation: dotPulse 0.9s infinite ease-in-out;
-    }
+    .cute-bounce { font-size: 44px; display: inline-block; animation: bounceCute 0.75s infinite alternate ease-in-out; }
+    @keyframes bounceCute { from { transform: translateY(0) scale(1); } to { transform: translateY(-10px) scale(1.08); } }
+    .cute-dots { display: inline-flex; gap: 6px; margin-top: 10px; }
+    .cute-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); animation: dotPulse 0.9s infinite ease-in-out; }
     .cute-dots span:nth-child(2) { animation-delay: 0.15s; background: var(--accent); }
     .cute-dots span:nth-child(3) { animation-delay: 0.3s; background: var(--mint); }
     @keyframes dotPulse { 0%, 100% { transform: scale(0.7); opacity: 0.4; } 50% { transform: scale(1.2); opacity: 1; } }
 
-    /* ============ Fullscreen Maintenance Overlay ============ */
+    /* ============ Maintenance Lock Screen ============ */
     .maintenance-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 110;
+      position: fixed; inset: 0; z-index: 110;
       background: linear-gradient(160deg, #FFF0F6 0%, #F4F0FF 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 24px; text-align: center;
     }
 
-    /* ============ Fullscreen Slideshow Overlay ============ */
+    /* ============ Cute Dreamy Polaroid Slideshow ============ */
     .slideshow-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 105;
-      background: rgba(18, 12, 28, 0.95);
+      position: fixed; inset: 0; z-index: 105;
+      background: radial-gradient(circle at 20% 20%, #3E2356 0%, #1F1533 55%, #120B20 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .slideshow-sparkles {
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+    }
+
+    .sparkle-float {
+      position: absolute;
+      font-size: 22px;
+      opacity: 0.5;
+      animation: floatSparkle 6s infinite ease-in-out alternate;
+    }
+
+    @keyframes floatSparkle {
+      from { transform: translateY(0) rotate(-8deg); opacity: 0.35; }
+      to { transform: translateY(-18px) rotate(12deg); opacity: 0.75; }
+    }
+
+    .slideshow-polaroid {
+      position: relative;
+      background: #FFFDF9;
+      border-radius: 24px;
+      padding: 14px 14px 18px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 4px rgba(255, 194, 218, 0.35);
+      max-width: 90vw;
+      max-height: 82dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 18px;
-      cursor: pointer;
+      animation: fadeSlide 0.55s ease;
+    }
+
+    .slideshow-tape {
+      position: absolute;
+      top: -12px;
+      background: linear-gradient(135deg, #FFB3D1, #D8CCFF);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 999px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
     }
 
     .slideshow-img {
-      max-width: 94vw;
-      max-height: 76dvh;
-      border-radius: 18px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
-      animation: fadeSlide 0.55s ease;
+      max-width: 82vw;
+      max-height: 62dvh;
+      border-radius: 14px;
       object-fit: contain;
+      background: #FFF7FA;
+      animation: gentleZoom 4.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes gentleZoom {
+      from { transform: scale(1); }
+      to { transform: scale(1.025); }
     }
 
     @keyframes fadeSlide {
-      from { opacity: 0.2; transform: scale(0.97); }
-      to { opacity: 1; transform: scale(1); }
+      from { opacity: 0.25; transform: translateY(10px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .slideshow-nav-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      z-index: 2;
+    }
+
+    .slideshow-nav-btn {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
     }
 
     .toast {
-      position: fixed;
-      bottom: 20px; left: 50%; transform: translateX(-50%);
-      background: #2D2235; color: #fff;
-      padding: 9px 16px; border-radius: 999px;
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      background: #2D2235; color: #fff; padding: 8px 16px; border-radius: 999px;
       font-size: 12.5px; font-weight: 600; z-index: 130;
     }
 
     /* ============ Formal Print Area (Sarabun Font) ============ */
     #print-report-area { display: none; font-family: 'Sarabun', sans-serif; }
     @media print {
+      html, body { height: auto; overflow: visible; }
       body * { visibility: hidden !important; }
       #print-report-area, #print-report-area * { visibility: visible !important; }
       #print-report-area {
@@ -870,7 +959,7 @@
       <button class="icon-btn" id="nav-gallery-btn" onclick="switchAppView('gallery')" title="คลังภาพ">
         🖼️ <span class="btn-label">คลังภาพ</span>
       </button>
-      <button class="icon-btn" onclick="openSettingsModal()" title="ตั้งค่า">
+      <button class="icon-btn" id="nav-settings-btn" onclick="openSettingsModal()" title="โหมด / ตั้งค่า">
         ⚙️
       </button>
     </div>
@@ -890,44 +979,44 @@
       <div id="stage-1" class="card">
         <div class="section-title">
           <span>✨ เลือกรูปแบบ</span>
-          <span id="seasonal-badge" class="user-pill hidden" style="font-size:11.5px;"></span>
+          <span id="seasonal-badge" class="user-pill hidden" style="font-size:11px;"></span>
         </div>
 
         <div class="layout-grid" id="layout-selector">
-          <div class="layout-card selected" data-layout="1x4" onclick="selectLayout('1x4')">
+          <div class="layout-card selected" data-layout="1x4" tabindex="0" onclick="selectLayout('1x4')">
             <div class="mini-strip l-1x4">
               <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
             </div>
-            <div style="font-weight:700;font-size:13.5px;">4 ช่อง</div>
+            <div style="font-weight:700;font-size:13px;">4 ช่อง</div>
           </div>
 
-          <div class="layout-card" data-layout="1x3" onclick="selectLayout('1x3')">
+          <div class="layout-card" data-layout="1x3" tabindex="0" onclick="selectLayout('1x3')">
             <div class="mini-strip l-1x3">
               <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
             </div>
-            <div style="font-weight:700;font-size:13.5px;">3 ช่อง</div>
+            <div style="font-weight:700;font-size:13px;">3 ช่อง</div>
           </div>
 
-          <div class="layout-card" data-layout="2x2" onclick="selectLayout('2x2')">
+          <div class="layout-card" data-layout="2x2" tabindex="0" onclick="selectLayout('2x2')">
             <div class="mini-strip l-2x2">
               <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
             </div>
-            <div style="font-weight:700;font-size:13.5px;">ตาราง 2x2</div>
+            <div style="font-weight:700;font-size:13px;">ตาราง 2x2</div>
           </div>
 
-          <div class="layout-card" data-layout="1x1" onclick="selectLayout('1x1')">
+          <div class="layout-card" data-layout="1x1" tabindex="0" onclick="selectLayout('1x1')">
             <div class="mini-strip l-1x1">
               <div class="mini-cell"></div>
               <div style="background:#FFE4F0;border-radius:2px;"></div>
             </div>
-            <div style="font-weight:700;font-size:13.5px;">โพลารอยด์</div>
+            <div style="font-weight:700;font-size:13px;">โพลารอยด์</div>
           </div>
         </div>
 
         <div class="quick-chips-row">
           <button class="icon-btn" id="chip-timer-btn" onclick="openOptionPopup('setup-timer')">⏱️ 3 วิ</button>
           <button class="icon-btn" onclick="openOptionPopup('setup-cam')">🎛️ กล้อง</button>
-          <button class="icon-btn" onclick="triggerUploadFlow()" title="อัปโหลดรูป">🖼️ อัปโหลด</button>
+          <button class="icon-btn" onclick="triggerUploadFlow()">🖼️ อัปโหลด</button>
           <input type="file" id="multi-upload-input" accept="image/*" multiple class="hidden" onchange="handleMultiUpload(event)" />
         </div>
 
@@ -936,7 +1025,7 @@
         </div>
       </div>
 
-      <!-- STAGE 2: LIVE CAMERA (Clean Viewfinder, No Bottom Settings Bar) -->
+      <!-- STAGE 2: LIVE CAMERA (Mobile Camera Shutter + Mini Frames On-Frame) -->
       <div id="stage-2" class="card hidden">
         <div class="viewfinder-wrap">
           <video id="camera-video" autoplay playsinline muted></video>
@@ -956,26 +1045,29 @@
             <div class="countdown-num" id="countdown-number">3</div>
           </div>
           <div class="flash-overlay" id="flash-overlay"></div>
-        </div>
 
-        <div class="slot-thumbs-strip" id="slot-thumbs"></div>
-
-        <div class="cta-row">
-          <button class="btn-primary" id="btn-auto-shoot" onclick="startAutoCapture()">📸 ถ่ายเลย!</button>
+          <!-- Overlaid Mobile Camera Controls (Mini Frames + Shutter Button) -->
+          <div class="cam-bottom-overlay">
+            <div class="mini-frames-dock" id="slot-thumbs"></div>
+            <button class="shutter-btn" id="btn-auto-shoot" onclick="startAutoCapture()" title="ถ่ายภาพ">
+              <span class="shutter-inner">📸</span>
+            </button>
+            <div></div>
+          </div>
         </div>
       </div>
 
-      <!-- STAGE 3: MOBILE-FIRST EDITOR -->
+      <!-- STAGE 3: MOBILE SINGLE-SCREEN EDITOR -->
       <div id="stage-3" class="card hidden">
         <div class="canvas-stage">
           <canvas id="strip-canvas"></canvas>
 
           <div id="selected-sticker-controls" class="floating-sticker-bar hidden">
             <span style="font-size:12px;">🔍</span>
-            <input type="range" id="sticker-size-range" min="28" max="150" value="64" oninput="updateSelectedSticker()" style="width:86px;" />
+            <input type="range" id="sticker-size-range" min="28" max="150" value="64" oninput="updateSelectedSticker()" style="width:82px;" />
             <span style="font-size:12px;">🔄</span>
-            <input type="range" id="sticker-rot-range" min="-180" max="180" value="0" oninput="updateSelectedSticker()" style="width:86px;" />
-            <button class="icon-btn" style="padding:4px 8px;min-height:30px;color:#DC2626;" onclick="deleteSelectedSticker()">🗑️</button>
+            <input type="range" id="sticker-rot-range" min="-180" max="180" value="0" oninput="updateSelectedSticker()" style="width:82px;" />
+            <button class="icon-btn" style="padding:3px 8px;min-height:28px;color:#DC2626;" onclick="deleteSelectedSticker()">🗑️</button>
           </div>
         </div>
 
@@ -1005,19 +1097,17 @@
         </div>
       </div>
 
-      <!-- STAGE 4: RESULT & DIRECT QR -->
+      <!-- STAGE 4: RESULT (Small Photo Frame + Save Image + GIF Button + QR, NO GIF Window) -->
       <div id="stage-4" class="card hidden">
-        <div class="preview-pair">
-          <div class="media-box">
+        <div class="result-top-bar">
+          <div class="mini-result-frame">
             <img id="result-png-img" alt="Photo Strip" />
-            <button class="btn-primary" style="padding:8px 12px;font-size:13px;min-height:38px;width:100%;" onclick="downloadLocalPng()">⬇️ PNG</button>
           </div>
-
-          <div class="media-box">
-            <img id="result-gif-img" alt="Animated GIF" />
-            <div style="display:flex;gap:6px;width:100%;">
-              <button class="btn-secondary" style="padding:7px 10px;font-size:12.5px;min-height:38px;flex:1;" onclick="downloadLocalGif()">🎞️ GIF</button>
-              <button class="icon-btn hidden" id="btn-dl-video" style="padding:7px 10px;min-height:38px;" onclick="downloadLocalVideo()" title="วิดีโอ">🎥</button>
+          <div class="result-dl-col">
+            <button class="btn-primary" style="padding:8px 14px;font-size:13.5px;min-height:40px;max-width:none;" onclick="downloadLocalPng()">📲 บันทึกลงรูปภาพ (Save Image)</button>
+            <div style="display:flex;gap:6px;">
+              <button class="btn-secondary" style="flex:1;padding:6px 10px;font-size:12.5px;min-height:36px;" onclick="downloadLocalGif()">🎞️ โหลด GIF</button>
+              <button class="icon-btn hidden" id="btn-dl-video" style="padding:6px 10px;min-height:36px;" onclick="downloadLocalVideo()" title="โหลดวิดีโอ">🎥 วิดีโอ</button>
             </div>
           </div>
         </div>
@@ -1030,17 +1120,17 @@
 
           <div class="qr-canvas-box">
             <div id="qr-loading-box" class="hidden" style="text-align:center;">
-              <div class="cute-bounce" style="font-size:34px;">📸</div>
-              <div style="font-size:12px;color:var(--primary-dark);font-weight:700;margin-top:4px;">กำลังสร้าง QR...</div>
+              <div class="cute-bounce" style="font-size:32px;">📸</div>
+              <div style="font-size:11.5px;color:var(--primary-dark);font-weight:700;margin-top:4px;">กำลังสร้าง QR...</div>
             </div>
-            <canvas id="qr-canvas" width="190" height="190"></canvas>
+            <canvas id="qr-canvas" width="150" height="150"></canvas>
           </div>
 
-          <div id="qr-link-caption" style="font-size:12px;color:var(--muted);margin-bottom:8px;"></div>
-          <div id="qr-cloud-cta" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;"></div>
+          <div id="qr-link-caption" style="font-size:11.5px;color:var(--muted);margin-bottom:4px;"></div>
+          <div id="qr-cloud-cta" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;"></div>
         </div>
 
-        <div class="cta-row" style="margin-top:12px;">
+        <div class="cta-row">
           <button class="btn-primary" id="btn-stage4-next" onclick="resetForNewSession()">📸 ถ่ายใหม่</button>
         </div>
       </div>
@@ -1049,16 +1139,16 @@
     <!-- ==================== GALLERY VIEW ==================== -->
     <section id="view-gallery" class="card hidden">
       <div class="gallery-toolbar">
-        <div style="font-weight:700;font-size:17px;">🖼️ คลังภาพ</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
-          <div class="thai-date-wrap" style="width:124px;">
-            <input type="text" id="gallery-date-display" class="modern-input" readonly placeholder="📅 วันที่ พ.ศ." style="padding:7px 6px;font-size:12px;width:100%;cursor:pointer;text-align:center;background:#fff;" onclick="openDatePicker('gallery-date-raw')" />
+        <div style="font-weight:700;font-size:16px;">🖼️ คลังภาพ</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;">
+          <div class="thai-date-wrap" style="width:116px;">
+            <input type="text" id="gallery-date-display" class="modern-input" readonly placeholder="📅 วันที่ พ.ศ." style="padding:6px;font-size:11.5px;width:100%;cursor:pointer;text-align:center;background:#fff;" onclick="openDatePicker('gallery-date-raw')" />
             <input type="date" id="gallery-date-raw" class="thai-date-raw" onchange="onGalleryDateChange(this.value)" />
           </div>
-          <button class="icon-btn" onclick="clearGalleryDateFilter()" title="ทั้งหมด">ทั้งหมด</button>
-          <button class="icon-btn" onclick="startGallerySlideshow()" title="สไลด์โชว์">🎞️</button>
-          <button class="icon-btn" onclick="loadGalleryItems()" title="รีเฟรช">🔄</button>
-          <button class="icon-btn" onclick="printGalleryReport()" title="พิมพ์รายงาน">🖨️</button>
+          <button class="icon-btn" style="padding:5px 8px;min-height:32px;font-size:12px;" onclick="clearGalleryDateFilter()">ทั้งหมด</button>
+          <button class="icon-btn" style="padding:5px 8px;min-height:32px;" onclick="startGallerySlideshow()" title="สไลด์โชว์">🎞️</button>
+          <button class="icon-btn" style="padding:5px 8px;min-height:32px;" onclick="loadGalleryItems()" title="รีเฟรช">🔄</button>
+          <button class="icon-btn admin-only hidden" id="btn-print-report" style="padding:5px 8px;min-height:32px;" onclick="printGalleryReport()" title="พิมพ์รายงาน">🖨️</button>
         </div>
       </div>
 
@@ -1069,62 +1159,62 @@
     </section>
   </main>
 
-  <!-- ==================== OPTION POPUP / NON-BLOCKING LIVE TRAY ==================== -->
+  <!-- ==================== OPTION POPUP / LIVE TRAY ==================== -->
   <div id="option-popup" class="modal-backdrop sheet-mode hidden" onclick="if(event.target===this) closeOptionPopup()">
     <div class="modal-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <h3 id="popup-title" style="margin:0;font-size:15.5px;">ตัวเลือก</h3>
-        <button class="icon-btn" style="min-height:32px;padding:4px 10px;" onclick="closeOptionPopup()">✓ เสร็จ</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <h3 id="popup-title" style="margin:0;font-size:15px;">ตัวเลือก</h3>
+        <button class="icon-btn" style="min-height:30px;padding:3px 10px;font-size:12.5px;" onclick="closeOptionPopup()">✓ เสร็จ</button>
       </div>
       <div id="popup-body"></div>
     </div>
   </div>
 
-  <!-- ==================== SETTINGS & ADMIN MODAL ==================== -->
+  <!-- ==================== USER MODE & ADMIN SETTINGS MODAL ==================== -->
   <div id="settings-modal" class="modal-backdrop sheet-mode hidden" onclick="if(event.target===this) closeSettingsModal()">
     <div class="modal-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <h3 style="margin:0;font-size:17px;">⚙️ ตั้งค่า &amp; Admin</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3 style="margin:0;font-size:16.5px;">⚙️ โหมดการใช้งาน</h3>
         <button class="icon-btn" style="min-height:32px;padding:4px 10px;" onclick="closeSettingsModal()">✕</button>
       </div>
 
-      <div style="margin-bottom:10px;">
-        <label class="opt-label">ชื่อบูธ</label>
-        <input type="text" id="setting-booth-name" class="modern-input" placeholder="WNTK Photos" />
+      <!-- Current Mode Indicator -->
+      <div class="opt-box" style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;font-weight:700;" id="current-mode-label">👤 โหมดผู้ใช้ทั่วไป (ใช้งานปกติ)</span>
+        <button class="pill-btn active hidden" id="btn-switch-normal" onclick="adminLogout()">กลับโหมดทั่วไป</button>
       </div>
 
-      <div style="margin-bottom:12px;">
-        <label class="opt-label">Apps Script URL</label>
-        <input type="url" id="setting-gas-url" class="modern-input" placeholder="https://script.google.com/macros/s/.../exec" />
+      <!-- Admin Login Box (Shown in Normal User Mode) -->
+      <div id="admin-login-box" class="opt-box">
+        <div style="font-weight:700;font-size:13px;margin-bottom:8px;">👑 เข้าสู่โหมด Admin (สำหรับจัดการระบบเชิงลึก)</div>
+        <div style="display:flex;gap:8px;">
+          <input type="password" id="admin-pin-input" class="modern-input" placeholder="กรอกรหัสผ่าน Admin" inputmode="numeric" />
+          <button class="icon-btn active" onclick="adminLoginSubmit()">เข้าสู่ระบบ</button>
+        </div>
       </div>
 
-      <button class="btn-primary" style="width:100%;padding:10px;font-size:14px;min-height:42px;max-width:none;" onclick="saveAndTestGas()">💾 บันทึกตั้งค่า</button>
-      <div id="drive-test-result" class="opt-box hidden" style="margin-top:8px;font-size:12px;"></div>
-
-      <hr style="border:none;border-top:1.5px solid var(--border);margin:14px 0;" />
-
-      <!-- Admin Section -->
-      <div class="opt-box">
-        <div style="font-weight:700;font-size:13.5px;margin-bottom:8px;">🔐 โหมดผู้ดูแลระบบ (Admin)</div>
-
-        <div id="admin-login-box">
-          <div style="display:flex;gap:8px;">
-            <input type="password" id="admin-pin-input" class="modern-input" placeholder="กรอกรหัสผ่าน Admin" inputmode="numeric" />
-            <button class="icon-btn active" onclick="adminLoginSubmit()">เข้าสู่ระบบ</button>
-          </div>
+      <!-- Admin Deep Controls (Hidden in Normal User Mode, Shown ONLY in Admin Mode) -->
+      <div id="admin-panel-box" class="hidden">
+        <div class="opt-box" style="margin-bottom:10px;">
+          <div style="font-weight:700;font-size:13px;margin-bottom:8px;">🏪 ตั้งค่าบูธ &amp; Google Drive</div>
+          <label class="opt-label">ชื่อบูธ</label>
+          <input type="text" id="setting-booth-name" class="modern-input" placeholder="WNTK Photos" style="margin-bottom:8px;" />
+          <label class="opt-label">Apps Script URL</label>
+          <input type="url" id="setting-gas-url" class="modern-input" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:8px;" />
+          <button class="btn-primary" style="width:100%;padding:9px;font-size:13.5px;min-height:40px;max-width:none;" onclick="saveAndTestGas()">💾 บันทึกตั้งค่า &amp; ชื่อบูธ</button>
+          <div id="drive-test-result" class="hidden" style="margin-top:8px;font-size:12px;"></div>
         </div>
 
-        <div id="admin-panel-box" class="hidden">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
+        <div class="opt-box">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
             <span style="font-size:13px;font-weight:700;">🛠️ โหมดปรับปรุงระบบ</span>
             <button class="pill-btn" id="admin-maint-toggle-btn" onclick="toggleMaintenanceFromAdmin()">ปิดอยู่</button>
           </div>
           <input type="text" id="admin-maint-msg-input" class="modern-input" placeholder="ข้อความแจ้งผู้ใช้" style="margin-bottom:8px;" />
-          <div style="display:flex;gap:6px;margin-bottom:10px;">
-            <input type="password" id="admin-new-pin-input" class="modern-input" placeholder="เปลี่ยนรหัส PIN ใหม่ (4+ ตัว)" inputmode="numeric" />
+          <div style="display:flex;gap:6px;">
+            <input type="password" id="admin-new-pin-input" class="modern-input" placeholder="เปลี่ยนรหัส PIN ใหม่" inputmode="numeric" />
             <button class="icon-btn" onclick="adminChangePinSubmit()">เปลี่ยน PIN</button>
           </div>
-          <button class="icon-btn" style="width:100%;font-size:12.5px;" onclick="adminLogout()">ออกจากโหมด Admin</button>
         </div>
       </div>
     </div>
@@ -1133,7 +1223,7 @@
   <!-- ==================== GALLERY ITEM QR MODAL ==================== -->
   <div id="item-qr-modal" class="modal-backdrop sheet-mode hidden" onclick="if(event.target===this) closeItemQrModal()">
     <div class="modal-card" style="text-align:center;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
         <h3 style="margin:0;font-size:16px;">📱 สแกนโหลดไฟล์</h3>
         <button class="icon-btn" style="min-height:32px;padding:4px 10px;" onclick="closeItemQrModal()">✕</button>
       </div>
@@ -1142,9 +1232,9 @@
         <button class="pill-btn" id="modal-qr-media-btn" onclick="renderModalQr('media')">🎞️ GIF</button>
       </div>
       <div class="qr-canvas-box">
-        <canvas id="modal-qr-canvas" width="190" height="190"></canvas>
+        <canvas id="modal-qr-canvas" width="170" height="170"></canvas>
       </div>
-      <div id="modal-qr-caption" style="font-size:12px;color:var(--muted);margin-bottom:10px;"></div>
+      <div id="modal-qr-caption" style="font-size:12px;color:var(--muted);margin-bottom:8px;"></div>
       <div id="modal-qr-links" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"></div>
     </div>
   </div>
@@ -1163,14 +1253,31 @@
     <div style="font-size:64px;margin-bottom:10px;">🛠️</div>
     <h2 style="margin:0 0 8px;color:var(--primary-dark);">กำลังปรับปรุงระบบ</h2>
     <p id="maintenance-msg-display" style="margin:0 0 24px;color:var(--muted);max-width:340px;">ระบบกำลังปรับปรุงชั่วคราว กรุณารอสักครู่</p>
-    <button class="icon-btn" style="font-size:12.5px;" onclick="openSettingsModal()">🔐 Admin</button>
+    <button class="icon-btn" style="font-size:12.5px;" onclick="openSettingsModal()">👑 Admin</button>
   </div>
 
-  <!-- ==================== FULLSCREEN SLIDESHOW OVERLAY ==================== -->
-  <div id="slideshow-overlay" class="slideshow-overlay hidden" onclick="stopSlideshow()">
-    <img id="slideshow-img" class="slideshow-img" alt="Slideshow" />
-    <div id="slideshow-caption" style="color:#fff;margin-top:12px;font-size:14px;font-weight:700;"></div>
-    <div style="color:rgba(255,255,255,0.65);font-size:11.5px;margin-top:4px;">แตะหน้าจอเพื่อกลับสู่แอป</div>
+  <!-- ==================== CUTE POLAROID SLIDESHOW OVERLAY ==================== -->
+  <div id="slideshow-overlay" class="slideshow-overlay hidden" onclick="if(event.target===this || event.target.classList.contains('slideshow-sparkles')) stopSlideshow()">
+    <div class="slideshow-sparkles">
+      <span class="sparkle-float" style="top:10%;left:12%;">✨</span>
+      <span class="sparkle-float" style="top:18%;right:14%;animation-delay:1s;">💖</span>
+      <span class="sparkle-float" style="bottom:20%;left:10%;animation-delay:2s;">🌸</span>
+      <span class="sparkle-float" style="bottom:14%;right:12%;animation-delay:1.5s;">⭐</span>
+    </div>
+
+    <div class="slideshow-polaroid" onclick="event.stopPropagation()">
+      <div class="slideshow-tape">🎀 WNTK Photos ✨</div>
+      <img id="slideshow-img" class="slideshow-img" alt="Slideshow" />
+      <div id="slideshow-caption" style="color:var(--primary-dark);margin-top:10px;font-size:14px;font-weight:700;text-align:center;"></div>
+      <div id="slideshow-meta" style="color:var(--muted);font-size:11.5px;margin-top:2px;"></div>
+    </div>
+
+    <div class="slideshow-nav-row" onclick="event.stopPropagation()">
+      <button class="slideshow-nav-btn" onclick="stepSlideshow(-1)">◀ ก่อนหน้า</button>
+      <span id="slideshow-counter" style="color:#fff;font-size:12px;font-weight:700;">1 / 1</span>
+      <button class="slideshow-nav-btn" onclick="stepSlideshow(1)">ถัดไป ▶</button>
+      <button class="slideshow-nav-btn" onclick="stopSlideshow()">✕ ปิด</button>
+    </div>
   </div>
 
   <!-- Formal Print Report Container (Sarabun Font) -->
@@ -1196,6 +1303,7 @@
     }
 
     const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbyDyrIfE5QXCH4D5HwIpFpbEhvhmYWyTUSHEWOwnEJVZIYpf3fAP-XkUMUREYiRzWoMmQ/exec';
+    const DEFAULT_ADMIN_PIN = '8055';
 
     const STORAGE_KEYS = {
       GAS_URL: 'wntk_photos_gas_url_v1',
@@ -1215,7 +1323,6 @@
       '1x1': { label: 'โพลารอยด์', count: 1, w: 720, h: 880, cols: 1, rows: 1 }
     };
 
-    // Universal 16 Filters (identical pixel engine for mobile iOS/Android & desktop)
     const FILTERS = [
       { id: 'original', name: 'ต้นฉบับ', bright: 1, cont: 1, sat: 1, sep: 0, gray: 0 },
       { id: 'peach', name: 'พีชละมุน', bright: 1.06, cont: 0.96, sat: 1.12, sep: 0.08, gray: 0, tint: [8, 2, -2] },
@@ -1309,15 +1416,15 @@
       galleryDateFilter: '',
       activePopupType: null,
 
-      // Admin & Maintenance
       maintenanceMode: false,
       maintenanceMsg: 'ระบบกำลังปรับปรุงชั่วคราว กรุณารอสักครู่ 🛠️',
       adminLoggedIn: false,
 
-      // Slideshow & Idle Timer
+      slideshowValidItems: [],
       slideshowInterval: null,
       slideshowIndex: 0,
-      idleTimer: null
+      idleTimer: null,
+      kbdIndex: -1
     };
 
     /* =====================================================================
@@ -1330,29 +1437,18 @@
       const d = dt.getDate();
       const md = m * 100 + d;
 
-      // New Year: Dec 28 - Jan 7
       if (md >= 1228 || md <= 107) return 'newyear';
-      // Christmas: Dec 15 - Dec 27
       if (md >= 1215 && md <= 1227) return 'christmas';
-      // Songkran: Apr 6 - Apr 18
       if (md >= 406 && md <= 418) return 'songkran';
-      // Halloween: Oct 20 - Nov 2
       if (md >= 1020 && md <= 1102) return 'halloween';
-      // Graduation season: Feb 20 - Mar 25
       if (md >= 220 && md <= 325) return 'graduation';
 
-      // Chinese New Year lookup windows (2025-2030)
       const cnyWindows = {
-        2025: [122, 204],
-        2026: [210, 223],
-        2027: [130, 212],
-        2028: [119, 201],
-        2029: [206, 219],
-        2030: [127, 209]
+        2025: [122, 204], 2026: [210, 223], 2027: [130, 212],
+        2028: [119, 201], 2029: [206, 219], 2030: [127, 209]
       };
       const win = cnyWindows[y];
       if (win && md >= win[0] && md <= win[1]) return 'cny';
-
       return null;
     }
 
@@ -1365,10 +1461,7 @@
           state.framePattern = pat.id;
           state.frameColor = pat.defaultBg || '#FFFDF9';
           state.caption = pat.defaultCaption || 'WNTK Photos ✨';
-          if (badge) {
-            badge.textContent = pat.name;
-            badge.classList.remove('hidden');
-          }
+          if (badge) { badge.textContent = pat.name; badge.classList.remove('hidden'); }
           return;
         }
       }
@@ -1401,11 +1494,8 @@
     function cleanTimeDisplay(rawTime) {
       if (!rawTime) return '';
       const s = String(rawTime).trim();
-      // Remove any timezone/1899 Date string leaked from older rows
       const m = s.match(/(\d{1,2}:\d{2})/);
-      if (s.includes('GMT') || s.includes('1899') || s.includes('Time')) {
-        return m ? m[1] : '';
-      }
+      if (s.includes('GMT') || s.includes('1899') || s.includes('Time')) return m ? m[1] : '';
       return s;
     }
 
@@ -1425,16 +1515,12 @@
       state.stampDateBE = be;
       const disp = document.getElementById('stamp-date-display');
       if (disp) disp.value = be;
-      // Also check if picked date is near a festival
       const dt = new Date(val);
       if (!isNaN(dt.getTime())) {
         const theme = detectSeasonalTheme(dt);
         if (theme) {
           const pat = FRAME_PATTERNS.find(p => p.id === theme);
-          if (pat) {
-            state.framePattern = pat.id;
-            if (pat.defaultBg) state.frameColor = pat.defaultBg;
-          }
+          if (pat) { state.framePattern = pat.id; if (pat.defaultBg) state.frameColor = pat.defaultBg; }
         }
       }
       renderStripCanvas();
@@ -1470,14 +1556,11 @@
         audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.frequency.value = freq;
-        osc.type = 'sine';
+        osc.frequency.value = freq; osc.type = 'sine';
         gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + dur);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + dur);
       } catch (e) {}
     }
 
@@ -1496,7 +1579,7 @@
     }
 
     /* =====================================================================
-       4. UNIVERSAL PIXEL FILTER ENGINE (100% MOBILE & DESKTOP CONSISTENT)
+       4. UNIVERSAL PIXEL FILTER ENGINE
        ===================================================================== */
     function applyPixelFilterToImageData(imgData, filterObj) {
       if (!filterObj || filterObj.id === 'original') return;
@@ -1510,10 +1593,7 @@
       const tR = tint[0], tG = tint[1], tB = tint[2];
 
       for (let i = 0; i < d.length; i += 4) {
-        let r = d[i] * br;
-        let g = d[i + 1] * br;
-        let b = d[i + 2] * br;
-
+        let r = d[i] * br, g = d[i + 1] * br, b = d[i + 2] * br;
         if (ct !== 1) {
           r = (r - 128) * ct + 128;
           g = (g - 128) * ct + 128;
@@ -1530,16 +1610,12 @@
           const sg = r * 0.349 + g * 0.686 + b * 0.168;
           const sb = r * 0.272 + g * 0.534 + b * 0.131;
           const inv = 1 - sep;
-          r = r * inv + sr * sep;
-          g = g * inv + sg * sep;
-          b = b * inv + sb * sep;
+          r = r * inv + sr * sep; g = g * inv + sg * sep; b = b * inv + sb * sep;
         }
         if (gray > 0) {
           const gl = 0.299 * r + 0.587 * g + 0.114 * b;
           const invG = 1 - gray;
-          r = r * invG + gl * gray;
-          g = g * invG + gl * gray;
-          b = b * invG + gl * gray;
+          r = r * invG + gl * gray; g = g * invG + gl * gray; b = b * invG + gl * gray;
         }
         r += tR; g += tG; b += tB;
         d[i] = r < 0 ? 0 : (r > 255 ? 255 : r);
@@ -1556,8 +1632,7 @@
       const tmp = document.createElement('canvas');
       const tw = Math.max(1, Math.round(w));
       const th = Math.max(1, Math.round(h));
-      tmp.width = tw;
-      tmp.height = th;
+      tmp.width = tw; tmp.height = th;
       const tctx = tmp.getContext('2d', { willReadFrequently: true });
       drawImageCover(tctx, img, 0, 0, tw, th);
       const imd = tctx.getImageData(0, 0, tw, th);
@@ -1618,10 +1693,16 @@
     /* =====================================================================
        6. NAVIGATION & NON-BLOCKING LIVE TRAY POPUPS
        ===================================================================== */
+    function clearKbdFocus() {
+      document.querySelectorAll('.kbd-focus').forEach(el => el.classList.remove('kbd-focus'));
+      state.kbdIndex = -1;
+    }
+
     function switchAppView(view) {
       state.currentView = view;
       const isStudio = view === 'studio';
       closeOptionPopup();
+      clearKbdFocus();
       document.getElementById('view-studio').classList.toggle('hidden', !isStudio);
       document.getElementById('view-gallery').classList.toggle('hidden', isStudio);
       document.getElementById('nav-studio-btn').classList.toggle('active', isStudio);
@@ -1635,6 +1716,7 @@
     function setStudioStage(num) {
       state.currentStage = num;
       closeOptionPopup();
+      clearKbdFocus();
       [1, 2, 3, 4].forEach(i => {
         document.getElementById(`stage-${i}`).classList.toggle('hidden', i !== num);
         const chip = document.getElementById(`chip-${i}`);
@@ -1682,6 +1764,7 @@
     ]);
 
     function openOptionPopup(type) {
+      clearKbdFocus();
       state.activePopupType = type;
       const titles = {
         'setup-timer': '⏱️ เวลานับถอยหลัง',
@@ -1705,6 +1788,7 @@
     }
 
     function closeOptionPopup() {
+      clearKbdFocus();
       state.activePopupType = null;
       document.body.classList.remove('tray-open');
       document.getElementById('option-popup').classList.add('hidden');
@@ -1736,7 +1820,7 @@
                 <span>${c.name}</span>
               </button>`).join('')}
             <label class="swatch-btn" style="cursor:pointer;">
-              <input type="color" value="${state.frameColor}" onchange="setFrameColor(this.value)" style="width:26px;height:26px;border:none;padding:0;background:none;" />
+              <input type="color" value="${state.frameColor}" onchange="setFrameColor(this.value)" style="width:24px;height:24px;border:none;padding:0;background:none;" />
               <span>สีเอง</span>
             </label>
           </div>
@@ -1758,10 +1842,10 @@
       } else if (type === 'editor-text') {
         const curDate = state.stampDateBE || formatDateToThaiBE(new Date());
         body.innerHTML = `
-          <div style="margin-bottom:10px;">
+          <div style="margin-bottom:8px;">
             <input type="text" id="caption-input" class="modern-input" maxlength="40" placeholder="ข้อความบนกรอบ..." value="${escapeHtml(state.caption)}" oninput="updateCaptionSettings()" />
           </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
             ${[
               { v: 'auto', n: 'สีอัตโนมัติ' },
               { v: '#2D2235', n: 'เข้ม' },
@@ -1817,7 +1901,7 @@
     }
 
     /* =====================================================================
-       7. LIVE CANVAS CAMERA STREAM (FILTERS WORK 100% ON MOBILE)
+       7. LIVE CANVAS CAMERA STREAM
        ===================================================================== */
     async function startCameraStage(retakeIdx = null) {
       state.retakeSlotIndex = retakeIdx;
@@ -1862,7 +1946,6 @@
         if (vid.readyState >= 2 && vid.videoWidth > 0) {
           const fObj = FILTERS.find(f => f.id === state.filterId) || FILTERS[0];
           const isFiltered = fObj.id !== 'original';
-          // Use crisp 360px buffer when pixel filter is active for smooth 30fps on mobile
           const targetW = isFiltered ? 360 : Math.min(720, vid.videoWidth);
           const targetH = Math.max(1, Math.round(targetW * (vid.videoHeight / vid.videoWidth)));
 
@@ -1872,10 +1955,7 @@
           }
 
           ctx.save();
-          if (state.mirror) {
-            ctx.translate(cvs.width, 0);
-            ctx.scale(-1, 1);
-          }
+          if (state.mirror) { ctx.translate(cvs.width, 0); ctx.scale(-1, 1); }
           ctx.drawImage(vid, 0, 0, cvs.width, cvs.height);
           ctx.restore();
 
@@ -1917,15 +1997,12 @@
       if (state.activePopupType === 'camera-filter' || state.activePopupType === 'editor-filters') {
         renderPopupBody(state.activePopupType);
       }
-      if (state.currentStage === 3) {
-        renderStripCanvas();
-      }
+      if (state.currentStage === 3) renderStripCanvas();
     }
 
     function renderSlotThumbs() {
       const wrap = document.getElementById('slot-thumbs');
       const needed = LAYOUTS[state.layout].count;
-      wrap.style.gridTemplateColumns = `repeat(${Math.min(needed, 4)}, 1fr)`;
       wrap.innerHTML = '';
       for (let i = 0; i < needed; i++) {
         const div = document.createElement('div');
@@ -1951,9 +2028,7 @@
       const next = getNextEmptySlot();
       const idx = next === -1 ? needed : next + 1;
       document.getElementById('shot-progress-badge').textContent =
-        state.retakeSlotIndex !== null
-          ? `ซ่อม ${state.retakeSlotIndex + 1}/${needed}`
-          : `${idx} / ${needed}`;
+        state.retakeSlotIndex !== null ? `ซ่อม ${state.retakeSlotIndex + 1}/${needed}` : `${idx} / ${needed}`;
     }
 
     function startVideoSessionRecorder() {
@@ -1963,16 +2038,10 @@
         const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp8')
           ? 'video/webm;codecs=vp8'
           : (MediaRecorder.isTypeSupported('video/webm') ? 'video/webm' : '');
-        state.mediaRecorder = mime
-          ? new MediaRecorder(state.stream, { mimeType: mime })
-          : new MediaRecorder(state.stream);
-        state.mediaRecorder.ondataavailable = (ev) => {
-          if (ev.data && ev.data.size > 0) state.recordedChunks.push(ev.data);
-        };
+        state.mediaRecorder = mime ? new MediaRecorder(state.stream, { mimeType: mime }) : new MediaRecorder(state.stream);
+        state.mediaRecorder.ondataavailable = (ev) => { if (ev.data && ev.data.size > 0) state.recordedChunks.push(ev.data); };
         state.mediaRecorder.onstop = () => {
-          if (state.recordedChunks.length > 0) {
-            state.recordedVideoBlob = new Blob(state.recordedChunks, { type: 'video/webm' });
-          }
+          if (state.recordedChunks.length > 0) state.recordedVideoBlob = new Blob(state.recordedChunks, { type: 'video/webm' });
           document.getElementById('rec-badge').classList.add('hidden');
         };
         state.mediaRecorder.start(250);
@@ -1984,9 +2053,7 @@
       return new Promise((resolve) => {
         if (state.mediaRecorder && state.mediaRecorder.state === 'recording') {
           state.mediaRecorder.onstop = () => {
-            if (state.recordedChunks.length > 0) {
-              state.recordedVideoBlob = new Blob(state.recordedChunks, { type: 'video/webm' });
-            }
+            if (state.recordedChunks.length > 0) state.recordedVideoBlob = new Blob(state.recordedChunks, { type: 'video/webm' });
             document.getElementById('rec-badge').classList.add('hidden');
             resolve();
           };
@@ -2006,9 +2073,7 @@
         overlay.classList.remove('hidden');
         for (let t = sec; t >= 1; t--) {
           numEl.textContent = t;
-          numEl.style.animation = 'none';
-          void numEl.offsetWidth;
-          numEl.style.animation = 'popIn 0.45s ease';
+          numEl.style.animation = 'none'; void numEl.offsetWidth; numEl.style.animation = 'popIn 0.45s ease';
           playBeep(t === 1 ? 1046 : 784, 0.1);
           await sleep(1000);
         }
@@ -2020,26 +2085,19 @@
     async function snapFrameToSlot(slotIdx) {
       const vid = document.getElementById('camera-video');
       const flash = document.getElementById('flash-overlay');
-      flash.classList.add('active');
-      playShutterSound();
+      flash.classList.add('active'); playShutterSound();
       setTimeout(() => flash.classList.remove('active'), 160);
 
       const c = document.createElement('canvas');
       c.width = vid.videoWidth || 960;
       c.height = vid.videoHeight || 720;
       const ctx = c.getContext('2d');
-      if (state.mirror) {
-        ctx.translate(c.width, 0);
-        ctx.scale(-1, 1);
-      }
+      if (state.mirror) { ctx.translate(c.width, 0); ctx.scale(-1, 1); }
       ctx.drawImage(vid, 0, 0, c.width, c.height);
 
       const dataUrl = c.toDataURL('image/jpeg', 0.92);
       const img = new Image();
-      await new Promise(res => {
-        img.onload = res;
-        img.src = dataUrl;
-      });
+      await new Promise(res => { img.onload = res; img.src = dataUrl; });
       state.shots[slotIdx] = img;
       renderSlotThumbs();
       updateShotBadge();
@@ -2058,10 +2116,7 @@
         if (nextIdx === -1) break;
         updateShotBadge();
         await runCountdownAndSnap(nextIdx);
-        if (state.retakeSlotIndex !== null) {
-          state.retakeSlotIndex = null;
-          break;
-        }
+        if (state.retakeSlotIndex !== null) { state.retakeSlotIndex = null; break; }
         await sleep(450);
       }
 
@@ -2092,12 +2147,8 @@
     function setFramePattern(patternId) {
       state.framePattern = patternId;
       const pat = FRAME_PATTERNS.find(p => p.id === patternId);
-      if (pat && pat.defaultBg) {
-        state.frameColor = pat.defaultBg;
-      }
-      if (pat && pat.defaultCaption) {
-        state.caption = pat.defaultCaption;
-      }
+      if (pat && pat.defaultBg) state.frameColor = pat.defaultBg;
+      if (pat && pat.defaultCaption) state.caption = pat.defaultCaption;
       if (state.activePopupType === 'editor-frames') renderPopupBody('editor-frames');
       renderStripCanvas();
     }
@@ -2157,22 +2208,16 @@
         }
       ];
 
-      // If near a festival, include its theme preset first!
       const seasonal = detectSeasonalTheme(new Date());
       if (seasonal) {
         const pat = FRAME_PATTERNS.find(p => p.id === seasonal);
         const seasonalSticker = {
-          christmas: ['🎄', '🎅', '❄️'],
-          newyear: ['🎆', '✨', '🎉'],
-          cny: ['🧧', '🏮', '✨'],
-          halloween: ['🎃', '👻', '🦇'],
-          songkran: ['💦', '🌸', '🌺'],
-          graduation: ['🎓', '✨', '🎉']
+          christmas: ['🎄', '🎅', '❄️'], newyear: ['🎆', '✨', '🎉'],
+          cny: ['🧧', '🏮', '✨'], halloween: ['🎃', '👻', '🦇'],
+          songkran: ['💦', '🌸', '🌺'], graduation: ['🎓', '✨', '🎉']
         }[seasonal] || ['✨', '💖', '🎉'];
         presets.unshift({
-          filter: 'glow',
-          color: pat.defaultBg || '#FFFDF9',
-          pattern: pat.id,
+          filter: 'glow', color: pat.defaultBg || '#FFFDF9', pattern: pat.id,
           caption: pat.defaultCaption || 'WNTK Photos ✨',
           stickers: [
             { text: seasonalSticker[0], x: 0.12, y: 0.07, size: 56, rot: -12 },
@@ -2184,34 +2229,24 @@
 
       const pick = presets[state.magicStyleIndex % presets.length];
       state.magicStyleIndex++;
-
-      state.filterId = pick.filter;
-      state.frameColor = pick.color;
-      state.framePattern = pick.pattern;
-      state.caption = pick.caption;
-      state.captionColor = 'auto';
+      state.filterId = pick.filter; state.frameColor = pick.color;
+      state.framePattern = pick.pattern; state.caption = pick.caption; state.captionColor = 'auto';
       state.stickers = pick.stickers.map((s, idx) => ({
         id: 'auto_' + Date.now() + '_' + idx,
-        text: s.text,
-        isBadge: Boolean(s.isBadge),
-        x: s.x,
-        y: s.y,
-        size: s.size,
-        rot: s.rot
+        text: s.text, isBadge: Boolean(s.isBadge),
+        x: s.x, y: s.y, size: s.size, rot: s.rot
       }));
       selectSticker(null);
       renderStripCanvas();
-      showToast('🪄 จัดแต่งสไตล์อัตโนมัติให้แล้ว!');
+      showToast('🪄 จัดแต่งสไตล์อัตโนมัติแล้ว!');
     }
 
     function addSticker(text, isBadge) {
       const st = {
         id: 'stk_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
         text, isBadge,
-        x: 0.25 + Math.random() * 0.5,
-        y: 0.2 + Math.random() * 0.55,
-        size: isBadge ? 44 : 68,
-        rot: 0
+        x: 0.25 + Math.random() * 0.5, y: 0.2 + Math.random() * 0.55,
+        size: isBadge ? 44 : 68, rot: 0
       };
       state.stickers.push(st);
       selectSticker(st.id);
@@ -2261,8 +2296,7 @@
 
     function drawScatterEmojis(ctx, w, h, emojis, alpha = 0.32, scale = 0.046) {
       ctx.font = `${Math.round(w * scale)}px Mali, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       const step = Math.round(w * 0.17);
       let idx = 0;
       for (let y = step / 2; y < h; y += step) {
@@ -2288,18 +2322,13 @@
             if (((Math.round(x / cell) + Math.round(y / cell)) % 2) === 0) ctx.fillRect(x, y, cell, cell);
           }
         }
-      } else if (pat === 'hearts') {
-        drawScatterEmojis(ctx, w, h, ['💖', '💗'], 0.28);
-      } else if (pat === 'daisy') {
-        drawScatterEmojis(ctx, w, h, ['🌼', '🌸'], 0.34);
-      } else if (pat === 'sparkle') {
-        drawScatterEmojis(ctx, w, h, ['✨', '⭐'], 0.38);
-      } else if (pat === 'film') {
-        ctx.fillStyle = '#14111D';
-        ctx.fillRect(0, 0, w, h);
+      } else if (pat === 'hearts') drawScatterEmojis(ctx, w, h, ['💖', '💗'], 0.28);
+      else if (pat === 'daisy') drawScatterEmojis(ctx, w, h, ['🌼', '🌸'], 0.34);
+      else if (pat === 'sparkle') drawScatterEmojis(ctx, w, h, ['✨', '⭐'], 0.38);
+      else if (pat === 'film') {
+        ctx.fillStyle = '#14111D'; ctx.fillRect(0, 0, w, h);
         ctx.fillStyle = '#FFFDF9';
-        const holeH = Math.max(12, Math.round(w * 0.04));
-        const holeW = Math.max(8, Math.round(w * 0.025));
+        const holeH = Math.max(12, Math.round(w * 0.04)), holeW = Math.max(8, Math.round(w * 0.025));
         for (let y = 18; y < h - 18; y += holeH * 2) {
           ctx.beginPath();
           ctx.roundRect(8, y, holeW, holeH, 3);
@@ -2307,104 +2336,68 @@
           ctx.fill();
         }
       } else if (pat === 'christmas') {
-        // Festive border + snowflakes & trees
-        ctx.strokeStyle = '#166534';
-        ctx.lineWidth = Math.max(8, w * 0.022);
+        ctx.strokeStyle = '#166534'; ctx.lineWidth = Math.max(8, w * 0.022);
         ctx.strokeRect(ctx.lineWidth / 2, ctx.lineWidth / 2, w - ctx.lineWidth, h - ctx.lineWidth);
-        ctx.strokeStyle = '#FBBF24';
-        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#FBBF24'; ctx.lineWidth = 3;
         ctx.strokeRect(18, 18, w - 36, h - 36);
         drawScatterEmojis(ctx, w, h, ['❄️', '🎄', '🎁', '⭐'], 0.35, 0.05);
       } else if (pat === 'newyear') {
-        ctx.strokeStyle = '#FBBF24';
-        ctx.lineWidth = 4;
-        ctx.strokeRect(14, 14, w - 28, h - 28);
+        ctx.strokeStyle = '#FBBF24'; ctx.lineWidth = 4; ctx.strokeRect(14, 14, w - 28, h - 28);
         drawScatterEmojis(ctx, w, h, ['🎆', '✨', '🎊', '🥂'], 0.38, 0.05);
       } else if (pat === 'cny') {
-        ctx.strokeStyle = '#FBBF24';
-        ctx.lineWidth = Math.max(6, w * 0.015);
-        ctx.strokeRect(12, 12, w - 24, h - 24);
-        ctx.lineWidth = 2;
-        ctx.strokeRect(22, 22, w - 44, h - 44);
+        ctx.strokeStyle = '#FBBF24'; ctx.lineWidth = Math.max(6, w * 0.015); ctx.strokeRect(12, 12, w - 24, h - 24);
+        ctx.lineWidth = 2; ctx.strokeRect(22, 22, w - 44, h - 44);
         drawScatterEmojis(ctx, w, h, ['🏮', '🧧', '✨', '🐉'], 0.34, 0.05);
       } else if (pat === 'halloween') {
-        ctx.strokeStyle = '#F97316';
-        ctx.lineWidth = Math.max(5, w * 0.014);
-        ctx.strokeRect(10, 10, w - 20, h - 20);
+        ctx.strokeStyle = '#F97316'; ctx.lineWidth = Math.max(5, w * 0.014); ctx.strokeRect(10, 10, w - 20, h - 20);
         drawScatterEmojis(ctx, w, h, ['🎃', '👻', '🦇', '🕸️'], 0.35, 0.05);
       } else if (pat === 'songkran') {
-        ctx.strokeStyle = '#38BDF8';
-        ctx.lineWidth = Math.max(6, w * 0.016);
-        ctx.strokeRect(10, 10, w - 20, h - 20);
+        ctx.strokeStyle = '#38BDF8'; ctx.lineWidth = Math.max(6, w * 0.016); ctx.strokeRect(10, 10, w - 20, h - 20);
         drawScatterEmojis(ctx, w, h, ['💦', '🌸', '🌺', '💧'], 0.38, 0.05);
       } else if (pat === 'graduation') {
-        ctx.strokeStyle = '#F59E0B';
-        ctx.lineWidth = Math.max(5, w * 0.014);
-        ctx.strokeRect(12, 12, w - 24, h - 24);
+        ctx.strokeStyle = '#F59E0B'; ctx.lineWidth = Math.max(5, w * 0.014); ctx.strokeRect(12, 12, w - 24, h - 24);
         drawScatterEmojis(ctx, w, h, ['🎓', '📜', '✨', '🌟'], 0.34, 0.05);
       }
     }
 
     function drawImageCover(ctx, img, x, y, w, h) {
-      const iw = img.naturalWidth || img.width;
-      const ih = img.naturalHeight || img.height;
+      const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
       const scale = Math.max(w / iw, h / ih);
-      const sw = w / scale;
-      const sh = h / scale;
-      const sx = (iw - sw) / 2;
-      const sy = (ih - sh) / 2;
-      ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+      const sw = w / scale, sh = h / scale;
+      ctx.drawImage(img, (iw - sw) / 2, (ih - sh) / 2, sw, sh, x, y, w, h);
     }
 
     function renderStripCanvas(includeSelectionRing = true) {
       const cfg = LAYOUTS[state.layout];
       const canvas = document.getElementById('strip-canvas');
-      canvas.width = cfg.w;
-      canvas.height = cfg.h;
+      canvas.width = cfg.w; canvas.height = cfg.h;
       const ctx = canvas.getContext('2d');
 
       drawFrameBackground(ctx, cfg.w, cfg.h);
 
       const padX = state.framePattern === 'film' ? 46 : 36;
-      const padTop = 36;
-      const footerH = 140;
-      const gap = 22;
-
+      const padTop = 36, footerH = 140, gap = 22;
       const availW = cfg.w - padX * 2 - gap * (cfg.cols - 1);
       const availH = cfg.h - padTop - footerH - gap * (cfg.rows - 1);
-      const cellW = availW / cfg.cols;
-      const cellH = availH / cfg.rows;
+      const cellW = availW / cfg.cols, cellH = availH / cfg.rows;
       const filterObj = FILTERS.find(f => f.id === state.filterId) || FILTERS[0];
 
       for (let i = 0; i < cfg.count; i++) {
-        const r = Math.floor(i / cfg.cols);
-        const c = i % cfg.cols;
-        const x = padX + c * (cellW + gap);
-        const y = padTop + r * (cellH + gap);
+        const r = Math.floor(i / cfg.cols), c = i % cfg.cols;
+        const x = padX + c * (cellW + gap), y = padTop + r * (cellH + gap);
 
         ctx.save();
-        ctx.beginPath();
-        ctx.roundRect(x, y, cellW, cellH, 16);
-        ctx.clip();
-
-        if (state.shots[i]) {
-          drawFilteredImageCover(ctx, state.shots[i], x, y, cellW, cellH, filterObj);
-        } else {
-          ctx.fillStyle = '#E5D8E8';
-          ctx.fillRect(x, y, cellW, cellH);
-        }
+        ctx.beginPath(); ctx.roundRect(x, y, cellW, cellH, 16); ctx.clip();
+        if (state.shots[i]) drawFilteredImageCover(ctx, state.shots[i], x, y, cellW, cellH, filterObj);
+        else { ctx.fillStyle = '#E5D8E8'; ctx.fillRect(x, y, cellW, cellH); }
         ctx.restore();
       }
 
       let textColor = state.captionColor;
-      if (textColor === 'auto') {
-        const darkBg = state.framePattern === 'film' || isDarkColor(state.frameColor);
-        textColor = darkBg ? '#FFFDF9' : '#2D2235';
-      }
+      if (textColor === 'auto') textColor = (state.framePattern === 'film' || isDarkColor(state.frameColor)) ? '#FFFDF9' : '#2D2235';
 
       ctx.fillStyle = textColor;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       const footerCenterY = cfg.h - footerH / 2;
 
       if (state.caption) {
@@ -2419,34 +2412,23 @@
       }
 
       state.stickers.forEach(st => {
-        const sx = st.x * cfg.w;
-        const sy = st.y * cfg.h;
+        const sx = st.x * cfg.w, sy = st.y * cfg.h;
         ctx.save();
-        ctx.translate(sx, sy);
-        ctx.rotate((st.rot * Math.PI) / 180);
+        ctx.translate(sx, sy); ctx.rotate((st.rot * Math.PI) / 180);
         if (st.isBadge) {
           ctx.font = `700 ${Math.round(st.size * 0.55)}px Mali, sans-serif`;
-          const tw = ctx.measureText(st.text).width + 26;
-          const th = st.size * 0.95;
-          ctx.fillStyle = '#FF5D9E';
-          ctx.beginPath();
-          ctx.roundRect(-tw / 2, -th / 2, tw, th, 999);
-          ctx.fill();
-          ctx.fillStyle = '#FFFFFF';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
+          const tw = ctx.measureText(st.text).width + 26, th = st.size * 0.95;
+          ctx.fillStyle = '#FF5D9E'; ctx.beginPath(); ctx.roundRect(-tw / 2, -th / 2, tw, th, 999); ctx.fill();
+          ctx.fillStyle = '#FFFFFF'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(st.text, 0, 1);
         } else {
           ctx.font = `${st.size}px Mali, sans-serif`;
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(st.text, 0, 0);
         }
 
         if (includeSelectionRing && st.id === state.selectedStickerId) {
-          ctx.strokeStyle = '#7C5CFC';
-          ctx.lineWidth = 3;
-          ctx.setLineDash([6, 4]);
+          ctx.strokeStyle = '#7C5CFC'; ctx.lineWidth = 3; ctx.setLineDash([6, 4]);
           ctx.strokeRect(-st.size * 0.65, -st.size * 0.65, st.size * 1.3, st.size * 1.3);
         }
         ctx.restore();
@@ -2457,29 +2439,20 @@
       const canvas = document.getElementById('strip-canvas');
       function getNormPos(e) {
         const rect = canvas.getBoundingClientRect();
-        return {
-          x: (e.clientX - rect.left) / rect.width,
-          y: (e.clientY - rect.top) / rect.height
-        };
+        return { x: (e.clientX - rect.left) / rect.width, y: (e.clientY - rect.top) / rect.height };
       }
       canvas.addEventListener('pointerdown', (e) => {
         const pos = getNormPos(e);
         let hit = null;
         for (let i = state.stickers.length - 1; i >= 0; i--) {
           const st = state.stickers[i];
-          if (Math.abs(pos.x - st.x) < 0.1 && Math.abs(pos.y - st.y) < 0.08) {
-            hit = st;
-            break;
-          }
+          if (Math.abs(pos.x - st.x) < 0.1 && Math.abs(pos.y - st.y) < 0.08) { hit = st; break; }
         }
         if (hit) {
-          selectSticker(hit.id);
-          state.draggingSticker = true;
-          canvas.setPointerCapture(e.pointerId);
-          renderStripCanvas(true);
+          selectSticker(hit.id); state.draggingSticker = true;
+          canvas.setPointerCapture(e.pointerId); renderStripCanvas(true);
         } else {
-          selectSticker(null);
-          renderStripCanvas(true);
+          selectSticker(null); renderStripCanvas(true);
         }
       });
       canvas.addEventListener('pointermove', (e) => {
@@ -2527,11 +2500,7 @@
           }
           const rR = maxR - minR, rG = maxG - minG, rB = maxB - minB;
           const top = Math.max(rR, rG, rB);
-          if (top > maxRange) {
-            maxRange = top;
-            splitIdx = i;
-            splitChan = top === rR ? 0 : (top === rG ? 1 : 2);
-          }
+          if (top > maxRange) { maxRange = top; splitIdx = i; splitChan = top === rR ? 0 : (top === rG ? 1 : 2); }
         }
         if (splitIdx === -1 || maxRange === 0) break;
         const target = buckets.splice(splitIdx, 1)[0];
@@ -2554,10 +2523,8 @@
 
     function encodeGifFromCanvases(canvases, delayCs = 48) {
       if (!canvases.length) return null;
-      const width = canvases[0].width;
-      const height = canvases[0].height;
+      const width = canvases[0].width, height = canvases[0].height;
       const frameRgbaList = canvases.map(c => c.getContext('2d').getImageData(0, 0, width, height).data);
-
       const palette = buildAdaptivePalette(frameRgbaList);
       const lut = new Int16Array(32768).fill(-1);
 
@@ -2568,11 +2535,9 @@
         const key = ((cr >> 3) << 10) | ((cg >> 3) << 5) | (cb >> 3);
         const cached = lut[key];
         if (cached !== -1) return cached;
-
         let best = 0, bestDist = 1e9;
         for (let i = 0; i < 256; i++) {
-          const p = palette[i];
-          const dr = cr - p[0], dg = cg - p[1], db = cb - p[2];
+          const p = palette[i], dr = cr - p[0], dg = cg - p[1], db = cb - p[2];
           const dist = dr * dr + dg * dg + db * db;
           if (dist < bestDist) { bestDist = dist; best = i; }
         }
@@ -2584,47 +2549,28 @@
       const writeStr = (s) => { for (let i = 0; i < s.length; i++) bytes.push(s.charCodeAt(i)); };
       const writeU16 = (v) => { bytes.push(v & 0xff, (v >> 8) & 0xff); };
 
-      writeStr('GIF89a');
-      writeU16(width); writeU16(height);
-      bytes.push(0xF7, 0, 0);
+      writeStr('GIF89a'); writeU16(width); writeU16(height); bytes.push(0xF7, 0, 0);
       for (let i = 0; i < 256; i++) bytes.push(palette[i][0], palette[i][1], palette[i][2]);
-
-      bytes.push(0x21, 0xFF, 0x0B);
-      writeStr('NETSCAPE2.0');
-      bytes.push(0x03, 0x01, 0x00, 0x00, 0x00);
+      bytes.push(0x21, 0xFF, 0x0B); writeStr('NETSCAPE2.0'); bytes.push(0x03, 0x01, 0x00, 0x00, 0x00);
 
       function lzwEncode(indices, minCodeSize) {
-        const clearCode = 1 << minCodeSize;
-        const eoiCode = clearCode + 1;
-        const out = [];
-        let codeSize = minCodeSize + 1;
-        let nextCode = eoiCode + 1;
-        let dict = new Map();
+        const clearCode = 1 << minCodeSize, eoiCode = clearCode + 1, out = [];
+        let codeSize = minCodeSize + 1, nextCode = eoiCode + 1, dict = new Map();
         const resetDict = () => { dict.clear(); codeSize = minCodeSize + 1; nextCode = eoiCode + 1; };
-
         let bitBuf = 0, bitCnt = 0;
         const emit = (code) => {
-          bitBuf |= (code << bitCnt);
-          bitCnt += codeSize;
+          bitBuf |= (code << bitCnt); bitCnt += codeSize;
           while (bitCnt >= 8) { out.push(bitBuf & 0xff); bitBuf >>= 8; bitCnt -= 8; }
         };
-
         emit(clearCode);
         let prefix = indices[0];
         for (let i = 1; i < indices.length; i++) {
-          const k = indices[i];
-          const key = (prefix << 8) | k;
-          if (dict.has(key)) {
-            prefix = dict.get(key);
-          } else {
+          const k = indices[i], key = (prefix << 8) | k;
+          if (dict.has(key)) prefix = dict.get(key);
+          else {
             emit(prefix);
-            if (nextCode < 4096) {
-              dict.set(key, nextCode++);
-              if (nextCode > (1 << codeSize) && codeSize < 12) codeSize++;
-            } else {
-              emit(clearCode);
-              resetDict();
-            }
+            if (nextCode < 4096) { dict.set(key, nextCode++); if (nextCode > (1 << codeSize) && codeSize < 12) codeSize++; }
+            else { emit(clearCode); resetDict(); }
             prefix = k;
           }
         }
@@ -2633,71 +2579,36 @@
         return out;
       }
 
-      let errCurr = new Float32Array(width * 3);
-      let errNext = new Float32Array(width * 3);
-
+      let errCurr = new Float32Array(width * 3), errNext = new Float32Array(width * 3);
       frameRgbaList.forEach((imgData) => {
         const indices = new Uint8Array(width * height);
         errCurr.fill(0); errNext.fill(0);
-
         for (let y = 0; y < height; y++) {
           for (let x = 0; x < width; x++) {
-            const p = (y * width + x) * 4;
-            const eIdx = x * 3;
-            const r = imgData[p] + errCurr[eIdx];
-            const g = imgData[p + 1] + errCurr[eIdx + 1];
-            const b = imgData[p + 2] + errCurr[eIdx + 2];
-
+            const p = (y * width + x) * 4, eIdx = x * 3;
+            const r = imgData[p] + errCurr[eIdx], g = imgData[p + 1] + errCurr[eIdx + 1], b = imgData[p + 2] + errCurr[eIdx + 2];
             const idx = nearestColorIndex(r, g, b);
             indices[y * width + x] = idx;
-
             const chosen = palette[idx];
             const er = Math.max(-64, Math.min(64, r - chosen[0]));
             const eg = Math.max(-64, Math.min(64, g - chosen[1]));
             const eb = Math.max(-64, Math.min(64, b - chosen[2]));
-
-            if (x + 1 < width) {
-              errCurr[(x + 1) * 3] += er * 0.4375;
-              errCurr[(x + 1) * 3 + 1] += eg * 0.4375;
-              errCurr[(x + 1) * 3 + 2] += eb * 0.4375;
-            }
+            if (x + 1 < width) { errCurr[(x + 1) * 3] += er * 0.4375; errCurr[(x + 1) * 3 + 1] += eg * 0.4375; errCurr[(x + 1) * 3 + 2] += eb * 0.4375; }
             if (y + 1 < height) {
-              if (x > 0) {
-                errNext[(x - 1) * 3] += er * 0.1875;
-                errNext[(x - 1) * 3 + 1] += eg * 0.1875;
-                errNext[(x - 1) * 3 + 2] += eb * 0.1875;
-              }
-              errNext[x * 3] += er * 0.3125;
-              errNext[x * 3 + 1] += eg * 0.3125;
-              errNext[x * 3 + 2] += eb * 0.3125;
-              if (x + 1 < width) {
-                errNext[(x + 1) * 3] += er * 0.0625;
-                errNext[(x + 1) * 3 + 1] += eg * 0.0625;
-                errNext[(x + 1) * 3 + 2] += eb * 0.0625;
-              }
+              if (x > 0) { errNext[(x - 1) * 3] += er * 0.1875; errNext[(x - 1) * 3 + 1] += eg * 0.1875; errNext[(x - 1) * 3 + 2] += eb * 0.1875; }
+              errNext[x * 3] += er * 0.3125; errNext[x * 3 + 1] += eg * 0.3125; errNext[x * 3 + 2] += eb * 0.3125;
+              if (x + 1 < width) { errNext[(x + 1) * 3] += er * 0.0625; errNext[(x + 1) * 3 + 1] += eg * 0.0625; errNext[(x + 1) * 3 + 2] += eb * 0.0625; }
             }
           }
           const tmp = errCurr; errCurr = errNext; errNext = tmp; errNext.fill(0);
         }
-
-        bytes.push(0x21, 0xF9, 0x04, 0x04);
-        writeU16(delayCs);
-        bytes.push(0x00, 0x00);
-
-        bytes.push(0x2C);
-        writeU16(0); writeU16(0); writeU16(width); writeU16(height);
-        bytes.push(0x00);
-
-        const minCodeSize = 8;
-        bytes.push(minCodeSize);
+        bytes.push(0x21, 0xF9, 0x04, 0x04); writeU16(delayCs); bytes.push(0x00, 0x00);
+        bytes.push(0x2C); writeU16(0); writeU16(0); writeU16(width); writeU16(height); bytes.push(0x00);
+        const minCodeSize = 8; bytes.push(minCodeSize);
         const compressed = lzwEncode(indices, minCodeSize);
-        for (let i = 0; i < compressed.length; i += 255) {
-          const slice = compressed.slice(i, i + 255);
-          bytes.push(slice.length, ...slice);
-        }
+        for (let i = 0; i < compressed.length; i += 255) { const slice = compressed.slice(i, i + 255); bytes.push(slice.length, ...slice); }
         bytes.push(0x00);
       });
-
       bytes.push(0x3B);
       return new Blob([new Uint8Array(bytes)], { type: 'image/gif' });
     }
@@ -2708,37 +2619,22 @@
       if (!sourceList.length) return [];
 
       const first = sourceList[0];
-      const iw = first.naturalWidth || first.width || 4;
-      const ih = first.naturalHeight || first.height || 3;
-      const isPortrait = ih > iw;
-      const w = isPortrait ? 360 : 440;
-      const h = isPortrait ? 490 : 370;
-      const pad = state.framePattern === 'film' ? 24 : 16;
-      const footerH = 52;
+      const isPortrait = (first.naturalHeight || first.height || 3) > (first.naturalWidth || first.width || 4);
+      const w = isPortrait ? 360 : 440, h = isPortrait ? 490 : 370;
+      const pad = state.framePattern === 'film' ? 24 : 16, footerH = 52;
 
       return sourceList.map((img, idx) => {
-        const c = document.createElement('canvas');
-        c.width = w; c.height = h;
+        const c = document.createElement('canvas'); c.width = w; c.height = h;
         const ctx = c.getContext('2d');
-
         drawFrameBackground(ctx, w, h);
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.roundRect(pad, pad, w - pad * 2, h - pad - footerH, 12);
-        ctx.clip();
+        ctx.save(); ctx.beginPath(); ctx.roundRect(pad, pad, w - pad * 2, h - pad - footerH, 12); ctx.clip();
         drawFilteredImageCover(ctx, img, pad, pad, w - pad * 2, h - pad - footerH, fObj);
         ctx.restore();
 
         let textColor = state.captionColor;
-        if (textColor === 'auto') {
-          const dark = state.framePattern === 'film' || isDarkColor(state.frameColor);
-          textColor = dark ? '#FFFFFF' : '#2D2235';
-        }
-        ctx.fillStyle = textColor;
-        ctx.font = '700 16px Mali, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        if (textColor === 'auto') textColor = (state.framePattern === 'film' || isDarkColor(state.frameColor)) ? '#FFFFFF' : '#2D2235';
+        ctx.fillStyle = textColor; ctx.font = '700 16px Mali, sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(`${state.caption || 'WNTK Photos'} • ${idx + 1}/${sourceList.length}`, w / 2, h - footerH / 2);
         return c;
       });
@@ -2747,15 +2643,63 @@
     function blobToDataUrl(blob) {
       return new Promise((resolve) => {
         if (!blob) { resolve(''); return; }
-        const r = new FileReader();
-        r.onload = () => resolve(r.result);
-        r.readAsDataURL(blob);
+        const r = new FileReader(); r.onload = () => resolve(r.result); r.readAsDataURL(blob);
       });
     }
 
+    function dataUrlToBlob(dataUrl) {
+      const parts = String(dataUrl).split(',');
+      const mime = (parts[0].match(/:(.*?);/) || [])[1] || 'application/octet-stream';
+      const bin = atob(parts[1]);
+      const arr = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      return new Blob([arr], { type: mime });
+    }
+
     /* =====================================================================
-       10. FINALIZE, QR LOADING STATE & DIRECT DOWNLOAD QR
+       10. SAVE IMAGE TO MOBILE PHOTOS APP, FINALIZE & QR CODE
        ===================================================================== */
+    async function saveBlobToDevice(blob, filename, mimeType) {
+      if (!blob) return;
+      try {
+        if (typeof File !== 'undefined' && navigator.share) {
+          const file = new File([blob], filename, { type: mimeType });
+          if (!navigator.canShare || navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: 'WNTK Photos' });
+            showToast('📲 เลือก "บันทึกรูปภาพ (Save Image)" เพื่อเก็บลงเครื่อง');
+            return;
+          }
+        }
+      } catch (err) {
+        if (err && err.name === 'AbortError') return;
+      }
+      const url = URL.createObjectURL(blob);
+      triggerBlobDownload(url, filename);
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
+
+    function triggerBlobDownload(url, filename) {
+      const a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+
+    function downloadLocalPng() {
+      if (!state.finalPngDataUrl) return;
+      saveBlobToDevice(dataUrlToBlob(state.finalPngDataUrl), `wntk_photos_${Date.now()}.png`, 'image/png');
+    }
+
+    function downloadLocalGif() {
+      if (!state.finalGifBlob && !state.finalGifDataUrl) return;
+      const blob = state.finalGifBlob || dataUrlToBlob(state.finalGifDataUrl);
+      saveBlobToDevice(blob, `wntk_photos_${Date.now()}.gif`, 'image/gif');
+    }
+
+    function downloadLocalVideo() {
+      if (!state.recordedVideoBlob) return;
+      saveBlobToDevice(state.recordedVideoBlob, `wntk_photos_${Date.now()}.webm`, 'video/webm');
+    }
+
     async function finalizeAndGenerate() {
       closeOptionPopup();
       showCuteLoader('กำลังตกแต่งและสร้างไฟล์...');
@@ -2763,7 +2707,7 @@
       btn.disabled = true;
 
       try {
-        await sleep(60); // Let cute loader paint smoothly
+        await sleep(60);
         renderStripCanvas(false);
         const canvas = document.getElementById('strip-canvas');
         state.finalPngDataUrl = canvas.toDataURL('image/png');
@@ -2773,18 +2717,16 @@
         state.finalGifDataUrl = await blobToDataUrl(state.finalGifBlob);
 
         document.getElementById('result-png-img').src = state.finalPngDataUrl;
-        document.getElementById('result-gif-img').src = state.finalGifDataUrl || state.finalPngDataUrl;
         document.getElementById('btn-dl-video').classList.toggle('hidden', !state.recordedVideoBlob);
 
         setStudioStage(4);
         hideCuteLoader();
 
-        // Show QR loading animation inside QR panel while uploading to Drive
         const qrCanvas = document.getElementById('qr-canvas');
         const qrLoader = document.getElementById('qr-loading-box');
         qrCanvas.classList.add('hidden');
         qrLoader.classList.remove('hidden');
-        document.getElementById('qr-link-caption').textContent = '⏳ กำลังสร้าง QR Code ดาวน์โหลด...';
+        document.getElementById('qr-link-caption').textContent = '⏳ กำลังสร้าง QR Code...';
         document.getElementById('qr-cloud-cta').innerHTML = '';
 
         const now = new Date();
@@ -2842,23 +2784,15 @@
     function renderQrToCanvas(canvasEl, text) {
       const ctx = canvasEl.getContext('2d');
       const size = canvasEl.width;
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, size, size);
-
+      ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, size, size);
       if (typeof qrcode === 'function') {
         try {
-          const qr = qrcode(0, 'M');
-          qr.addData(text);
-          qr.make();
-          const count = qr.getModuleCount();
-          const pad = 10;
-          const cell = (size - pad * 2) / count;
+          const qr = qrcode(0, 'M'); qr.addData(text); qr.make();
+          const count = qr.getModuleCount(), pad = 10, cell = (size - pad * 2) / count;
           ctx.fillStyle = '#2D2235';
           for (let r = 0; r < count; r++) {
             for (let c = 0; c < count; c++) {
-              if (qr.isDark(r, c)) {
-                ctx.fillRect(pad + c * cell, pad + r * cell, Math.ceil(cell), Math.ceil(cell));
-              }
+              if (qr.isDark(r, c)) ctx.fillRect(pad + c * cell, pad + r * cell, Math.ceil(cell), Math.ceil(cell));
             }
           }
           return true;
@@ -2888,35 +2822,14 @@
         renderQrToCanvas(canvas, dlUrl);
         capEl.textContent = '📱 สแกน QR เพื่อดาวน์โหลดไฟล์ทันที';
         ctaEl.innerHTML = `
-          <a class="icon-btn" href="${dlUrl}" target="_blank" rel="noopener">⬇️ โหลดตรง</a>
-          <a class="icon-btn" href="${viewUrl}" target="_blank" rel="noopener">👁️ ดูรูป</a>
+          <a class="icon-btn" style="min-height:30px;padding:4px 9px;font-size:12px;" href="${dlUrl}" target="_blank" rel="noopener">⬇️ โหลดตรง</a>
+          <a class="icon-btn" style="min-height:30px;padding:4px 9px;font-size:12px;" href="${viewUrl}" target="_blank" rel="noopener">👁️ ดูรูป</a>
         `;
       } else {
         renderQrToCanvas(canvas, window.location.href);
         capEl.textContent = '💾 บันทึกลงเครื่องแล้ว';
         ctaEl.innerHTML = '';
       }
-    }
-
-    function triggerBlobDownload(url, filename) {
-      const a = document.createElement('a');
-      a.href = url; a.download = filename;
-      document.body.appendChild(a); a.click(); a.remove();
-    }
-
-    function downloadLocalPng() {
-      if (state.finalPngDataUrl) triggerBlobDownload(state.finalPngDataUrl, `wntk_photos_${Date.now()}.png`);
-    }
-
-    function downloadLocalGif() {
-      if (state.finalGifDataUrl) triggerBlobDownload(state.finalGifDataUrl, `wntk_photos_${Date.now()}.gif`);
-    }
-
-    function downloadLocalVideo() {
-      if (!state.recordedVideoBlob) return;
-      const url = URL.createObjectURL(state.recordedVideoBlob);
-      triggerBlobDownload(url, `wntk_photos_${Date.now()}.webm`);
-      setTimeout(() => URL.revokeObjectURL(url), 5000);
     }
 
     function resetForNewSession() {
@@ -2930,11 +2843,49 @@
     }
 
     /* =====================================================================
-       11. GALLERY, SLIDESHOW & IDLE AUTO-SLIDESHOW (1 MINUTE)
+       11. GALLERY, CUTE SLIDESHOW & IDLE AUTO-SLIDESHOW
        ===================================================================== */
-    async function loadGalleryItems(silent = false) {
+    function renderGalleryGrid() {
       const grid = document.getElementById('gallery-grid');
       const emptyEl = document.getElementById('gallery-empty');
+      const items = state.galleryItems || [];
+
+      if (!items.length) {
+        grid.innerHTML = '';
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+
+      emptyEl.classList.add('hidden');
+      grid.innerHTML = items.map(item => {
+        const thumb = item.localPng || item.photoThumbUrl || 'https://i.postimg.cc/Hx10w2k6/Photobooth.png';
+        const cleanTime = cleanTimeDisplay(item.timeStr);
+        const deleteBtn = state.adminLoggedIn
+          ? `<button class="icon-btn" style="padding:4px 7px;min-height:30px;font-size:12px;color:#DC2626;" onclick="deleteGalleryItem('${item.id}')" title="ลบภาพ (Admin)">🗑️</button>`
+          : '';
+        return `
+          <div class="gallery-item">
+            <div class="gallery-thumb">
+              <img src="${thumb}" alt="Photo" loading="lazy" />
+            </div>
+            <div class="gallery-meta">
+              <div style="font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(item.caption || 'WNTK Photos')}</div>
+              <div style="color:var(--muted);font-size:11px;margin:2px 0 6px;">${escapeHtml(item.dateStr || '')}${cleanTime ? ' • ' + escapeHtml(cleanTime) : ''}</div>
+              <div style="display:flex;gap:5px;">
+                <button class="icon-btn" style="flex:1;padding:4px 6px;min-height:30px;font-size:12px;" onclick="openItemQrModal('${item.id}')">📱 QR</button>
+                ${item.localPng
+                  ? `<button class="icon-btn" style="padding:4px 8px;min-height:30px;font-size:12px;" onclick="downloadGalleryLocal('${item.id}')">⬇️</button>`
+                  : `<a class="icon-btn" style="padding:4px 8px;min-height:30px;font-size:12px;" href="${item.photoDownloadUrl || item.photoViewUrl}" target="_blank" rel="noopener">⬇️</a>`
+                }
+                ${deleteBtn}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function loadGalleryItems(silent = false) {
       if (!silent) showCuteLoader('กำลังโหลดคลังภาพ...');
 
       const gasUrl = getGasUrl();
@@ -2964,46 +2915,22 @@
 
       state.galleryItems = items;
       if (!silent) hideCuteLoader();
-
-      if (!items.length) {
-        grid.innerHTML = '';
-        emptyEl.classList.remove('hidden');
-        return items;
-      }
-
-      emptyEl.classList.add('hidden');
-      grid.innerHTML = items.map(item => {
-        const thumb = item.localPng || item.photoThumbUrl || 'https://i.postimg.cc/Hx10w2k6/Photobooth.png';
-        const cleanTime = cleanTimeDisplay(item.timeStr);
-        return `
-          <div class="gallery-item">
-            <div class="gallery-thumb">
-              <img src="${thumb}" alt="Photo" loading="lazy" />
-            </div>
-            <div class="gallery-meta">
-              <div style="font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(item.caption || 'WNTK Photos')}</div>
-              <div style="color:var(--muted);font-size:11px;margin:2px 0 6px;">${escapeHtml(item.dateStr || '')}${cleanTime ? ' • ' + escapeHtml(cleanTime) : ''}</div>
-              <div style="display:flex;gap:5px;">
-                <button class="icon-btn" style="flex:1;padding:4px 6px;min-height:30px;font-size:12px;" onclick="openItemQrModal('${item.id}')">📱 QR</button>
-                ${item.localPng
-                  ? `<button class="icon-btn" style="padding:4px 8px;min-height:30px;font-size:12px;" onclick="downloadGalleryLocal('${item.id}')">⬇️</button>`
-                  : `<a class="icon-btn" style="padding:4px 8px;min-height:30px;font-size:12px;" href="${item.photoDownloadUrl || item.photoViewUrl}" target="_blank" rel="noopener">⬇️</a>`
-                }
-                <button class="icon-btn" style="padding:4px 8px;min-height:30px;font-size:12px;color:#DC2626;" onclick="deleteGalleryItem('${item.id}')">🗑️</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
+      renderGalleryGrid();
       return items;
     }
 
     function downloadGalleryLocal(id) {
       const it = state.galleryItems.find(x => x.id === id);
-      if (it && it.localPng) triggerBlobDownload(it.localPng, `${id}.png`);
+      if (it && it.localPng) {
+        saveBlobToDevice(dataUrlToBlob(it.localPng), `${id}.png`, 'image/png');
+      }
     }
 
     async function deleteGalleryItem(id) {
+      if (!state.adminLoggedIn) {
+        showToast('ต้องเข้าสู่โหมด Admin ก่อนลบภาพ');
+        return;
+      }
       if (!confirm('ต้องการลบรูปภาพนี้ใช่หรือไม่?')) return;
       showCuteLoader('กำลังลบ...');
       await deleteLocalSession(id);
@@ -3056,41 +2983,45 @@
         renderQrToCanvas(canvas, window.location.href);
         cap.textContent = '💾 บันทึกเฉพาะในเครื่องนี้';
         links.innerHTML = item.localPng
-          ? `<button class="btn-secondary" style="padding:8px 14px;font-size:12.5px;min-height:38px;" onclick="downloadGalleryLocal('${item.id}')">⬇️ ดาวน์โหลด</button>`
+          ? `<button class="btn-secondary" style="padding:8px 14px;font-size:12.5px;min-height:38px;" onclick="downloadGalleryLocal('${item.id}')">📲 Save Image</button>`
           : '';
       }
     }
 
+    function showSlideAt(index) {
+      const valid = state.slideshowValidItems;
+      if (!valid.length) return;
+      state.slideshowIndex = ((index % valid.length) + valid.length) % valid.length;
+      const cur = valid[state.slideshowIndex];
+      const imgEl = document.getElementById('slideshow-img');
+      imgEl.style.animation = 'none'; void imgEl.offsetWidth;
+      imgEl.style.animation = 'gentleZoom 4.2s ease-in-out infinite alternate';
+      imgEl.src = cur.localPng || cur.photoThumbUrl;
+      document.getElementById('slideshow-caption').textContent = cur.caption || 'WNTK Photos ✨';
+      const cleanTime = cleanTimeDisplay(cur.timeStr);
+      document.getElementById('slideshow-meta').textContent = `📅 ${cur.dateStr || ''}${cleanTime ? ' • ' + cleanTime : ''}`;
+      document.getElementById('slideshow-counter').textContent = `${state.slideshowIndex + 1} / ${valid.length}`;
+    }
+
+    function stepSlideshow(delta) {
+      showSlideAt(state.slideshowIndex + delta);
+      clearInterval(state.slideshowInterval);
+      state.slideshowInterval = setInterval(() => showSlideAt(state.slideshowIndex + 1), 4000);
+    }
+
     async function startGallerySlideshow(isAuto = false) {
       let items = state.galleryItems;
-      if (!items.length) {
-        items = await loadGalleryItems(true);
-      }
+      if (!items.length) items = await loadGalleryItems(true);
       const valid = items.filter(it => it.localPng || it.photoThumbUrl);
       if (!valid.length) {
         if (!isAuto) showToast('ยังไม่มีรูปสำหรับสไลด์โชว์');
         return;
       }
-
-      const overlay = document.getElementById('slideshow-overlay');
-      const imgEl = document.getElementById('slideshow-img');
-      const capEl = document.getElementById('slideshow-caption');
-
-      state.slideshowIndex = 0;
-      const showSlide = () => {
-        const cur = valid[state.slideshowIndex % valid.length];
-        imgEl.style.animation = 'none';
-        void imgEl.offsetWidth;
-        imgEl.style.animation = 'fadeSlide 0.55s ease';
-        imgEl.src = cur.localPng || cur.photoThumbUrl;
-        capEl.textContent = `${cur.caption || 'WNTK Photos'} • ${cur.dateStr || ''}`;
-        state.slideshowIndex++;
-      };
-
-      showSlide();
-      overlay.classList.remove('hidden');
+      state.slideshowValidItems = valid;
+      showSlideAt(0);
+      document.getElementById('slideshow-overlay').classList.remove('hidden');
       clearInterval(state.slideshowInterval);
-      state.slideshowInterval = setInterval(showSlide, 4000);
+      state.slideshowInterval = setInterval(() => showSlideAt(state.slideshowIndex + 1), 4000);
     }
 
     function stopSlideshow() {
@@ -3108,7 +3039,7 @@
         if (!state.isShooting && !inLock && !inSlide) {
           startGallerySlideshow(true);
         }
-      }, 60000); // 1 minute idle auto-slideshow
+      }, 60000);
     }
 
     function printGalleryReport() {
@@ -3142,21 +3073,36 @@
     }
 
     /* =====================================================================
-       12. SETTINGS, ADMIN & MAINTENANCE MODE
+       12. NORMAL USER MODE VS ADMIN MODE (PIN 8055) & MAINTENANCE
        ===================================================================== */
     function applyServerSettings(settings) {
       if (!settings) return;
       const isMaint = String(settings.maintenance_mode || 'false').toLowerCase() === 'true';
       state.maintenanceMode = isMaint;
       state.maintenanceMsg = settings.maintenance_msg || 'ระบบกำลังปรับปรุงชั่วคราว กรุณารอสักครู่ 🛠️';
+      if (settings.booth_name) {
+        localStorage.setItem(STORAGE_KEYS.BOOTH_NAME, settings.booth_name);
+        document.getElementById('staff-display').textContent = state.adminLoggedIn ? `👑 ${settings.booth_name}` : settings.booth_name;
+      }
       renderMaintenanceUI();
+    }
+
+    function renderModeUI() {
+      const isAdmin = state.adminLoggedIn;
+      const boothName = localStorage.getItem(STORAGE_KEYS.BOOTH_NAME) || 'WNTK Photos';
+      document.getElementById('staff-display').textContent = isAdmin ? `👑 ${boothName}` : boothName;
+      document.getElementById('nav-settings-btn').textContent = isAdmin ? '👑' : '⚙️';
+      document.getElementById('current-mode-label').textContent = isAdmin ? '👑 โหมด Admin (เข้าถึงเชิงลึก)' : '👤 โหมดผู้ใช้ทั่วไป (ใช้งานปกติ)';
+      document.getElementById('btn-switch-normal').classList.toggle('hidden', !isAdmin);
+      document.getElementById('admin-login-box').classList.toggle('hidden', isAdmin);
+      document.getElementById('admin-panel-box').classList.toggle('hidden', !isAdmin);
+      document.getElementById('btn-print-report').classList.toggle('hidden', !isAdmin);
+      renderGalleryGrid();
     }
 
     function renderMaintenanceUI() {
       const lockScreen = document.getElementById('maintenance-screen');
-      const msgEl = document.getElementById('maintenance-msg-display');
-      msgEl.textContent = state.maintenanceMsg;
-      // Show maintenance lock for everyone when enabled (unless currently inside settings modal as admin)
+      document.getElementById('maintenance-msg-display').textContent = state.maintenanceMsg;
       lockScreen.classList.toggle('hidden', !state.maintenanceMode);
 
       const tglBtn = document.getElementById('admin-maint-toggle-btn');
@@ -3171,8 +3117,7 @@
     function openSettingsModal() {
       document.getElementById('setting-booth-name').value = localStorage.getItem(STORAGE_KEYS.BOOTH_NAME) || 'WNTK Photos';
       document.getElementById('setting-gas-url').value = getGasUrl();
-      document.getElementById('admin-login-box').classList.toggle('hidden', state.adminLoggedIn);
-      document.getElementById('admin-panel-box').classList.toggle('hidden', !state.adminLoggedIn);
+      renderModeUI();
       renderMaintenanceUI();
       document.getElementById('settings-modal').classList.remove('hidden');
     }
@@ -3182,24 +3127,30 @@
     }
 
     async function saveAndTestGas() {
+      if (!state.adminLoggedIn) return;
       const name = document.getElementById('setting-booth-name').value.trim() || 'WNTK Photos';
       const url = document.getElementById('setting-gas-url').value.trim();
       localStorage.setItem(STORAGE_KEYS.BOOTH_NAME, name);
       localStorage.setItem(STORAGE_KEYS.GAS_URL, url);
-      document.getElementById('staff-display').textContent = name;
+      renderModeUI();
 
       const resBox = document.getElementById('drive-test-result');
       resBox.classList.remove('hidden');
       if (!url) { resBox.innerHTML = '💾 บันทึกแล้ว'; return; }
 
-      showCuteLoader('กำลังทดสอบการเชื่อมต่อ...');
+      showCuteLoader('กำลังบันทึกและเชื่อมต่อ Drive...');
       try {
+        await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'saveSettings', settings: { booth_name: name } })
+        });
         const res = await fetch(`${url}?action=init`);
         const json = await res.json();
         if (json.status === 'success') {
           localStorage.setItem(STORAGE_KEYS.DRIVE_LINKS, JSON.stringify(json));
           if (json.settings) applyServerSettings(json.settings);
-          resBox.innerHTML = `✅ เชื่อมต่อสำเร็จ <a href="${json.folderUrl}" target="_blank" rel="noopener">📁 เปิดโฟลเดอร์</a>`;
+          resBox.innerHTML = `✅ บันทึก &amp; เชื่อมต่อสำเร็จ <a href="${json.folderUrl}" target="_blank" rel="noopener">📁 เปิดโฟลเดอร์</a>`;
         } else {
           resBox.innerHTML = `❌ ${escapeHtml(json.message || 'Error')}`;
         }
@@ -3228,15 +3179,15 @@
             return;
           }
           if (json.settings) applyServerSettings(json.settings);
-        } else if (pin !== '1234') {
+        } else if (pin !== DEFAULT_ADMIN_PIN) {
           showToast('รหัสผ่านไม่ถูกต้อง');
           return;
         }
         sessionStorage.setItem(STORAGE_KEYS.ADMIN_PIN_SESSION, pin);
         state.adminLoggedIn = true;
         document.getElementById('admin-pin-input').value = '';
-        openSettingsModal();
-        showToast('เข้าสู่ระบบ Admin แล้ว');
+        renderModeUI();
+        showToast('👑 เข้าสู่โหมด Admin แล้ว');
       } catch (e) {
         showToast('ตรวจสอบสิทธิ์ไม่สำเร็จ');
       } finally {
@@ -3259,17 +3210,14 @@
             body: JSON.stringify({ action: 'adminSetMaintenance', pin, enabled: nextMode, message: msg })
           });
           const json = await res.json();
-          if (json.status !== 'success') {
-            showToast(json.message || 'อัปเดตไม่สำเร็จ');
-            return;
-          }
+          if (json.status !== 'success') { showToast(json.message || 'อัปเดตไม่สำเร็จ'); return; }
           if (json.settings) applyServerSettings(json.settings);
         } else {
           state.maintenanceMode = nextMode;
           state.maintenanceMsg = msg;
           renderMaintenanceUI();
         }
-        showToast(state.maintenanceMode ? '🛠️ เปิดโหมดปรับปรุงระบบแล้ว' : '✅ เปิดใช้งานระบบตามปกติแล้ว');
+        showToast(state.maintenanceMode ? '🛠️ เปิดโหมดปรับปรุงระบบแล้ว' : '✅ เปิดใช้งานระบบปกติแล้ว');
       } catch (e) {
         showToast('เชื่อมต่อไม่สำเร็จ');
       } finally {
@@ -3306,30 +3254,107 @@
     function adminLogout() {
       sessionStorage.removeItem(STORAGE_KEYS.ADMIN_PIN_SESSION);
       state.adminLoggedIn = false;
-      openSettingsModal();
+      renderModeUI();
+      showToast('👤 สลับเป็นโหมดผู้ใช้ทั่วไปแล้ว');
     }
 
     /* =====================================================================
-       13. ENTER KEY ADVANCE & BOOTSTRAP
+       13. ARROW KEY NAVIGATION + ENTER ADVANCE
        ===================================================================== */
-    document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Enter') return;
+    function getNavigableElements() {
+      if (!document.getElementById('option-popup').classList.contains('hidden')) {
+        return Array.from(document.querySelectorAll('#popup-body button, #popup-body input[type="text"]'))
+          .filter(el => el.offsetParent !== null);
+      }
+      if (state.currentView === 'gallery') {
+        return Array.from(document.querySelectorAll('#view-gallery button, #view-gallery a'))
+          .filter(el => el.offsetParent !== null);
+      }
+      if (state.currentStage === 1) {
+        return Array.from(document.querySelectorAll('#stage-1 .layout-card, #stage-1 .quick-chips-row button, #btn-stage1-next'))
+          .filter(el => el.offsetParent !== null);
+      }
+      if (state.currentStage === 3) {
+        return Array.from(document.querySelectorAll('#stage-3 .dock-btn, #btn-save-finish'))
+          .filter(el => el.offsetParent !== null);
+      }
+      if (state.currentStage === 4) {
+        return Array.from(document.querySelectorAll('#stage-4 button, #stage-4 a'))
+          .filter(el => el.offsetParent !== null);
+      }
+      return [];
+    }
 
-      // Close slideshow if open
-      if (!document.getElementById('slideshow-overlay').classList.contains('hidden')) {
-        e.preventDefault();
-        stopSlideshow();
+    function handleArrowNavigation(key) {
+      // In camera mode, ArrowLeft/Right cycles live filters smoothly
+      if (state.currentView === 'studio' && state.currentStage === 2 &&
+          document.getElementById('option-popup').classList.contains('hidden')) {
+        if (key === 'ArrowLeft' || key === 'ArrowRight') {
+          const curIdx = FILTERS.findIndex(f => f.id === state.filterId);
+          const nextIdx = ((curIdx + (key === 'ArrowRight' ? 1 : -1)) + FILTERS.length) % FILTERS.length;
+          setFilter(FILTERS[nextIdx].id);
+          showToast(`🌈 ${FILTERS[nextIdx].name}`);
+        }
         return;
       }
+
+      const items = getNavigableElements();
+      if (!items.length) return;
+
+      const delta = (key === 'ArrowRight' || key === 'ArrowDown') ? 1 : -1;
+      let idx = state.kbdIndex;
+      if (idx < 0 || idx >= items.length) {
+        idx = delta > 0 ? 0 : items.length - 1;
+      } else {
+        idx = (idx + delta + items.length) % items.length;
+      }
+
+      clearKbdFocus();
+      state.kbdIndex = idx;
+      const target = items[idx];
+      target.classList.add('kbd-focus');
+      target.focus({ preventScroll: false });
+      target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+
+      if (target.classList.contains('layout-card') && target.dataset.layout) {
+        selectLayout(target.dataset.layout);
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
       if (!document.getElementById('cute-loading-popup').classList.contains('hidden')) return;
       if (!document.getElementById('maintenance-screen').classList.contains('hidden')) return;
 
-      // Ignore Enter inside input fields (or handle Admin PIN submit)
-      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
-        if (e.target.id === 'admin-pin-input') {
-          e.preventDefault();
-          adminLoginSubmit();
+      // Slideshow controls
+      if (!document.getElementById('slideshow-overlay').classList.contains('hidden')) {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); stepSlideshow(-1); return; }
+        if (e.key === 'ArrowRight') { e.preventDefault(); stepSlideshow(1); return; }
+        if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); stopSlideshow(); return; }
+        return;
+      }
+
+      // Arrow keys for item navigation
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        if (e.target && (e.target.tagName === 'INPUT' && e.target.type !== 'button' || e.target.tagName === 'TEXTAREA')) {
+          return;
         }
+        e.preventDefault();
+        handleArrowNavigation(e.key);
+        return;
+      }
+
+      if (e.key !== 'Enter') return;
+
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+        if (e.target.id === 'admin-pin-input') { e.preventDefault(); adminLoginSubmit(); }
+        return;
+      }
+
+      // If an item is focused via arrow keys inside popup or dock, activate it
+      const focused = document.querySelector('.kbd-focus');
+      if (focused && document.activeElement === focused) {
+        e.preventDefault();
+        focused.click();
         return;
       }
 
@@ -3364,9 +3389,7 @@
       try {
         const res = await fetch(`${gasUrl}?action=init`);
         const json = await res.json();
-        if (json.status === 'success' && json.settings) {
-          applyServerSettings(json.settings);
-        }
+        if (json.status === 'success' && json.settings) applyServerSettings(json.settings);
       } catch (e) {}
     }
 
@@ -3380,18 +3403,15 @@
       state.stampDateBE = formatDateToThaiBE(new Date());
       applySeasonalDefaultFrame(new Date());
       updateTimerLabels();
+      renderModeUI();
 
-      // Idle listeners for 1-minute auto-slideshow
       ['pointerdown', 'keydown', 'touchstart', 'scroll', 'click'].forEach(evt => {
         window.addEventListener(evt, () => {
-          if (document.getElementById('slideshow-overlay').classList.contains('hidden')) {
-            resetIdleTimer();
-          }
+          if (document.getElementById('slideshow-overlay').classList.contains('hidden')) resetIdleTimer();
         }, { passive: true });
       });
       resetIdleTimer();
 
-      // Check server maintenance status & poll periodically
       syncServerStatus();
       setInterval(syncServerStatus, 30000);
 

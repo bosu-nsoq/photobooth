@@ -122,9 +122,25 @@ function ensureWorkspace() {
       ["folder_url", rootFolder.getUrl()],
       ["maintenance_mode", "false"],
       ["maintenance_msg", "ระบบกำลังปรับปรุงชั่วคราว กรุณารอสักครู่ 🛠️"],
-      ["admin_pin", "1234"]
+      ["admin_pin", "8055"]
     ];
     settingsSheet.getRange(2, 1, defaults.length, 2).setValues(defaults);
+  } else {
+    // อัปเกรดรหัสผ่านเริ่มต้นเดิม 1234 เป็น 8055 หากยังไม่เคยตั้งค่าเอง
+    const sData = settingsSheet.getDataRange().getValues();
+    let hasPin = false;
+    for (let i = 1; i < sData.length; i++) {
+      if (String(sData[i][0] || "").trim() === "admin_pin") {
+        hasPin = true;
+        if (String(sData[i][1] || "").trim() === "1234") {
+          settingsSheet.getRange(i + 1, 2).setValue("8055");
+        }
+        break;
+      }
+    }
+    if (!hasPin) {
+      settingsSheet.appendRow(["admin_pin", "8055"]);
+    }
   }
 
   return {
@@ -156,18 +172,19 @@ function getSettingsMap(ss) {
 }
 
 /**
- * ดึง Admin PIN ภายในฝั่งเซิร์ฟเวอร์ (ค่าเริ่มต้น 1234)
+ * ดึง Admin PIN ภายในฝั่งเซิร์ฟเวอร์ (ค่าเริ่มต้น 8055)
  */
 function getAdminPin(ss) {
   const sheet = ss.getSheetByName(SHEET_SETTINGS);
-  if (!sheet) return "1234";
+  if (!sheet) return "8055";
   const data = sheet.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
     if (String(data[i][0] || "").trim() === "admin_pin") {
-      return String(data[i][1] || "1234").trim();
+      const val = String(data[i][1] || "8055").trim();
+      return val === "1234" ? "8055" : val;
     }
   }
-  return "1234";
+  return "8055";
 }
 
 /**
