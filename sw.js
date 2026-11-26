@@ -1,4 +1,4 @@
-const CACHE_NAME = 'wntk-photos-pwa-v9';
+const CACHE_NAME = 'wntk-photos-pwa-v10';
 const ASSETS = [
   './',
   './index.html',
