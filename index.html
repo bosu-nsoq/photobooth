@@ -12,9 +12,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="WNTK Photos" />
-  <link rel="apple-touch-icon" href="https://i.postimg.cc/Hx10w2k6/Photobooth.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/Hx10w2k6/Photobooth.png" />
-  <link rel="icon" type="image/png" href="https://i.postimg.cc/Hx10w2k6/Photobooth.png" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon-192.png" />
+  <link rel="icon" type="image/png" href="./icon-192.png" />
 
   <!-- Fonts: Mali (Interactive UI) & Sarabun (Official Print Reports) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -408,6 +408,19 @@
       height: 100%;
       object-fit: cover;
       display: block;
+    }
+
+    .camera-crop-guide {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px dashed rgba(255, 255, 255, 0.88);
+      border-radius: 14px;
+      box-shadow: 0 0 0 9999px rgba(16, 10, 26, 0.34);
+      pointer-events: none;
+      z-index: 3;
+      transition: width 0.18s ease, height 0.18s ease;
     }
 
     .cam-float-top {
@@ -1129,7 +1142,7 @@
   <!-- Header -->
   <header class="app-header">
     <div class="brand-group">
-      <img src="https://i.postimg.cc/Hx10w2k6/Photobooth.png" alt="WNTK Photos" class="brand-logo" />
+      <img src="./icon-192.png" alt="WNTK Photos" class="brand-logo" />
       <span class="brand-title">WNTK Photos</span>
     </div>
     <div class="header-actions">
@@ -1240,6 +1253,7 @@
         <div class="viewfinder-wrap">
           <video id="camera-video" autoplay playsinline muted></video>
           <canvas id="camera-canvas"></canvas>
+          <div id="camera-crop-guide" class="camera-crop-guide hidden"></div>
 
           <div class="cam-float-top">
             <div class="shot-badge" id="shot-progress-badge">1 / 4</div>
@@ -1452,7 +1466,7 @@
   <!-- ==================== INITIAL BOOT LOADING SCREEN ==================== -->
   <div id="boot-splash-screen" class="boot-splash-overlay">
     <div class="cute-loader-card">
-      <img src="https://i.postimg.cc/Hx10w2k6/Photobooth.png" alt="WNTK Photos" style="width:62px;height:62px;border-radius:16px;box-shadow:0 6px 16px rgba(255,93,158,0.28);margin-bottom:8px;" class="cute-bounce" />
+      <img src="./icon-192.png" alt="WNTK Photos" style="width:62px;height:62px;border-radius:16px;box-shadow:0 6px 16px rgba(255,93,158,0.28);margin-bottom:8px;" class="cute-bounce" />
       <div style="font-weight:700;font-size:16px;color:var(--primary-dark);">WNTK Photos</div>
       <div style="font-size:12.5px;color:var(--muted);margin-top:4px;">กำลังโหลดข้อมูลระบบ...</div>
       <div class="cute-dots"><span></span><span></span><span></span></div>
@@ -2273,6 +2287,9 @@
           if (cvs.width !== targetW || cvs.height !== targetH) {
             cvs.width = targetW;
             cvs.height = targetH;
+            updateCameraCropGuide();
+          } else if (document.getElementById('camera-crop-guide').classList.contains('hidden')) {
+            updateCameraCropGuide();
           }
 
           ctx.save();
@@ -2293,9 +2310,48 @@
       state.camAnimId = requestAnimationFrame(tick);
     }
 
+    function updateCameraCropGuide() {
+      const guide = document.getElementById('camera-crop-guide');
+      const cvs = document.getElementById('camera-canvas');
+      const wrap = cvs ? cvs.parentElement : null;
+      if (!guide || !cvs || !wrap || !state.stream || state.currentView !== 'studio' || state.currentStage !== 2) {
+        if (guide) guide.classList.add('hidden');
+        return;
+      }
+      const vw = wrap.clientWidth, vh = wrap.clientHeight;
+      const cw = cvs.width, ch = cvs.height;
+      if (!vw || !vh || !cw || !ch) return;
+
+      const cfg = LAYOUTS[state.layout];
+      const padX = state.framePattern === 'film' ? 46 : 36;
+      const rects = getLayoutSlotRects(state.layout, cfg, padX, 36, 140, 22);
+      const nextSlot = getNextEmptySlot();
+      const slotIdx = nextSlot >= 0 && nextSlot < rects.length ? nextSlot : 0;
+      const slot = rects[slotIdx] || rects[0];
+      const slotAR = slot.w / slot.h;
+      const camAR = cw / ch;
+
+      const coverScale = Math.max(vw / cw, vh / ch);
+      const dispCamW = cw * coverScale;
+      const dispCamH = ch * coverScale;
+
+      let guideW = camAR > slotAR ? dispCamH * slotAR : dispCamW;
+      let guideH = camAR > slotAR ? dispCamH : dispCamW / slotAR;
+
+      const maxW = vw - 6, maxH = vh - 6;
+      if (guideW > maxW) guideW = maxW;
+      if (guideH > maxH) guideH = maxH;
+
+      guide.style.width = `${Math.max(40, Math.round(guideW))}px`;
+      guide.style.height = `${Math.max(40, Math.round(guideH))}px`;
+      guide.classList.remove('hidden');
+    }
+
     function stopCameraStream() {
       cancelAnimationFrame(state.camAnimId);
       state.camAnimId = null;
+      const guide = document.getElementById('camera-crop-guide');
+      if (guide) guide.classList.add('hidden');
       if (state.mediaRecorder && state.mediaRecorder.state === 'recording') {
         try { state.mediaRecorder.stop(); } catch (e) {}
       }
@@ -2357,6 +2413,7 @@
       const idx = next === -1 ? needed : next + 1;
       document.getElementById('shot-progress-badge').textContent =
         state.retakeSlotIndex !== null ? `ซ่อม ${state.retakeSlotIndex + 1}/${needed}` : `${idx} / ${needed}`;
+      updateCameraCropGuide();
     }
 
     function startVideoSessionRecorder() {
@@ -3368,7 +3425,7 @@
       if (fid) {
         list.push(`https://drive.google.com/uc?export=view&id=${fid}`);
       }
-      list.push('https://i.postimg.cc/Hx10w2k6/Photobooth.png');
+      list.push('./icon-192.png');
       return list;
     }
 
@@ -3691,12 +3748,18 @@
       const lockScreen = document.getElementById('maintenance-screen');
       document.getElementById('maintenance-msg-display').textContent = state.maintenanceMsg;
       lockScreen.classList.toggle('hidden', !state.maintenanceMode);
-      if (state.maintenanceMode && !document.getElementById('slideshow-overlay').classList.contains('hidden')) {
-        stopSlideshow();
+      if (state.maintenanceMode) {
+        if (!document.getElementById('slideshow-overlay').classList.contains('hidden')) stopSlideshow();
+        if (state.stream) stopCameraStream();
+        closeOptionPopup();
+        closeItemQrModal();
+        closeGalleryLightbox();
       }
 
       const maintSwitch = document.getElementById('admin-maint-switch');
-      if (maintSwitch) maintSwitch.checked = state.maintenanceMode;
+      if (maintSwitch && document.getElementById('settings-modal').classList.contains('hidden')) {
+        maintSwitch.checked = state.maintenanceMode;
+      }
 
       const msgInp = document.getElementById('admin-maint-msg-input');
       if (msgInp && !msgInp.value) msgInp.value = state.maintenanceMsg;
@@ -3945,6 +4008,7 @@
 
     let _isSyncingStatus = false;
     async function syncServerStatus(isInitial = false) {
+      if (!isInitial && state.isShooting) return;
       if (_isSyncingStatus && !isInitial) return;
       const gasUrl = getGasUrl();
       if (!gasUrl) {
@@ -3997,6 +4061,7 @@
         if (document.visibilityState === 'visible') syncServerStatus(false);
       });
       window.addEventListener('focus', () => syncServerStatus(false));
+      window.addEventListener('resize', updateCameraCropGuide);
 
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
