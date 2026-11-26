@@ -763,6 +763,8 @@
 
     .gallery-thumb {
       height: 290px;
+      flex-shrink: 0;
+      box-sizing: border-box;
       padding: 10px;
       background: var(--bg);
       display: flex; align-items: center; justify-content: center;
@@ -770,12 +772,10 @@
       cursor: zoom-in;
     }
     .gallery-thumb img {
-      max-width: 100%; max-height: 100%;
-      width: auto; height: auto;
+      width: 100%; height: 100%;
       object-fit: contain;
       display: block;
       border-radius: 6px;
-      box-shadow: 0 3px 10px rgba(45, 34, 53, 0.12);
     }
     .gallery-meta { padding: 7px 9px; font-size: 11.5px; }
 
@@ -1899,6 +1899,8 @@
       const imd = tctx.getImageData(0, 0, tw, th);
       applyPixelFilterToImageData(imd, filterObj);
       tctx.putImageData(imd, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(tmp, x, y, w, h);
     }
 
@@ -2215,17 +2217,38 @@
 
     async function initCameraStream() {
       stopCameraStream();
+      const hiRes = { width: { ideal: 3840 }, height: { ideal: 2160 }, frameRate: { ideal: 30 } };
       const videoConstraints = state.selectedCameraId
-        ? { deviceId: { exact: state.selectedCameraId }, width: { ideal: 1280 }, height: { ideal: 960 } }
-        : { facingMode: state.facingMode, width: { ideal: 1280 }, height: { ideal: 960 } };
+        ? { deviceId: { exact: state.selectedCameraId }, ...hiRes }
+        : { facingMode: state.facingMode, ...hiRes };
       const stream = await navigator.mediaDevices.getUserMedia({
         video: videoConstraints,
         audio: false
       });
       state.stream = stream;
       const track = stream.getVideoTracks()[0];
-      if (track && track.getSettings && track.getSettings().deviceId) {
-        state.selectedCameraId = track.getSettings().deviceId;
+      if (track) {
+        if (track.getSettings && track.getSettings().deviceId) {
+          state.selectedCameraId = track.getSettings().deviceId;
+        }
+        // Push sensor to its maximum native resolution and continuous focus if supported
+        if (typeof track.getCapabilities === 'function' && typeof track.applyConstraints === 'function') {
+          try {
+            const caps = track.getCapabilities();
+            const cur = track.getSettings ? track.getSettings() : {};
+            const adv = {};
+            if (caps.width && caps.width.max && (!cur.width || caps.width.max > cur.width)) {
+              adv.width = { ideal: caps.width.max };
+            }
+            if (caps.height && caps.height.max && (!cur.height || caps.height.max > cur.height)) {
+              adv.height = { ideal: caps.height.max };
+            }
+            if (Array.isArray(caps.focusMode) && caps.focusMode.includes('continuous')) adv.focusMode = 'continuous';
+            if (Array.isArray(caps.exposureMode) && caps.exposureMode.includes('continuous')) adv.exposureMode = 'continuous';
+            if (Array.isArray(caps.whiteBalanceMode) && caps.whiteBalanceMode.includes('continuous')) adv.whiteBalanceMode = 'continuous';
+            if (Object.keys(adv).length) await track.applyConstraints(adv).catch(() => {});
+          } catch (e) {}
+        }
       }
       const vid = document.getElementById('camera-video');
       vid.srcObject = stream;
@@ -2244,7 +2267,7 @@
         if (vid.readyState >= 2 && vid.videoWidth > 0) {
           const fObj = FILTERS.find(f => f.id === state.filterId) || FILTERS[0];
           const isFiltered = fObj.id !== 'original';
-          const targetW = isFiltered ? 360 : Math.min(720, vid.videoWidth);
+          const targetW = isFiltered ? Math.min(720, vid.videoWidth) : Math.min(1920, vid.videoWidth);
           const targetH = Math.max(1, Math.round(targetW * (vid.videoHeight / vid.videoWidth)));
 
           if (cvs.width !== targetW || cvs.height !== targetH) {
@@ -2253,6 +2276,8 @@
           }
 
           ctx.save();
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
           if (state.mirror) { ctx.translate(cvs.width, 0); ctx.scale(-1, 1); }
           ctx.drawImage(vid, 0, 0, cvs.width, cvs.height);
           ctx.restore();
@@ -2392,13 +2417,15 @@
       setTimeout(() => flash.classList.remove('active'), 160);
 
       const c = document.createElement('canvas');
-      c.width = vid.videoWidth || 960;
+      c.width = vid.videoWidth || 1280;
       c.height = vid.videoHeight || 720;
       const ctx = c.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       if (state.mirror) { ctx.translate(c.width, 0); ctx.scale(-1, 1); }
       ctx.drawImage(vid, 0, 0, c.width, c.height);
 
-      const dataUrl = c.toDataURL('image/jpeg', 0.92);
+      const dataUrl = c.toDataURL('image/png');
       const img = new Image();
       await new Promise(res => { img.onload = res; img.src = dataUrl; });
       state.shots[slotIdx] = img;
@@ -2604,7 +2631,6 @@
       }));
       selectSticker(null);
       renderStripCanvas();
-      showToast('🪄 จัดแต่งสไตล์อัตโนมัติแล้ว!');
     }
 
     function addSticker(text, isBadge) {
@@ -2759,6 +2785,8 @@
       const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
       const scale = Math.max(w / iw, h / ih);
       const sw = w / scale, sh = h / scale;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, (iw - sw) / 2, (ih - sh) / 2, sw, sh, x, y, w, h);
     }
 
@@ -3083,7 +3111,6 @@
           const file = new File([blob], filename, { type: mimeType });
           if (!navigator.canShare || navigator.canShare({ files: [file] })) {
             await navigator.share({ files: [file], title: 'WNTK Photos' });
-            showToast('📲 เลือก "บันทึกรูปภาพ" เพื่อเก็บลงเครื่อง');
             return;
           }
         }
@@ -3181,6 +3208,8 @@
               state.lastCloudResult = json;
               localRecord.photoViewUrl = json.photoViewUrl;
               localRecord.photoDownloadUrl = json.photoDownloadUrl;
+              localRecord.photoThumbUrl = json.photoThumbUrl || '';
+              localRecord.photoFileId = json.photoFileId || '';
               localRecord.mediaViewUrl = json.mediaViewUrl;
               localRecord.mediaDownloadUrl = json.mediaDownloadUrl;
             }
@@ -3313,8 +3342,45 @@
       state.gallerySelectMode = false;
       state.selectedGalleryIds.clear();
       hideCuteLoader();
-      showToast(`ลบแล้ว ${ids.length} รายการ`);
       loadGalleryItems();
+    }
+
+    function extractDriveFileId(item) {
+      if (!item) return '';
+      if (item.photoFileId) return String(item.photoFileId).trim();
+      const raw = String(item.photoThumbUrl || item.photoViewUrl || item.photoDownloadUrl || '');
+      const m1 = raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (m1) return m1[1];
+      const m2 = raw.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      return m2 ? m2[1] : '';
+    }
+
+    function getGalleryImgCandidates(item, highRes = false) {
+      const list = [];
+      if (item && item.localPng) list.push(item.localPng);
+      const fid = extractDriveFileId(item);
+      if (fid) {
+        list.push(`https://lh3.googleusercontent.com/d/${fid}=${highRes ? 'w1600' : 'w800'}`);
+      }
+      if (item && item.photoThumbUrl && !list.includes(item.photoThumbUrl)) {
+        list.push(item.photoThumbUrl);
+      }
+      if (fid) {
+        list.push(`https://drive.google.com/uc?export=view&id=${fid}`);
+      }
+      list.push('https://i.postimg.cc/Hx10w2k6/Photobooth.png');
+      return list;
+    }
+
+    function handleGalleryImgError(imgEl) {
+      if (!imgEl || !imgEl.dataset.fallbacks) return;
+      let list = [];
+      try { list = JSON.parse(imgEl.dataset.fallbacks); } catch (e) { list = []; }
+      const idx = (parseInt(imgEl.dataset.fbIdx || '0', 10) || 0) + 1;
+      if (idx < list.length) {
+        imgEl.dataset.fbIdx = String(idx);
+        imgEl.src = list[idx];
+      }
     }
 
     function renderGalleryGrid() {
@@ -3333,7 +3399,9 @@
       emptyEl.classList.add('hidden');
       const inSelect = state.adminLoggedIn && state.gallerySelectMode;
       grid.innerHTML = items.map(item => {
-        const thumb = item.localPng || item.photoThumbUrl || 'https://i.postimg.cc/Hx10w2k6/Photobooth.png';
+        const candidates = getGalleryImgCandidates(item, false);
+        const thumb = candidates[0];
+        const fbJson = escapeHtml(JSON.stringify(candidates));
         const cleanTime = cleanTimeDisplay(item.timeStr);
         const isChecked = state.selectedGalleryIds.has(item.id);
         const deleteBtn = (state.adminLoggedIn && !inSelect)
@@ -3343,7 +3411,7 @@
           <div class="gallery-item ${inSelect ? 'select-mode' : ''} ${isChecked ? 'selected' : ''}" ${inSelect ? `onclick="toggleGalleryItemSelection('${item.id}')"` : ''}>
             ${inSelect ? `<div class="gallery-select-badge">${isChecked ? '✓' : ''}</div>` : ''}
             <div class="gallery-thumb" ${inSelect ? '' : `onclick="openGalleryLightbox('${item.id}')"`}>
-              <img src="${thumb}" alt="Photo" loading="lazy" />
+              <img src="${thumb}" alt="Photo" referrerpolicy="no-referrer" data-fb-idx="0" data-fallbacks="${fbJson}" onerror="handleGalleryImgError(this)" />
             </div>
             <div class="gallery-meta">
               <div style="font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(item.caption || 'WNTK Photos')}</div>
@@ -3423,7 +3491,6 @@
         } catch (e) {}
       }
       hideCuteLoader();
-      showToast('ลบแล้ว');
       loadGalleryItems();
     }
 
@@ -3431,12 +3498,12 @@
       const item = state.galleryItems.find(x => x.id === id);
       if (!item) return;
       const img = document.getElementById('lightbox-img');
-      const fb = item.photoThumbUrl || 'https://i.postimg.cc/Hx10w2k6/Photobooth.png';
-      img.dataset.fb = fb;
-      img.onerror = () => {
-        if (img.dataset.fb && img.src !== img.dataset.fb) img.src = img.dataset.fb;
-      };
-      img.src = item.localPng || item.photoViewUrl || fb;
+      const candidates = getGalleryImgCandidates(item, true);
+      img.referrerPolicy = 'no-referrer';
+      img.dataset.fbIdx = '0';
+      img.dataset.fallbacks = JSON.stringify(candidates);
+      img.onerror = () => handleGalleryImgError(img);
+      img.src = candidates[0];
 
       document.getElementById('lightbox-caption').textContent = item.caption || 'WNTK Photos';
       const cleanTime = cleanTimeDisplay(item.timeStr);
@@ -3512,7 +3579,12 @@
       const imgEl = document.getElementById('slideshow-img');
       imgEl.style.animation = 'none'; void imgEl.offsetWidth;
       imgEl.style.animation = 'gentleZoom 4.2s ease-in-out infinite alternate';
-      imgEl.src = cur.localPng || cur.photoThumbUrl;
+      const candidates = getGalleryImgCandidates(cur, true);
+      imgEl.referrerPolicy = 'no-referrer';
+      imgEl.dataset.fbIdx = '0';
+      imgEl.dataset.fallbacks = JSON.stringify(candidates);
+      imgEl.onerror = () => handleGalleryImgError(imgEl);
+      imgEl.src = candidates[0];
       document.getElementById('slideshow-caption').textContent = cur.caption || 'WNTK Photos ✨';
       const cleanTime = cleanTimeDisplay(cur.timeStr);
       document.getElementById('slideshow-meta').textContent = `📅 ${cur.dateStr || ''}${cleanTime ? ' • ' + cleanTime : ''}`;
@@ -3521,7 +3593,7 @@
     async function startGallerySlideshow(isAuto = false) {
       let items = state.galleryItems;
       if (!items.length) items = await loadGalleryItems(true);
-      const valid = items.filter(it => it.localPng || it.photoThumbUrl);
+      const valid = items.filter(it => it.localPng || it.photoThumbUrl || extractDriveFileId(it));
       if (!valid.length) {
         if (!isAuto) showToast('ยังไม่มีรูปสำหรับสไลด์โชว์');
         return;
@@ -3696,7 +3768,6 @@
           renderMaintenanceUI();
         }
         resBox.innerHTML = '✅ บันทึกการเปลี่ยนแปลงเรียบร้อยแล้ว';
-        showToast('✅ บันทึกการเปลี่ยนแปลงแล้ว');
       } catch (e) {
         if (maintSwitch) maintSwitch.checked = state.maintenanceMode;
         resBox.innerHTML = '❌ บันทึกไม่สำเร็จ';
@@ -3733,7 +3804,6 @@
         state.adminLoggedIn = true;
         document.getElementById('admin-pin-input').value = '';
         renderModeUI();
-        showToast('👑 เข้าสู่โหมด Admin แล้ว');
       } catch (e) {
         showToast('ตรวจสอบสิทธิ์ไม่สำเร็จ');
       } finally {
@@ -3747,7 +3817,6 @@
       renderModeUI();
       closeSettingsModal();
       switchAppView('studio');
-      showToast('👤 สลับเป็นโหมดผู้ใช้ทั่วไปแล้ว');
     }
 
     /* =====================================================================
@@ -3785,7 +3854,6 @@
           const curIdx = FILTERS.findIndex(f => f.id === state.filterId);
           const nextIdx = ((curIdx + (key === 'ArrowRight' ? 1 : -1)) + FILTERS.length) % FILTERS.length;
           setFilter(FILTERS[nextIdx].id);
-          showToast(`🌈 ${FILTERS[nextIdx].name}`);
         }
         return;
       }
