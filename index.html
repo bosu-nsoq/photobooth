@@ -1353,7 +1353,7 @@
   </div>
 
   <!-- ==================== CUTE POLAROID SLIDESHOW OVERLAY ==================== -->
-  <div id="slideshow-overlay" class="slideshow-overlay hidden" onclick="if(event.target===this || event.target.classList.contains('slideshow-sparkles')) stopSlideshow()">
+  <div id="slideshow-overlay" class="slideshow-overlay hidden" onclick="stopSlideshow()">
     <div class="slideshow-sparkles">
       <span class="sparkle-float" style="top:10%;left:12%;">✨</span>
       <span class="sparkle-float" style="top:18%;right:14%;animation-delay:1s;">💖</span>
@@ -1361,19 +1361,14 @@
       <span class="sparkle-float" style="bottom:14%;right:12%;animation-delay:1.5s;">⭐</span>
     </div>
 
-    <div class="slideshow-polaroid" onclick="event.stopPropagation()">
+    <div class="slideshow-polaroid">
       <div class="slideshow-tape">🎀 WNTK Photos ✨</div>
       <img id="slideshow-img" class="slideshow-img" alt="Slideshow" />
       <div id="slideshow-caption" style="color:var(--primary-dark);margin-top:10px;font-size:14px;font-weight:700;text-align:center;"></div>
       <div id="slideshow-meta" style="color:var(--muted);font-size:11.5px;margin-top:2px;"></div>
     </div>
 
-    <div class="slideshow-nav-row" onclick="event.stopPropagation()">
-      <button class="slideshow-nav-btn" onclick="stepSlideshow(-1)">◀ ก่อนหน้า</button>
-      <span id="slideshow-counter" style="color:#fff;font-size:12px;font-weight:700;">1 / 1</span>
-      <button class="slideshow-nav-btn" onclick="stepSlideshow(1)">ถัดไป ▶</button>
-      <button class="slideshow-nav-btn" onclick="stopSlideshow()">✕ ปิด</button>
-    </div>
+    <div style="color:rgba(255,255,255,0.65);font-size:11.5px;margin-top:14px;z-index:2;">แตะหน้าจอเพื่อกลับสู่แอป</div>
   </div>
 
   <!-- Formal Print Report Container (Sarabun Font) -->
@@ -3084,11 +3079,15 @@
       }
     }
 
-    function showSlideAt(index) {
+    function showRandomSlide() {
       const valid = state.slideshowValidItems;
       if (!valid.length) return;
-      state.slideshowIndex = ((index % valid.length) + valid.length) % valid.length;
-      const cur = valid[state.slideshowIndex];
+      let nextIdx = Math.floor(Math.random() * valid.length);
+      if (valid.length > 1 && nextIdx === state.slideshowIndex) {
+        nextIdx = (nextIdx + 1 + Math.floor(Math.random() * (valid.length - 1))) % valid.length;
+      }
+      state.slideshowIndex = nextIdx;
+      const cur = valid[nextIdx];
       const imgEl = document.getElementById('slideshow-img');
       imgEl.style.animation = 'none'; void imgEl.offsetWidth;
       imgEl.style.animation = 'gentleZoom 4.2s ease-in-out infinite alternate';
@@ -3096,13 +3095,6 @@
       document.getElementById('slideshow-caption').textContent = cur.caption || 'WNTK Photos ✨';
       const cleanTime = cleanTimeDisplay(cur.timeStr);
       document.getElementById('slideshow-meta').textContent = `📅 ${cur.dateStr || ''}${cleanTime ? ' • ' + cleanTime : ''}`;
-      document.getElementById('slideshow-counter').textContent = `${state.slideshowIndex + 1} / ${valid.length}`;
-    }
-
-    function stepSlideshow(delta) {
-      showSlideAt(state.slideshowIndex + delta);
-      clearInterval(state.slideshowInterval);
-      state.slideshowInterval = setInterval(() => showSlideAt(state.slideshowIndex + 1), 4000);
     }
 
     async function startGallerySlideshow(isAuto = false) {
@@ -3114,10 +3106,11 @@
         return;
       }
       state.slideshowValidItems = valid;
-      showSlideAt(0);
+      state.slideshowIndex = -1;
+      showRandomSlide();
       document.getElementById('slideshow-overlay').classList.remove('hidden');
       clearInterval(state.slideshowInterval);
-      state.slideshowInterval = setInterval(() => showSlideAt(state.slideshowIndex + 1), 4000);
+      state.slideshowInterval = setInterval(showRandomSlide, 4000);
     }
 
     function stopSlideshow() {
@@ -3439,11 +3432,9 @@
       if (!document.getElementById('maintenance-screen').classList.contains('hidden') &&
           document.getElementById('settings-modal').classList.contains('hidden')) return;
 
-      // Slideshow controls
+      // Slideshow controls (tap/Enter/Escape closes)
       if (!document.getElementById('slideshow-overlay').classList.contains('hidden')) {
-        if (e.key === 'ArrowLeft') { e.preventDefault(); stepSlideshow(-1); return; }
-        if (e.key === 'ArrowRight') { e.preventDefault(); stepSlideshow(1); return; }
-        if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); stopSlideshow(); return; }
+        if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); stopSlideshow(); }
         return;
       }
 
