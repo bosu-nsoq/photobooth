@@ -39,7 +39,7 @@
       --text: #2D2235;
       --muted: #7B6D87;
       --border: #F3DCE8;
-      --shadow: 0 10px 30px rgba(255, 93, 158, 0.12);
+      --shadow: 0 10px 28px rgba(255, 93, 158, 0.12);
       --radius: 22px;
     }
 
@@ -53,7 +53,7 @@
       font-family: 'Mali', sans-serif;
       background: radial-gradient(circle at top left, #FFEBF4 0%, #FFF8FC 45%, #F4F0FF 100%);
       color: var(--text);
-      min-height: 100vh;
+      min-height: 100dvh;
       overflow-x: hidden;
     }
 
@@ -66,14 +66,14 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(14px);
       border-bottom: 1.5px solid var(--border);
-      padding: 10px 16px;
+      padding: 8px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
     }
 
     .brand-group {
@@ -85,8 +85,8 @@
     }
 
     .brand-logo {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 10px;
       object-fit: cover;
       box-shadow: 0 4px 10px rgba(255, 93, 158, 0.25);
@@ -94,7 +94,7 @@
     }
 
     .brand-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--primary-dark);
       white-space: nowrap;
@@ -104,7 +104,7 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex-shrink: 1;
       min-width: 0;
     }
@@ -112,9 +112,9 @@
     .user-pill {
       background: var(--primary-soft);
       color: var(--primary-dark);
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       white-space: nowrap;
       display: inline-block;
@@ -123,53 +123,37 @@
 
     #staff-display {
       white-space: nowrap;
-      font-size: 13px;
-      padding: 5px 12px;
+      font-size: 12.5px;
+      padding: 4px 10px;
       max-width: none;
       overflow: visible;
       text-overflow: clip;
-    }
-
-    .drive-dot {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-      background: #F3F4F6;
-      color: #4B5563;
-      cursor: pointer;
-      border: 1px solid #E5E7EB;
-    }
-
-    .drive-dot.connected {
-      background: var(--mint-soft);
-      color: #065F46;
-      border-color: #A7F3D0;
     }
 
     .icon-btn {
       border: 1.5px solid var(--border);
       background: #fff;
       color: var(--text);
-      border-radius: 12px;
-      padding: 6px 11px;
-      font-size: 13px;
+      border-radius: 14px;
+      padding: 7px 11px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 5px;
-      transition: transform 0.15s, background 0.15s;
+      min-height: 38px;
+      transition: transform 0.14s, background 0.14s;
     }
 
     .icon-btn:hover {
       background: var(--bg-soft);
-      transform: translateY(-1px);
+    }
+
+    .icon-btn:active {
+      transform: scale(0.96);
     }
 
     .icon-btn.active {
@@ -180,7 +164,7 @@
 
     @media (max-width: 480px) {
       .app-header {
-        padding: 8px 10px;
+        padding: 7px 10px;
         gap: 6px;
       }
       .brand-logo {
@@ -195,59 +179,55 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 96px;
+        max-width: 92px;
         font-size: 11px;
         padding: 3px 7px;
       }
-      .drive-dot span.dot-label {
-        display: none;
-      }
-      .drive-dot {
-        padding: 4px 7px;
-      }
       .icon-btn {
-        padding: 5px 8px;
-        font-size: 12px;
+        padding: 6px 9px;
+        font-size: 15px;
+        min-height: 34px;
       }
-      .icon-btn span.btn-label {
+      .app-header .icon-btn span.btn-label {
         display: none;
       }
     }
 
-    /* ============ Layout & Stepper ============ */
+    /* ============ Main Container & Compact Stepper ============ */
     .container {
-      max-width: 1100px;
+      max-width: 780px;
       margin: 0 auto;
-      padding: 18px 14px 48px;
+      padding: 12px 12px 32px;
     }
 
     .stepper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
     }
 
     .step-chip {
-      padding: 6px 14px;
+      padding: 6px 6px;
       border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 11.5px;
+      font-weight: 700;
       background: #fff;
       border: 1.5px solid var(--border);
       color: var(--muted);
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 4px;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     .step-chip.active {
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #fff;
       border-color: transparent;
-      box-shadow: 0 6px 16px rgba(255, 93, 158, 0.28);
+      box-shadow: 0 4px 12px rgba(255, 93, 158, 0.28);
     }
 
     .step-chip.done {
@@ -261,62 +241,61 @@
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 20px;
+      padding: 16px;
     }
 
     .section-title {
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 700;
-      margin: 0 0 6px;
+      margin: 0 0 12px;
       color: var(--text);
-    }
-
-    .section-sub {
-      font-size: 13.5px;
-      color: var(--muted);
-      margin: 0 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
 
     .hidden {
       display: none !important;
     }
 
-    /* ============ Stage 1: Setup & Layouts ============ */
+    /* ============ Stage 1: Setup (Mobile Portrait 2x2 + Popup Options) ============ */
     .layout-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .layout-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     .layout-card {
       border: 2px solid var(--border);
       border-radius: 18px;
-      padding: 14px 10px;
+      padding: 12px 8px;
       text-align: center;
       cursor: pointer;
       background: #FFFDFE;
-      transition: all 0.18s;
+      transition: all 0.16s;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
     }
 
-    .layout-card:hover {
-      border-color: #FFB3D1;
-      transform: translateY(-2px);
-    }
-
     .layout-card.selected {
       border-color: var(--primary);
       background: var(--primary-soft);
-      box-shadow: 0 6px 18px rgba(255, 93, 158, 0.2);
+      box-shadow: 0 6px 16px rgba(255, 93, 158, 0.2);
     }
 
     .mini-strip {
-      width: 44px;
-      height: 66px;
+      width: 40px;
+      height: 58px;
       background: #fff;
       border: 1.5px solid #E5C7D8;
       border-radius: 6px;
@@ -327,40 +306,26 @@
 
     .mini-strip.l-1x4 { grid-template-columns: 1fr; grid-template-rows: repeat(4, 1fr); }
     .mini-strip.l-1x3 { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); }
-    .mini-strip.l-2x2 { width: 58px; height: 58px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    .mini-strip.l-1x1 { width: 54px; height: 64px; grid-template-columns: 1fr; grid-template-rows: 1fr 10px; }
+    .mini-strip.l-2x2 { width: 54px; height: 54px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    .mini-strip.l-1x1 { width: 50px; height: 58px; grid-template-columns: 1fr; grid-template-rows: 1fr 10px; }
 
     .mini-cell {
       background: linear-gradient(135deg, #FFC2DA, #D8CCFF);
       border-radius: 2px;
     }
 
-    .setup-options {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-bottom: 22px;
-    }
-
-    .opt-box {
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      padding: 12px 14px;
-    }
-
-    .opt-label {
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      display: block;
-      color: var(--text);
+    .quick-chips-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
     }
 
     .pill-group {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
     }
 
     .pill-btn {
@@ -368,11 +333,11 @@
       background: #fff;
       color: var(--text);
       border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 12.5px;
+      padding: 8px 14px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.15s;
+      transition: 0.14s;
     }
 
     .pill-btn.active {
@@ -384,7 +349,7 @@
     .cta-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       justify-content: center;
     }
 
@@ -393,53 +358,37 @@
       color: #fff;
       border: none;
       border-radius: 999px;
-      padding: 13px 26px;
+      padding: 13px 22px;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(255, 93, 158, 0.35);
+      box-shadow: 0 8px 20px rgba(255, 93, 158, 0.34);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: transform 0.15s;
+      gap: 7px;
+      min-height: 46px;
     }
 
-    .btn-primary:hover { transform: translateY(-2px); }
-    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
 
     .btn-secondary {
       background: #fff;
       color: var(--accent);
       border: 2px solid #D9CEFF;
       border-radius: 999px;
-      padding: 12px 22px;
+      padding: 11px 18px;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: 0.15s;
+      gap: 7px;
+      min-height: 46px;
     }
 
-    .btn-secondary:hover { background: var(--accent-soft); }
-
-    /* ============ Stage 2: Camera Capture ============ */
-    .capture-layout {
-      display: grid;
-      grid-template-columns: 1fr 240px;
-      gap: 18px;
-      align-items: start;
-    }
-
-    @media (max-width: 820px) {
-      .capture-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
+    /* ============ Stage 2: Camera Capture (Portrait First) ============ */
     .viewfinder-wrap {
       position: relative;
       background: #1A1325;
@@ -447,8 +396,17 @@
       overflow: hidden;
       aspect-ratio: 4 / 3;
       width: 100%;
-      box-shadow: 0 12px 32px rgba(45, 34, 53, 0.22);
+      max-height: 58dvh;
+      margin: 0 auto;
+      box-shadow: 0 12px 28px rgba(45, 34, 53, 0.22);
       border: 3px solid #fff;
+    }
+
+    @media (max-width: 640px) {
+      .viewfinder-wrap {
+        aspect-ratio: 3 / 4;
+        max-height: 56dvh;
+      }
     }
 
     #camera-video {
@@ -456,7 +414,6 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: filter 0.2s;
     }
 
     #camera-video.mirrored {
@@ -467,7 +424,6 @@
       position: absolute;
       inset: 0;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       background: rgba(20, 12, 32, 0.25);
@@ -478,7 +434,7 @@
       font-size: 96px;
       font-weight: 700;
       color: #fff;
-      text-shadow: 0 6px 25px rgba(255, 93, 158, 0.85);
+      text-shadow: 0 6px 25px rgba(255, 93, 158, 0.9);
       animation: popIn 0.45s ease;
     }
 
@@ -496,32 +452,29 @@
       transition: opacity 0.12s ease-out;
     }
 
-    .flash-overlay.active {
-      opacity: 0.95;
-    }
+    .flash-overlay.active { opacity: 0.95; }
 
     .shot-badge {
       position: absolute;
-      top: 12px;
-      left: 12px;
+      top: 10px;
+      left: 10px;
       background: rgba(255, 255, 255, 0.92);
       color: var(--primary-dark);
-      padding: 5px 12px;
+      padding: 4px 11px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     }
 
     .rec-badge {
       position: absolute;
-      top: 12px;
-      right: 12px;
+      top: 10px;
+      right: 10px;
       background: rgba(239, 68, 68, 0.92);
       color: #fff;
       padding: 4px 10px;
       border-radius: 999px;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -536,44 +489,27 @@
       animation: pulse 1s infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    .live-filter-bar {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding: 10px 2px 4px;
-    }
-
-    .slots-sidebar {
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 18px;
-      padding: 12px;
-    }
-
-    .slot-thumbs {
+    .slot-thumbs-strip {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px;
-      margin-top: 8px;
+      margin: 10px 0;
     }
 
     .slot-thumb {
       aspect-ratio: 4 / 3;
       border-radius: 10px;
-      background: #fff;
+      background: var(--bg);
       border: 2px dashed #E5C7D8;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 12px;
+      font-weight: 700;
       color: var(--muted);
       overflow: hidden;
-      position: relative;
     }
 
     .slot-thumb.filled {
@@ -587,93 +523,232 @@
       object-fit: cover;
     }
 
-    /* ============ Stage 3: Snappy Editor ============ */
-    .editor-grid {
-      display: grid;
-      grid-template-columns: minmax(280px, 420px) 1fr;
-      gap: 20px;
-      align-items: start;
+    .cam-icon-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
     }
 
-    @media (max-width: 860px) {
-      .editor-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
+    /* ============ Stage 3: Icon-First Mobile Editor + Popups ============ */
     .canvas-stage {
       background: repeating-conic-gradient(#F8EFF5 0% 25%, #FFFFFF 0% 50%) 50% / 20px 20px;
       border: 1.5px solid var(--border);
       border-radius: 18px;
-      padding: 16px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
+      margin-bottom: 12px;
     }
 
     #strip-canvas {
       max-width: 100%;
-      max-height: 540px;
+      max-height: 55dvh;
       width: auto;
       height: auto;
       border-radius: 10px;
-      box-shadow: 0 12px 28px rgba(45, 34, 53, 0.16);
+      box-shadow: 0 10px 24px rgba(45, 34, 53, 0.16);
       touch-action: none;
       cursor: grab;
     }
 
-    .retake-row {
+    .floating-sticker-bar {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      align-items: center;
       justify-content: center;
-    }
-
-    .editor-tabs {
-      display: flex;
-      gap: 6px;
-      border-bottom: 1.5px solid var(--border);
-      padding-bottom: 10px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-
-    .ed-tab {
-      border: 1.5px solid var(--border);
+      gap: 10px;
       background: #fff;
-      border-radius: 12px;
-      padding: 8px 13px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--muted);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 8px 12px;
+      width: 100%;
     }
 
-    .ed-tab.active {
+    .editor-dock {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .dock-btn {
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .dock-btn .dock-ico {
+      font-size: 20px;
+      line-height: 1.1;
+    }
+
+    .dock-btn:active {
       background: var(--primary-soft);
       border-color: var(--primary);
-      color: var(--primary-dark);
+    }
+
+    /* ============ Stage 4: Result & Direct QR ============ */
+    .preview-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .media-box {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 8px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .media-box img {
+      max-width: 100%;
+      max-height: 230px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .qr-panel {
+      background: linear-gradient(180deg, #FFFFFF, #FFF7FB);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .qr-canvas-box {
+      display: inline-flex;
+      padding: 10px;
+      background: #fff;
+      border-radius: 16px;
+      border: 2px solid var(--primary-soft);
+      margin: 10px 0 6px;
+    }
+
+    /* ============ Gallery ============ */
+    .gallery-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+      gap: 10px;
+    }
+
+    .gallery-item {
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      background: #fff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery-thumb {
+      aspect-ratio: 3 / 4;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .gallery-meta {
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
+    /* ============ Popups / Bottom Sheets ============ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(25, 16, 36, 0.52);
+      backdrop-filter: blur(4px);
+      z-index: 80;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    @media (max-width: 640px) {
+      .modal-backdrop.sheet-mode {
+        align-items: flex-end;
+        padding: 0;
+      }
+      .modal-backdrop.sheet-mode .modal-card {
+        border-radius: 24px 24px 0 0;
+        max-width: 100%;
+        padding: 18px 16px 26px;
+        animation: slideUp 0.2s ease-out;
+      }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: 22px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 85dvh;
+      overflow-y: auto;
+      padding: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     }
 
     .swatch-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .swatch-btn {
       border: 2px solid var(--border);
       border-radius: 12px;
-      padding: 8px 6px;
+      padding: 7px 4px;
       background: #fff;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
-      font-size: 11.5px;
+      gap: 4px;
+      font-size: 11px;
       font-weight: 600;
     }
 
@@ -683,19 +758,24 @@
     }
 
     .swatch-color {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       border: 1.5px solid rgba(0, 0, 0, 0.1);
     }
 
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+      gap: 8px;
+    }
+
     .sticker-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
       gap: 8px;
-      max-height: 220px;
+      max-height: 240px;
       overflow-y: auto;
-      padding: 4px;
     }
 
     .sticker-btn {
@@ -708,19 +788,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.12s;
-    }
-
-    .sticker-btn:hover {
-      transform: scale(1.08);
-      background: var(--bg-soft);
     }
 
     .sticker-text-btn {
       font-size: 11px;
       font-weight: 700;
       color: var(--primary-dark);
-      padding: 8px 4px;
     }
 
     .modern-input {
@@ -734,8 +807,19 @@
       color: var(--text);
     }
 
-    .modern-input:focus {
-      border-color: var(--primary);
+    .opt-label {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: block;
+      color: var(--text);
+    }
+
+    .opt-box {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
     }
 
     /* Clean Thai Date Input (Transparent Overlay, No Cluttered Calendar Icon) */
@@ -765,130 +849,6 @@
       cursor: pointer;
     }
 
-    /* ============ Stage 4: Result & QR Code ============ */
-    .result-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    @media (max-width: 780px) {
-      .result-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .preview-pair {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      align-items: start;
-    }
-
-    .media-box {
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .media-box img {
-      max-width: 100%;
-      max-height: 360px;
-      border-radius: 10px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-    }
-
-    .qr-panel {
-      background: linear-gradient(180deg, #FFFFFF, #FFF7FB);
-      border: 2px solid var(--border);
-      border-radius: 20px;
-      padding: 18px;
-      text-align: center;
-    }
-
-    .qr-canvas-box {
-      display: inline-flex;
-      padding: 14px;
-      background: #fff;
-      border-radius: 18px;
-      border: 2px solid var(--primary-soft);
-      box-shadow: 0 8px 20px rgba(255, 93, 158, 0.12);
-      margin: 10px 0;
-    }
-
-    /* ============ Gallery ============ */
-    .gallery-toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 14px;
-    }
-
-    .gallery-item {
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      background: #fff;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    }
-
-    .gallery-thumb {
-      aspect-ratio: 3 / 4;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .gallery-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .gallery-meta {
-      padding: 10px 12px;
-      font-size: 12.5px;
-    }
-
-    /* ============ Modal ============ */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(25, 16, 36, 0.55);
-      backdrop-filter: blur(4px);
-      z-index: 80;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px;
-    }
-
-    .modal-card {
-      background: #fff;
-      border-radius: 22px;
-      max-width: 540px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 22px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-    }
-
     .toast {
       position: fixed;
       bottom: 20px;
@@ -896,12 +856,11 @@
       transform: translateX(-50%);
       background: #2D2235;
       color: #fff;
-      padding: 10px 18px;
+      padding: 9px 16px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       z-index: 100;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
 
     /* ============ Formal Print Area (Sarabun Font) ============ */
@@ -911,62 +870,39 @@
     }
 
     @media print {
-      body * {
-        visibility: hidden !important;
-      }
-      #print-report-area, #print-report-area * {
-        visibility: visible !important;
-      }
+      body * { visibility: hidden !important; }
+      #print-report-area, #print-report-area * { visibility: visible !important; }
       #print-report-area {
         display: block !important;
         position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        padding: 20px;
-        background: #fff;
-        color: #111;
+        left: 0; top: 0; width: 100%; padding: 20px;
+        background: #fff; color: #111;
         font-family: 'Sarabun', sans-serif;
       }
-      #print-report-area table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 12px;
-        font-size: 13px;
-      }
-      #print-report-area th, #print-report-area td {
-        border: 1px solid #cbd5e1;
-        padding: 6px 8px;
-        text-align: left;
-      }
-      #print-report-area th {
-        background: #f1f5f9;
-      }
+      #print-report-area table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+      #print-report-area th, #print-report-area td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; }
+      #print-report-area th { background: #f1f5f9; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header (Clean Icon-First Single-Line) -->
   <header class="app-header">
     <div class="brand-group">
       <img src="https://i.postimg.cc/Hx10w2k6/Photobooth.png" alt="WNTK Photos" class="brand-logo" />
       <span class="brand-title">WNTK Photos</span>
     </div>
     <div class="header-actions">
-      <div id="drive-status-pill" class="drive-dot" onclick="openSettingsModal()" title="สถานะ Google Drive">
-        <span id="drive-dot-icon">⚪</span>
-        <span class="dot-label" id="drive-dot-text">Drive: ออฟไลน์</span>
-      </div>
       <span id="staff-display" class="user-pill">WNTK Photos</span>
-      <button class="icon-btn active" id="nav-studio-btn" onclick="switchAppView('studio')">
+      <button class="icon-btn active" id="nav-studio-btn" onclick="switchAppView('studio')" title="สตูดิโอ">
         📸 <span class="btn-label">สตูดิโอ</span>
       </button>
-      <button class="icon-btn" id="nav-gallery-btn" onclick="switchAppView('gallery')">
+      <button class="icon-btn" id="nav-gallery-btn" onclick="switchAppView('gallery')" title="คลังภาพ">
         🖼️ <span class="btn-label">คลังภาพ</span>
       </button>
-      <button class="icon-btn" onclick="openSettingsModal()" title="ตั้งค่า Google Drive">
-        ⚙️ <span class="btn-label">ตั้งค่า</span>
+      <button class="icon-btn" onclick="openSettingsModal()" title="ตั้งค่า">
+        ⚙️
       </button>
     </div>
   </header>
@@ -974,48 +910,40 @@
   <main class="container">
     <!-- ==================== STUDIO VIEW ==================== -->
     <section id="view-studio">
-      <!-- Stepper -->
+      <!-- Compact Stepper -->
       <div class="stepper">
-        <div class="step-chip active" id="chip-1">1. เลือกรูปแบบ</div>
-        <div class="step-chip" id="chip-2">2. ถ่ายภาพ &amp; นับถอยหลัง</div>
-        <div class="step-chip" id="chip-3">3. เฟรม ฟิลเตอร์ สติกเกอร์</div>
-        <div class="step-chip" id="chip-4">4. บันทึก &amp; QR Code</div>
+        <div class="step-chip active" id="chip-1">1. รูปแบบ</div>
+        <div class="step-chip" id="chip-2">2. ถ่าย</div>
+        <div class="step-chip" id="chip-3">3. แต่ง</div>
+        <div class="step-chip" id="chip-4">4. โหลด</div>
       </div>
 
       <!-- STAGE 1: SETUP -->
       <div id="stage-1" class="card">
-        <h2 class="section-title">เลือกเลย์เอาต์ตู้สติ๊กเกอร์ของคุณ ✨</h2>
-        <p class="section-sub">แอปสำหรับเก็บภาพความทรงจำของทุกช่วงเวลา — ถ่ายสดผ่านกล้อง หรืออัปโหลดรูปจากเครื่อง แล้วแต่งเฟรม ฟิลเตอร์ สติกเกอร์ พร้อม QR Code ดาวน์โหลด</p>
+        <div class="section-title">
+          <span>✨ เลือกรูปแบบ</span>
+        </div>
 
         <div class="layout-grid" id="layout-selector">
           <div class="layout-card selected" data-layout="1x4" onclick="selectLayout('1x4')">
             <div class="mini-strip l-1x4">
               <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
             </div>
-            <div>
-              <div style="font-weight:700;font-size:14px;">แถบยาว 4 ช่อง</div>
-              <div style="font-size:12px;color:var(--muted);">Classic Strip (4 รูป)</div>
-            </div>
+            <div style="font-weight:700;font-size:13.5px;">4 ช่อง</div>
           </div>
 
           <div class="layout-card" data-layout="1x3" onclick="selectLayout('1x3')">
             <div class="mini-strip l-1x3">
               <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
             </div>
-            <div>
-              <div style="font-weight:700;font-size:14px;">แถบยาว 3 ช่อง</div>
-              <div style="font-size:12px;color:var(--muted);">3-Cut Strip (3 รูป)</div>
-            </div>
+            <div style="font-weight:700;font-size:13.5px;">3 ช่อง</div>
           </div>
 
           <div class="layout-card" data-layout="2x2" onclick="selectLayout('2x2')">
             <div class="mini-strip l-2x2">
               <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
             </div>
-            <div>
-              <div style="font-weight:700;font-size:14px;">ตาราง 2x2</div>
-              <div style="font-size:12px;color:var(--muted);">Photo Grid (4 รูป)</div>
-            </div>
+            <div style="font-weight:700;font-size:13.5px;">ตาราง 2x2</div>
           </div>
 
           <div class="layout-card" data-layout="1x1" onclick="selectLayout('1x1')">
@@ -1023,224 +951,123 @@
               <div class="mini-cell"></div>
               <div style="background:#FFE4F0;border-radius:2px;"></div>
             </div>
-            <div>
-              <div style="font-weight:700;font-size:14px;">โพลารอยด์</div>
-              <div style="font-size:12px;color:var(--muted);">Single Shot (1 รูป)</div>
-            </div>
+            <div style="font-weight:700;font-size:13.5px;">โพลารอยด์</div>
           </div>
         </div>
 
-        <div class="setup-options">
-          <div class="opt-box">
-            <span class="opt-label">⏱️ เวลานับถอยหลังก่อนถ่าย</span>
-            <div class="pill-group" id="timer-pills">
-              <button class="pill-btn active" onclick="setCountdown(3, this)">3 วินาที</button>
-              <button class="pill-btn" onclick="setCountdown(5, this)">5 วินาที</button>
-              <button class="pill-btn" onclick="setCountdown(10, this)">10 วินาที</button>
-              <button class="pill-btn" onclick="setCountdown(0, this)">ถ่ายทันที</button>
-            </div>
-          </div>
-
-          <div class="opt-box">
-            <span class="opt-label">🪞 มุมกล้อง &amp; การบันทึกวิดีโอ/GIF</span>
-            <div class="pill-group">
-              <button class="pill-btn active" id="opt-mirror-btn" onclick="toggleMirrorOption()">กระจก: เปิด</button>
-              <button class="pill-btn active" id="opt-sound-btn" onclick="toggleSoundOption()">เสียงชัตเตอร์: เปิด</button>
-              <button class="pill-btn active" id="opt-motion-btn" onclick="toggleMotionOption()">เก็บภาพทำ GIF/วิดีโอ: เปิด</button>
-            </div>
-          </div>
+        <!-- Popup Trigger Chips -->
+        <div class="quick-chips-row">
+          <button class="icon-btn" id="chip-timer-btn" onclick="openOptionPopup('setup-timer')">⏱️ 3 วิ</button>
+          <button class="icon-btn" onclick="openOptionPopup('setup-cam')">🎛️ ตัวเลือกกล้อง</button>
         </div>
 
         <div class="cta-row">
-          <button class="btn-primary" onclick="startCameraStage()">
-            📸 เปิดกล้องเริ่มถ่ายเลย!
-          </button>
-          <button class="btn-secondary" onclick="triggerUploadFlow()">
-            🖼️ อัปโหลดรูปจากเครื่อง
-          </button>
+          <button class="btn-primary" onclick="startCameraStage()">📸 เปิดกล้อง</button>
+          <button class="btn-secondary" onclick="triggerUploadFlow()">🖼️ อัปโหลด</button>
           <input type="file" id="multi-upload-input" accept="image/*" multiple class="hidden" onchange="handleMultiUpload(event)" />
         </div>
       </div>
 
       <!-- STAGE 2: LIVE CAMERA & COUNTDOWN -->
       <div id="stage-2" class="card hidden">
-        <div class="capture-layout">
-          <div>
-            <div class="viewfinder-wrap">
-              <video id="camera-video" class="mirrored" autoplay playsinline muted></video>
-              <div class="shot-badge" id="shot-progress-badge">เตรียมพร้อม • ช่อง 1 / 4</div>
-              <div class="rec-badge hidden" id="rec-badge"><span class="rec-dot"></span> REC</div>
-              <div class="countdown-overlay hidden" id="countdown-overlay">
-                <div class="countdown-num" id="countdown-number">3</div>
-                <div style="color:#fff;font-size:14px;font-weight:600;" id="countdown-hint">เตรียมโพสท่าสวยๆ!</div>
-              </div>
-              <div class="flash-overlay" id="flash-overlay"></div>
-            </div>
-
-            <!-- Live Filter Preview Bar -->
-            <div class="live-filter-bar" id="live-filter-bar"></div>
-
-            <div class="cta-row" style="margin-top:14px;">
-              <button class="btn-primary" id="btn-auto-shoot" onclick="startAutoCapture()">
-                🎬 เริ่มถ่ายอัตโนมัติครบเซต
-              </button>
-              <button class="btn-secondary" id="btn-single-shoot" onclick="captureSingleNext()">
-                📸 ถ่ายทีละช็อต
-              </button>
-              <button class="icon-btn" onclick="switchCameraFacing()">🔄 สลับกล้อง</button>
-              <button class="icon-btn" onclick="toggleMirrorOption()">🪞 กลับด้าน</button>
-              <button class="icon-btn" onclick="backToSetup()">⬅️ เปลี่ยนเลย์เอาต์</button>
-            </div>
+        <div class="viewfinder-wrap">
+          <video id="camera-video" class="mirrored" autoplay playsinline muted></video>
+          <div class="shot-badge" id="shot-progress-badge">1 / 4</div>
+          <div class="rec-badge hidden" id="rec-badge"><span class="rec-dot"></span> REC</div>
+          <div class="countdown-overlay hidden" id="countdown-overlay">
+            <div class="countdown-num" id="countdown-number">3</div>
           </div>
+          <div class="flash-overlay" id="flash-overlay"></div>
+        </div>
 
-          <aside class="slots-sidebar">
-            <div style="font-weight:700;font-size:14px;">ช่องรูปภาพของคุณ</div>
-            <div style="font-size:12px;color:var(--muted);" id="sidebar-slot-desc">ถ่ายครบ 4 รูปแล้วไปแต่งต่ออัตโนมัติ</div>
-            <div class="slot-thumbs" id="slot-thumbs"></div>
-          </aside>
+        <div class="slot-thumbs-strip" id="slot-thumbs"></div>
+
+        <div class="cam-icon-bar">
+          <button class="icon-btn" onclick="openOptionPopup('camera-filter')" title="ฟิลเตอร์">🌈 ฟิลเตอร์</button>
+          <button class="icon-btn" id="cam-timer-btn" onclick="openOptionPopup('setup-timer')" title="เวลา">⏱️ 3 วิ</button>
+          <button class="icon-btn" onclick="switchCameraFacing()" title="สลับกล้อง">🔄</button>
+          <button class="icon-btn" onclick="toggleMirrorOption()" title="กลับด้าน">🪞</button>
+          <button class="icon-btn" onclick="backToSetup()" title="ย้อนกลับ">⬅️</button>
+        </div>
+
+        <div class="cta-row">
+          <button class="btn-primary" id="btn-auto-shoot" onclick="startAutoCapture()">🎬 ถ่ายอัตโนมัติ</button>
+          <button class="btn-secondary" id="btn-single-shoot" onclick="captureSingleNext()">📸 ทีละรูป</button>
         </div>
       </div>
 
-      <!-- STAGE 3: SNAPPY EDITOR -->
+      <!-- STAGE 3: ICON-FIRST EDITOR (POPUP TOOLS) -->
       <div id="stage-3" class="card hidden">
-        <div class="editor-grid">
-          <div class="canvas-stage">
-            <canvas id="strip-canvas"></canvas>
-            <div style="font-size:12px;color:var(--muted);">💡 แตะสติกเกอร์บนรูปเพื่อลากย้ายตำแหน่งได้ทันที</div>
-            <div class="retake-row" id="retake-row"></div>
+        <div class="canvas-stage">
+          <canvas id="strip-canvas"></canvas>
+
+          <div id="selected-sticker-controls" class="floating-sticker-bar hidden">
+            <span style="font-size:12px;">🔍</span>
+            <input type="range" id="sticker-size-range" min="28" max="150" value="64" oninput="updateSelectedSticker()" style="width:90px;" />
+            <span style="font-size:12px;">🔄</span>
+            <input type="range" id="sticker-rot-range" min="-180" max="180" value="0" oninput="updateSelectedSticker()" style="width:90px;" />
+            <button class="icon-btn" style="padding:4px 9px;min-height:30px;color:#DC2626;" onclick="deleteSelectedSticker()">🗑️</button>
           </div>
+        </div>
 
-          <div>
-            <div class="editor-tabs">
-              <button class="ed-tab active" onclick="switchEditorTab('frames', this)">🎨 เฟรม</button>
-              <button class="ed-tab" onclick="switchEditorTab('filters', this)">🌈 ฟิลเตอร์</button>
-              <button class="ed-tab" onclick="switchEditorTab('stickers', this)">🧸 สติกเกอร์</button>
-              <button class="ed-tab" onclick="switchEditorTab('text', this)">✍️ ข้อความ &amp; วันที่</button>
-            </div>
+        <div class="editor-dock">
+          <button class="dock-btn" onclick="openOptionPopup('editor-frames')">
+            <span class="dock-ico">🎨</span><span>เฟรม</span>
+          </button>
+          <button class="dock-btn" onclick="openOptionPopup('editor-filters')">
+            <span class="dock-ico">🌈</span><span>ฟิลเตอร์</span>
+          </button>
+          <button class="dock-btn" onclick="openOptionPopup('editor-stickers')">
+            <span class="dock-ico">🧸</span><span>สติกเกอร์</span>
+          </button>
+          <button class="dock-btn" onclick="openOptionPopup('editor-text')">
+            <span class="dock-ico">✍️</span><span>ข้อความ</span>
+          </button>
+          <button class="dock-btn" onclick="openOptionPopup('editor-retake')">
+            <span class="dock-ico">🔄</span><span>ถ่ายซ่อม</span>
+          </button>
+        </div>
 
-            <!-- Tab: Frames -->
-            <div id="ed-panel-frames">
-              <div class="opt-label">สีพื้นหลังกรอบรูป</div>
-              <div class="swatch-grid" id="frame-color-grid"></div>
-
-              <div class="opt-label">ลวดลายกรอบสไตล์ SnappyBooth</div>
-              <div class="pill-group" id="frame-pattern-pills" style="margin-bottom:14px;"></div>
-
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="font-size:13px;font-weight:600;">เลือกสีเอง:</span>
-                <input type="color" id="custom-frame-color" value="#FFFDF9" onchange="setCustomFrameColor(this.value)" style="width:44px;height:34px;border:none;background:none;cursor:pointer;" />
-              </div>
-            </div>
-
-            <!-- Tab: Filters -->
-            <div id="ed-panel-filters" class="hidden">
-              <div class="opt-label">เลือกโทนสีรูปภาพ</div>
-              <div class="pill-group" id="editor-filter-pills"></div>
-            </div>
-
-            <!-- Tab: Stickers -->
-            <div id="ed-panel-stickers" class="hidden">
-              <div class="opt-label">แตะเพื่อแปะสติกเกอร์ลงบนรูป</div>
-              <div class="sticker-grid" id="sticker-palette"></div>
-
-              <div id="selected-sticker-controls" class="opt-box hidden" style="margin-top:12px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                  <span style="font-size:13px;font-weight:700;">ปรับแต่งสติกเกอร์ที่เลือก</span>
-                  <button class="icon-btn" style="color:#DC2626;border-color:#FECACA;" onclick="deleteSelectedSticker()">🗑️ ลบอันนี้</button>
-                </div>
-                <label style="font-size:12px;">ขนาด: <input type="range" id="sticker-size-range" min="28" max="150" value="64" oninput="updateSelectedSticker()" style="width:100%;" /></label>
-                <label style="font-size:12px;">หมุน: <input type="range" id="sticker-rot-range" min="-180" max="180" value="0" oninput="updateSelectedSticker()" style="width:100%;" /></label>
-              </div>
-
-              <div style="margin-top:10px;">
-                <button class="icon-btn" onclick="clearAllStickers()">🧹 ล้างสติกเกอร์ทั้งหมด</button>
-              </div>
-            </div>
-
-            <!-- Tab: Caption & Thai Date -->
-            <div id="ed-panel-text" class="hidden">
-              <div style="margin-bottom:12px;">
-                <label class="opt-label">ข้อความ / แคปชันบนกรอบรูป</label>
-                <input type="text" id="caption-input" class="modern-input" maxlength="40" placeholder="เช่น WNTK Photos ✨" value="WNTK Photos ✨" oninput="updateCaptionSettings()" />
-              </div>
-
-              <div style="margin-bottom:12px;">
-                <label class="opt-label">สีข้อความ</label>
-                <div class="pill-group" id="caption-color-pills">
-                  <button class="pill-btn active" onclick="setCaptionColor('auto', this)">อัตโนมัติ</button>
-                  <button class="pill-btn" onclick="setCaptionColor('#2D2235', this)">เข้ม</button>
-                  <button class="pill-btn" onclick="setCaptionColor('#FFFFFF', this)">ขาว</button>
-                  <button class="pill-btn" onclick="setCaptionColor('#FF5D9E', this)">ชมพู</button>
-                </div>
-              </div>
-
-              <div class="opt-box">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                  <span style="font-size:13px;font-weight:700;">📅 ประทับวันที่ (พ.ศ.)</span>
-                  <button class="pill-btn active" id="toggle-date-stamp-btn" onclick="toggleDateStamp()">แสดงวันที่: เปิด</button>
-                </div>
-                <div class="thai-date-wrap">
-                  <input type="text" id="stamp-date-display" class="modern-input" readonly placeholder="วว/ดด/ปปปป" style="padding:9px;font-size:13px;width:100%;cursor:pointer;text-align:center;background:#fff;" onclick="openDatePicker('stamp-date-raw')" title="คลิกเพื่อเลือกวันที่" />
-                  <input type="date" id="stamp-date-raw" class="thai-date-raw" onchange="onStampDateChange(this.value)" />
-                </div>
-              </div>
-            </div>
-
-            <div class="cta-row" style="margin-top:20px;justify-content:flex-start;">
-              <button class="btn-primary" id="btn-save-finish" onclick="finalizeAndGenerate()">
-                ✨ บันทึก &amp; สร้าง QR Code
-              </button>
-              <button class="icon-btn" onclick="goBackToCamera()">📸 ถ่ายใหม่ทั้งหมด</button>
-            </div>
-          </div>
+        <div class="cta-row">
+          <button class="btn-primary" id="btn-save-finish" onclick="finalizeAndGenerate()">✨ บันทึก &amp; QR</button>
+          <button class="icon-btn" onclick="goBackToCamera()">📸 ถ่ายใหม่</button>
         </div>
       </div>
 
-      <!-- STAGE 4: RESULT, GIF/VIDEO & QR CODE -->
+      <!-- STAGE 4: RESULT & DIRECT QR CODE -->
       <div id="stage-4" class="card hidden">
-        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;">
-          <div>
-            <h2 class="section-title" style="margin:0;">รูปของคุณพร้อมแล้ว! 🎉</h2>
-            <p class="section-sub" id="save-cloud-status" style="margin:2px 0 0;">กำลังเตรียมไฟล์และ QR Code...</p>
-          </div>
-          <button class="btn-secondary" onclick="resetForNewSession()">📸 ถ่ายเซตใหม่</button>
+        <div class="section-title">
+          <span>🎉 พร้อมดาวน์โหลด</span>
+          <button class="icon-btn" onclick="resetForNewSession()">📸 ถ่ายใหม่</button>
         </div>
 
-        <div class="result-grid">
-          <div class="preview-pair">
-            <div class="media-box">
-              <div style="font-size:13px;font-weight:700;margin-bottom:8px;">🖼️ ภาพนิ่ง (Photo Strip)</div>
-              <img id="result-png-img" alt="Photo Strip" />
-              <div style="margin-top:10px;">
-                <button class="btn-primary" style="padding:9px 16px;font-size:13px;width:100%;" onclick="downloadLocalPng()">⬇️ ดาวน์โหลด PNG</button>
-              </div>
-            </div>
-
-            <div class="media-box">
-              <div style="font-size:13px;font-weight:700;margin-bottom:8px;">🎞️ ภาพเคลื่อนไหว (GIF / วิดีโอ)</div>
-              <img id="result-gif-img" alt="Animated GIF" />
-              <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
-                <button class="btn-secondary" style="padding:8px 12px;font-size:12.5px;width:100%;" onclick="downloadLocalGif()">🎞️ ดาวน์โหลด GIF</button>
-                <button class="icon-btn" id="btn-dl-video" style="justify-content:center;width:100%;" onclick="downloadLocalVideo()">🎥 ดาวน์โหลดวิดีโอ (.webm)</button>
-              </div>
-            </div>
+        <div class="preview-pair">
+          <div class="media-box">
+            <img id="result-png-img" alt="Photo Strip" />
+            <button class="btn-primary" style="padding:8px 14px;font-size:13px;min-height:38px;width:100%;" onclick="downloadLocalPng()">⬇️ PNG</button>
           </div>
 
-          <div class="qr-panel">
-            <div style="font-size:16px;font-weight:700;color:var(--primary-dark);">📱 สแกน QR Code เพื่อดาวน์โหลด</div>
-            <div class="pill-group" style="justify-content:center;margin-top:10px;">
-              <button class="pill-btn active" id="qr-tab-photo" onclick="switchQrMode('photo')">QR รูปภาพ (PNG)</button>
-              <button class="pill-btn" id="qr-tab-media" onclick="switchQrMode('media')">QR วิดีโอ / GIF</button>
+          <div class="media-box">
+            <img id="result-gif-img" alt="Animated GIF" />
+            <div style="display:flex;gap:6px;width:100%;">
+              <button class="btn-secondary" style="padding:7px 10px;font-size:12.5px;min-height:38px;flex:1;" onclick="downloadLocalGif()">🎞️ GIF</button>
+              <button class="icon-btn hidden" id="btn-dl-video" style="padding:7px 10px;min-height:38px;" onclick="downloadLocalVideo()" title="ดาวน์โหลดวิดีโอ">🎥</button>
             </div>
-
-            <div class="qr-canvas-box">
-              <canvas id="qr-canvas" width="210" height="210"></canvas>
-            </div>
-
-            <div id="qr-link-caption" style="font-size:12.5px;color:var(--muted);word-break:break-all;margin-bottom:10px;"></div>
-
-            <div id="qr-cloud-cta" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;"></div>
           </div>
+        </div>
+
+        <div class="qr-panel">
+          <div class="pill-group" style="justify-content:center;">
+            <button class="pill-btn active" id="qr-tab-photo" onclick="switchQrMode('photo')">🖼️ QR รูปภาพ</button>
+            <button class="pill-btn" id="qr-tab-media" onclick="switchQrMode('media')">🎞️ QR GIF</button>
+          </div>
+
+          <div class="qr-canvas-box">
+            <canvas id="qr-canvas" width="200" height="200"></canvas>
+          </div>
+
+          <div id="qr-link-caption" style="font-size:12px;color:var(--muted);margin-bottom:8px;"></div>
+          <div id="qr-cloud-cta" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"></div>
         </div>
       </div>
     </section>
@@ -1248,84 +1075,74 @@
     <!-- ==================== GALLERY VIEW ==================== -->
     <section id="view-gallery" class="card hidden">
       <div class="gallery-toolbar">
-        <div>
-          <h2 class="section-title" style="margin:0;">คลังภาพ &amp; Google Drive 🖼️</h2>
-          <p class="section-sub" style="margin:2px 0 0;">เก็บภาพในโฟลเดอร์ <b>Photobooth/Photos</b> และวิดีโอ/GIF ใน <b>Photobooth/Videos_GIF</b></p>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-          <div class="thai-date-wrap" style="width:155px;">
-            <input type="text" id="gallery-date-display" class="modern-input" readonly placeholder="กรองวันที่ พ.ศ." style="padding:8px 10px;font-size:12.5px;width:100%;cursor:pointer;text-align:center;background:#fff;" onclick="openDatePicker('gallery-date-raw')" title="คลิกเพื่อกรองตามวันที่" />
+        <div style="font-weight:700;font-size:17px;">🖼️ คลังภาพ</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+          <div class="thai-date-wrap" style="width:130px;">
+            <input type="text" id="gallery-date-display" class="modern-input" readonly placeholder="📅 วันที่ พ.ศ." style="padding:7px 8px;font-size:12px;width:100%;cursor:pointer;text-align:center;background:#fff;" onclick="openDatePicker('gallery-date-raw')" />
             <input type="date" id="gallery-date-raw" class="thai-date-raw" onchange="onGalleryDateChange(this.value)" />
           </div>
-          <button class="icon-btn" onclick="clearGalleryDateFilter()">ทั้งหมด</button>
-          <button class="icon-btn" onclick="loadGalleryItems()">🔄 รีเฟรช</button>
-          <button class="icon-btn" onclick="printGalleryReport()">🖨️ พิมพ์รายงาน</button>
+          <button class="icon-btn" onclick="clearGalleryDateFilter()" title="ทั้งหมด">ทั้งหมด</button>
+          <button class="icon-btn" onclick="loadGalleryItems()" title="รีเฟรช">🔄</button>
+          <button class="icon-btn" onclick="printGalleryReport()" title="พิมพ์รายงาน">🖨️</button>
         </div>
       </div>
 
       <div id="gallery-grid" class="gallery-grid"></div>
-      <div id="gallery-empty" class="hidden" style="text-align:center;padding:40px 10px;color:var(--muted);">
-        ยังไม่มีรูปภาพในช่วงเวลานี้ — ลองไปถ่ายเซตแรกที่แท็บ <b>สตูดิโอ</b> ดูสิ! 📸
+      <div id="gallery-empty" class="hidden" style="text-align:center;padding:36px 10px;color:var(--muted);font-size:13.5px;">
+        ยังไม่มีรูปภาพ 📸
       </div>
     </section>
   </main>
 
-  <!-- ==================== SETTINGS MODAL ==================== -->
-  <div id="settings-modal" class="modal-backdrop hidden" onclick="if(event.target===this) closeSettingsModal()">
+  <!-- ==================== UNIFIED OPTION POPUP / BOTTOM SHEET ==================== -->
+  <div id="option-popup" class="modal-backdrop sheet-mode hidden" onclick="if(event.target===this) closeOptionPopup()">
     <div class="modal-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <h3 style="margin:0;font-size:18px;">⚙️ ตั้งค่า Google Drive &amp; แอป</h3>
-        <button class="icon-btn" onclick="closeSettingsModal()">✕</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3 id="popup-title" style="margin:0;font-size:16px;">ตัวเลือก</h3>
+        <button class="icon-btn" style="min-height:32px;padding:4px 10px;" onclick="closeOptionPopup()">✕</button>
+      </div>
+      <div id="popup-body"></div>
+    </div>
+  </div>
+
+  <!-- ==================== SETTINGS MODAL ==================== -->
+  <div id="settings-modal" class="modal-backdrop sheet-mode hidden" onclick="if(event.target===this) closeSettingsModal()">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3 style="margin:0;font-size:17px;">⚙️ ตั้งค่า</h3>
+        <button class="icon-btn" style="min-height:32px;padding:4px 10px;" onclick="closeSettingsModal()">✕</button>
       </div>
 
-      <div style="margin-bottom:14px;">
-        <label class="opt-label">ชื่อบูธ / ชื่อผู้ใช้งาน (แสดงบนแถบหัวเว็บ)</label>
-        <input type="text" id="setting-booth-name" class="modern-input" placeholder="เช่น บูธของฉัน" />
+      <div style="margin-bottom:12px;">
+        <label class="opt-label">ชื่อบูธ / ชื่อแสดงผล</label>
+        <input type="text" id="setting-booth-name" class="modern-input" placeholder="WNTK Photos" />
       </div>
 
-      <div style="margin-bottom:14px;">
-        <label class="opt-label">Google Apps Script Web App URL (จาก Code.gs)</label>
+      <div style="margin-bottom:12px;">
+        <label class="opt-label">Google Apps Script URL</label>
         <input type="url" id="setting-gas-url" class="modern-input" placeholder="https://script.google.com/macros/s/.../exec" />
-        <div style="font-size:11.5px;color:var(--muted);margin-top:5px;">
-          เมื่อเชื่อมต่อแล้ว ระบบจะสร้างโฟลเดอร์ <b>Photobooth</b>, โฟลเดอร์ย่อย <b>Photos</b> / <b>Videos_GIF</b> และชีต <b>Photobooth_Database</b> ใน Google Drive ให้อัตโนมัติ
-        </div>
       </div>
 
-      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
-        <button class="btn-primary" style="padding:10px 18px;font-size:13.5px;" onclick="saveAndTestGas()">
-          💾 บันทึก &amp; สร้างโฟลเดอร์ Photobooth
-        </button>
-      </div>
-
-      <div id="drive-test-result" class="opt-box hidden" style="margin-bottom:14px;font-size:12.5px;"></div>
-
-      <details style="background:var(--bg);padding:12px;border-radius:14px;border:1px solid var(--border);font-size:12.5px;">
-        <summary style="cursor:pointer;font-weight:700;">📘 วิธีเชื่อมต่อ Google Drive ด้วย Code.gs (ทำครั้งเดียว)</summary>
-        <ol style="margin:8px 0 0;padding-left:18px;line-height:1.6;">
-          <li>เปิด <a href="https://script.google.com" target="_blank" rel="noopener">script.google.com</a> สร้างโปรเจกต์ใหม่ แล้วนำโค้ดจากไฟล์ <b>Code.gs</b> ไปวางแทนที่</li>
-          <li>กดเลือกฟังก์ชัน <b>initPhotoboothDrive</b> แล้วกด <b>เรียกใช้ (Run)</b> เพื่ออนุญาตสิทธิ์ Google Drive &amp; Sheets</li>
-          <li>กด <b>ทำให้ใช้งานได้ (Deploy) &gt; การทำให้ใช้งานได้รายการใหม่ &gt; เว็บแอป</b></li>
-          <li>ตั้งค่า "ผู้มีสิทธิ์เข้าถึง" เป็น <b>ทุกคน (Anyone)</b> แล้วคัดลอก URL มาวางในช่องด้านบน</li>
-        </ol>
-      </details>
+      <button class="btn-primary" style="width:100%;padding:10px;font-size:14px;" onclick="saveAndTestGas()">💾 บันทึก &amp; ทดสอบ Drive</button>
+      <div id="drive-test-result" class="opt-box hidden" style="margin-top:10px;font-size:12.5px;"></div>
     </div>
   </div>
 
   <!-- ==================== GALLERY ITEM QR MODAL ==================== -->
-  <div id="item-qr-modal" class="modal-backdrop hidden" onclick="if(event.target===this) closeItemQrModal()">
+  <div id="item-qr-modal" class="modal-backdrop sheet-mode hidden" onclick="if(event.target===this) closeItemQrModal()">
     <div class="modal-card" style="text-align:center;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <h3 style="margin:0;font-size:17px;">📱 QR Code ดาวน์โหลด</h3>
-        <button class="icon-btn" onclick="closeItemQrModal()">✕</button>
+        <h3 style="margin:0;font-size:16px;">📱 สแกนโหลดไฟล์</h3>
+        <button class="icon-btn" style="min-height:32px;padding:4px 10px;" onclick="closeItemQrModal()">✕</button>
       </div>
-      <div class="pill-group" style="justify-content:center;margin-bottom:10px;">
-        <button class="pill-btn active" id="modal-qr-photo-btn" onclick="renderModalQr('photo')">รูปภาพ (PNG)</button>
-        <button class="pill-btn" id="modal-qr-media-btn" onclick="renderModalQr('media')">วิดีโอ / GIF</button>
+      <div class="pill-group" style="justify-content:center;margin-bottom:8px;">
+        <button class="pill-btn active" id="modal-qr-photo-btn" onclick="renderModalQr('photo')">🖼️ รูปภาพ</button>
+        <button class="pill-btn" id="modal-qr-media-btn" onclick="renderModalQr('media')">🎞️ GIF</button>
       </div>
       <div class="qr-canvas-box">
-        <canvas id="modal-qr-canvas" width="210" height="210"></canvas>
+        <canvas id="modal-qr-canvas" width="200" height="200"></canvas>
       </div>
-      <div id="modal-qr-caption" style="font-size:12px;color:var(--muted);word-break:break-all;margin-bottom:12px;"></div>
+      <div id="modal-qr-caption" style="font-size:12px;color:var(--muted);margin-bottom:10px;"></div>
       <div id="modal-qr-links" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"></div>
     </div>
   </div>
@@ -1365,39 +1182,49 @@
     }
 
     const LAYOUTS = {
-      '1x4': { label: 'แถบยาว 4 ช่อง', count: 4, w: 600, h: 1800, cols: 1, rows: 4 },
-      '1x3': { label: 'แถบยาว 3 ช่อง', count: 3, w: 600, h: 1420, cols: 1, rows: 3 },
+      '1x4': { label: '4 ช่อง', count: 4, w: 600, h: 1800, cols: 1, rows: 4 },
+      '1x3': { label: '3 ช่อง', count: 3, w: 600, h: 1420, cols: 1, rows: 3 },
       '2x2': { label: 'ตาราง 2x2', count: 4, w: 1000, h: 1260, cols: 2, rows: 2 },
       '1x1': { label: 'โพลารอยด์', count: 1, w: 720, h: 880, cols: 1, rows: 1 }
     };
 
+    // 16 Curated Filters with both CSS and pixel-fallback parameters
     const FILTERS = [
-      { id: 'original', name: 'ธรรมชาติ', css: 'none' },
-      { id: 'peach', name: 'ผิวละมุน', css: 'brightness(1.06) contrast(0.95) saturate(1.12) sepia(0.08)' },
-      { id: 'bw', name: 'ขาวดำ', css: 'grayscale(1) contrast(1.15) brightness(1.03)' },
-      { id: 'vintage', name: 'วินเทจ', css: 'sepia(0.38) contrast(1.05) brightness(0.98) saturate(0.9)' },
-      { id: 'cool', name: 'คลีนเย็น', css: 'brightness(1.05) contrast(1.04) saturate(0.92) hue-rotate(-6deg)' },
-      { id: 'vivid', name: 'สดใสป๊อป', css: 'contrast(1.12) saturate(1.38) brightness(1.03)' },
-      { id: 'retro90', name: 'เรโทร 90s', css: 'contrast(1.2) saturate(1.15) sepia(0.18) brightness(0.96)' }
+      { id: 'original', name: 'ต้นฉบับ', css: 'none', bright: 1, cont: 1, sat: 1, sep: 0, gray: 0 },
+      { id: 'peach', name: 'พีชละมุน', css: 'brightness(1.06) contrast(0.95) saturate(1.12) sepia(0.08)', bright: 1.06, cont: 0.95, sat: 1.12, sep: 0.08, gray: 0 },
+      { id: 'glow', name: 'ผิวใสไบรท์', css: 'brightness(1.1) contrast(0.96) saturate(1.05)', bright: 1.1, cont: 0.96, sat: 1.05, sep: 0, gray: 0 },
+      { id: 'creamy', name: 'ครีมมี่', css: 'brightness(1.07) contrast(0.92) sepia(0.14) saturate(1.06)', bright: 1.07, cont: 0.92, sat: 1.06, sep: 0.14, gray: 0 },
+      { id: 'rose', name: 'โรสพาสเทล', css: 'brightness(1.05) saturate(1.18) hue-rotate(-10deg) contrast(0.97)', bright: 1.05, cont: 0.97, sat: 1.18, sep: 0.04, gray: 0, tint: [12, -4, 6] },
+      { id: 'cool', name: 'คูลเกาหลี', css: 'brightness(1.05) contrast(1.04) saturate(0.92) hue-rotate(-6deg)', bright: 1.05, cont: 1.04, sat: 0.92, sep: 0, gray: 0, tint: [-6, 2, 12] },
+      { id: 'mint', name: 'มิ้นต์ใส', css: 'brightness(1.06) contrast(0.98) saturate(1.05) hue-rotate(10deg)', bright: 1.06, cont: 0.98, sat: 1.05, sep: 0, gray: 0, tint: [-8, 10, 4] },
+      { id: 'sky', name: 'ฟ้าโปร่ง', css: 'brightness(1.06) contrast(1.06) saturate(1.12) hue-rotate(6deg)', bright: 1.06, cont: 1.06, sat: 1.12, sep: 0, gray: 0, tint: [-6, 4, 14] },
+      { id: 'vivid', name: 'สีสดป๊อป', css: 'contrast(1.14) saturate(1.38) brightness(1.03)', bright: 1.03, cont: 1.14, sat: 1.38, sep: 0, gray: 0 },
+      { id: 'sunset', name: 'ซันเซ็ตอุ่น', css: 'brightness(1.04) contrast(1.06) saturate(1.22) sepia(0.2)', bright: 1.04, cont: 1.06, sat: 1.22, sep: 0.2, gray: 0 },
+      { id: 'vintage', name: 'ฟิล์มวินเทจ', css: 'sepia(0.38) contrast(1.05) brightness(0.98) saturate(0.9)', bright: 0.98, cont: 1.05, sat: 0.9, sep: 0.38, gray: 0 },
+      { id: 'kodak', name: 'โกดัก 400', css: 'contrast(1.12) saturate(1.18) sepia(0.22) brightness(1.01)', bright: 1.01, cont: 1.12, sat: 1.18, sep: 0.22, gray: 0 },
+      { id: 'retro90', name: 'เรโทร 90s', css: 'contrast(1.2) saturate(1.15) sepia(0.18) brightness(0.96)', bright: 0.96, cont: 1.2, sat: 1.15, sep: 0.18, gray: 0 },
+      { id: 'dreamy', name: 'ดรีมมี่ฟุ้ง', css: 'brightness(1.11) contrast(0.88) saturate(1.12)', bright: 1.11, cont: 0.88, sat: 1.12, sep: 0.05, gray: 0 },
+      { id: 'bw', name: 'ขาวดำ', css: 'grayscale(1) contrast(1.15) brightness(1.03)', bright: 1.03, cont: 1.15, sat: 0, sep: 0, gray: 1 },
+      { id: 'noir', name: 'ฟิล์มนัวร์', css: 'grayscale(1) contrast(1.42) brightness(0.94)', bright: 0.94, cont: 1.42, sat: 0, sep: 0, gray: 1 }
     ];
 
     const FRAME_COLORS = [
-      { id: 'cream', name: 'ขาวครีม', hex: '#FFFDF9', darkText: true },
-      { id: 'noir', name: 'ดำเท่', hex: '#1F1A2E', darkText: false },
-      { id: 'pink', name: 'ชมพูพาสเทล', hex: '#FFD6E7', darkText: true },
-      { id: 'mint', name: 'เขียวมิ้นต์', hex: '#D8F3DC', darkText: true },
-      { id: 'sky', name: 'ฟ้าเบบี้บลู', hex: '#DBEAFE', darkText: true },
-      { id: 'lavender', name: 'ม่วงลาเวนเดอร์', hex: '#EDE9FE', darkText: true },
-      { id: 'butter', name: 'เหลืองบัตเตอร์', hex: '#FEF3C7', darkText: true }
+      { id: 'cream', name: 'ครีม', hex: '#FFFDF9' },
+      { id: 'noir', name: 'ดำ', hex: '#1F1A2E' },
+      { id: 'pink', name: 'ชมพู', hex: '#FFD6E7' },
+      { id: 'mint', name: 'มิ้นต์', hex: '#D8F3DC' },
+      { id: 'sky', name: 'ฟ้า', hex: '#DBEAFE' },
+      { id: 'lavender', name: 'ม่วง', hex: '#EDE9FE' },
+      { id: 'butter', name: 'เหลือง', hex: '#FEF3C7' }
     ];
 
     const FRAME_PATTERNS = [
-      { id: 'none', name: 'สีพื้นเรียบ' },
-      { id: 'hearts', name: 'หัวใจคิ้วท์ 💖' },
-      { id: 'daisy', name: 'ดอกเดซี่ 🌼' },
-      { id: 'film', name: 'ฟิล์ม 35mm 🎞️' },
-      { id: 'gingham', name: 'ตารางพาสเทล 🏁' },
-      { id: 'sparkle', name: 'วิ้งค์ Y2K ✨' }
+      { id: 'none', name: 'สีเรียบ' },
+      { id: 'hearts', name: '💖 หัวใจ' },
+      { id: 'daisy', name: '🌼 ดอกไม้' },
+      { id: 'film', name: '🎞️ ฟิล์ม' },
+      { id: 'gingham', name: '🏁 ตาราง' },
+      { id: 'sparkle', name: '✨ วิ้งค์' }
     ];
 
     const STICKER_OPTIONS = [
@@ -1413,15 +1240,13 @@
       motionOn: true,
       facingMode: 'user',
       stream: null,
-      shots: [],        // Array of HTMLImageElement or null
-      burstFrames: [],  // Array of canvas data URLs collected for GIF
+      shots: [],
       recordedVideoBlob: null,
       mediaRecorder: null,
       recordedChunks: [],
       isShooting: false,
       retakeSlotIndex: null,
 
-      // Editor state
       frameColor: '#FFFDF9',
       framePattern: 'none',
       filterId: 'original',
@@ -1429,11 +1254,10 @@
       captionColor: 'auto',
       showDateStamp: true,
       stampDateBE: '',
-      stickers: [], // { id, text, isBadge, x, y, size, rot } (x,y in 0..1 normalized coords)
+      stickers: [],
       selectedStickerId: null,
       draggingSticker: false,
 
-      // Result state
       finalPngDataUrl: '',
       finalGifBlob: null,
       finalGifDataUrl: '',
@@ -1441,11 +1265,12 @@
       lastCloudResult: null,
       modalQrItem: null,
       galleryItems: [],
-      galleryDateFilter: ''
+      galleryDateFilter: '',
+      activePopupType: null
     };
 
     /* =====================================================================
-       2. THAI DATE HELPERS (dd/mm/yyyy พ.ศ.) & AUDIO SYNTH
+       2. THAI DATE HELPERS & AUDIO
        ===================================================================== */
     function formatDateToThaiBE(dateObj) {
       const dt = dateObj || new Date();
@@ -1478,13 +1303,14 @@
       if (!val) return;
       const be = isoToThaiBE(val);
       state.stampDateBE = be;
-      document.getElementById('stamp-date-display').value = be;
+      const disp = document.getElementById('stamp-date-display');
+      if (disp) disp.value = be;
       renderStripCanvas();
     }
 
     function onGalleryDateChange(val) {
       const be = isoToThaiBE(val);
-      state.galleryDateFilter = val; // YYYY-MM-DD (Code.gs checkDateMatch handles both YYYY-MM-DD and DD/MM/YYYY)
+      state.galleryDateFilter = val;
       document.getElementById('gallery-date-display').value = be;
       loadGalleryItems();
     }
@@ -1525,11 +1351,11 @@
       el.textContent = msg;
       el.classList.remove('hidden');
       clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => el.classList.add('hidden'), 3000);
+      showToast._t = setTimeout(() => el.classList.add('hidden'), 2600);
     }
 
     /* =====================================================================
-       3. INDEXEDDB LOCAL STORAGE (OFFLINE GALLERY CACHE)
+       3. INDEXEDDB LOCAL STORAGE
        ===================================================================== */
     function openLocalDb() {
       return new Promise((resolve, reject) => {
@@ -1578,7 +1404,7 @@
     }
 
     /* =====================================================================
-       4. NAVIGATION & SETUP STAGE
+       4. NAVIGATION & POPUP OPTIONS SYSTEM
        ===================================================================== */
     function switchAppView(view) {
       const isStudio = view === 'studio';
@@ -1608,29 +1434,141 @@
       });
     }
 
-    function setCountdown(sec, btn) {
+    function updateTimerLabels() {
+      const txt = state.countdownSec === 0 ? '⏱️ ทันที' : `⏱️ ${state.countdownSec} วิ`;
+      const b1 = document.getElementById('chip-timer-btn');
+      const b2 = document.getElementById('cam-timer-btn');
+      if (b1) b1.textContent = txt;
+      if (b2) b2.textContent = txt;
+    }
+
+    function setCountdown(sec) {
       state.countdownSec = sec;
-      document.querySelectorAll('#timer-pills .pill-btn').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
+      updateTimerLabels();
+      if (state.activePopupType === 'setup-timer') renderPopupBody('setup-timer');
     }
 
     function toggleMirrorOption() {
       state.mirror = !state.mirror;
-      document.getElementById('opt-mirror-btn').textContent = `กระจก: ${state.mirror ? 'เปิด' : 'ปิด'}`;
-      document.getElementById('opt-mirror-btn').classList.toggle('active', state.mirror);
       document.getElementById('camera-video').classList.toggle('mirrored', state.mirror);
+      if (state.activePopupType === 'setup-cam') renderPopupBody('setup-cam');
     }
 
     function toggleSoundOption() {
       state.soundOn = !state.soundOn;
-      document.getElementById('opt-sound-btn').textContent = `เสียงชัตเตอร์: ${state.soundOn ? 'เปิด' : 'ปิด'}`;
-      document.getElementById('opt-sound-btn').classList.toggle('active', state.soundOn);
+      if (state.activePopupType === 'setup-cam') renderPopupBody('setup-cam');
     }
 
     function toggleMotionOption() {
       state.motionOn = !state.motionOn;
-      document.getElementById('opt-motion-btn').textContent = `เก็บภาพทำ GIF/วิดีโอ: ${state.motionOn ? 'เปิด' : 'ปิด'}`;
-      document.getElementById('opt-motion-btn').classList.toggle('active', state.motionOn);
+      if (state.activePopupType === 'setup-cam') renderPopupBody('setup-cam');
+    }
+
+    function openOptionPopup(type) {
+      state.activePopupType = type;
+      const titles = {
+        'setup-timer': '⏱️ ตั้งเวลานับถอยหลัง',
+        'setup-cam': '🎛️ ตั้งค่ากล้อง & GIF',
+        'camera-filter': '🌈 เลือกฟิลเตอร์',
+        'editor-frames': '🎨 เลือกเฟรม',
+        'editor-filters': '🌈 เลือกฟิลเตอร์',
+        'editor-stickers': '🧸 เลือกสติกเกอร์',
+        'editor-text': '✍️ ข้อความ & วันที่',
+        'editor-retake': '🔄 ถ่ายซ่อมเฉพาะช่อง'
+      };
+      document.getElementById('popup-title').textContent = titles[type] || 'ตัวเลือก';
+      renderPopupBody(type);
+      document.getElementById('option-popup').classList.remove('hidden');
+    }
+
+    function closeOptionPopup() {
+      state.activePopupType = null;
+      document.getElementById('option-popup').classList.add('hidden');
+    }
+
+    function renderPopupBody(type) {
+      const body = document.getElementById('popup-body');
+      if (type === 'setup-timer') {
+        const opts = [3, 5, 10, 0];
+        body.innerHTML = `<div class="pill-group" style="justify-content:center;">
+          ${opts.map(s => `<button class="pill-btn ${state.countdownSec === s ? 'active' : ''}" onclick="setCountdown(${s}); closeOptionPopup();">${s === 0 ? 'ถ่ายทันที' : s + ' วินาที'}</button>`).join('')}
+        </div>`;
+      } else if (type === 'setup-cam') {
+        body.innerHTML = `<div class="pill-group" style="justify-content:center;">
+          <button class="pill-btn ${state.mirror ? 'active' : ''}" onclick="toggleMirrorOption()">🪞 กระจก: ${state.mirror ? 'เปิด' : 'ปิด'}</button>
+          <button class="pill-btn ${state.soundOn ? 'active' : ''}" onclick="toggleSoundOption()">🔊 เสียง: ${state.soundOn ? 'เปิด' : 'ปิด'}</button>
+          <button class="pill-btn ${state.motionOn ? 'active' : ''}" onclick="toggleMotionOption()">🎞️ GIF/วิดีโอ: ${state.motionOn ? 'เปิด' : 'ปิด'}</button>
+        </div>`;
+      } else if (type === 'camera-filter' || type === 'editor-filters') {
+        body.innerHTML = `<div class="filter-grid">
+          ${FILTERS.map(f => `<button class="pill-btn ${state.filterId === f.id ? 'active' : ''}" onclick="setFilter('${f.id}');">${f.name}</button>`).join('')}
+        </div>`;
+      } else if (type === 'editor-frames') {
+        body.innerHTML = `
+          <span class="opt-label">สีกรอบ</span>
+          <div class="swatch-grid">
+            ${FRAME_COLORS.map(c => `
+              <button class="swatch-btn ${state.frameColor === c.hex ? 'active' : ''}" onclick="setFrameColor('${c.hex}')">
+                <span class="swatch-color" style="background:${c.hex};"></span>
+                <span>${c.name}</span>
+              </button>`).join('')}
+          </div>
+          <span class="opt-label">ลวดลาย</span>
+          <div class="pill-group" style="margin-bottom:12px;">
+            ${FRAME_PATTERNS.map(p => `<button class="pill-btn ${state.framePattern === p.id ? 'active' : ''}" onclick="setFramePattern('${p.id}')">${p.name}</button>`).join('')}
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:13px;font-weight:700;">🎨 สีเอง:</span>
+            <input type="color" id="custom-frame-color" value="${state.frameColor}" onchange="setFrameColor(this.value)" style="width:44px;height:34px;border:none;background:none;cursor:pointer;" />
+          </div>`;
+      } else if (type === 'editor-stickers') {
+        body.innerHTML = `
+          <div class="sticker-grid" style="margin-bottom:10px;">
+            ${STICKER_OPTIONS.map(st => {
+              if (st.startsWith('TEXT:')) {
+                const txt = st.slice(5);
+                return `<button class="sticker-btn sticker-text-btn" onclick="addSticker('${txt}', true); closeOptionPopup();">${txt}</button>`;
+              }
+              return `<button class="sticker-btn" onclick="addSticker('${st}', false); closeOptionPopup();">${st}</button>`;
+            }).join('')}
+          </div>
+          <button class="icon-btn" style="width:100%;" onclick="clearAllStickers(); closeOptionPopup();">🧹 ล้างสติกเกอร์ทั้งหมด</button>`;
+      } else if (type === 'editor-text') {
+        const curDate = state.stampDateBE || formatDateToThaiBE(new Date());
+        body.innerHTML = `
+          <div style="margin-bottom:12px;">
+            <label class="opt-label">ข้อความบนกรอบ</label>
+            <input type="text" id="caption-input" class="modern-input" maxlength="40" value="${escapeHtml(state.caption)}" oninput="updateCaptionSettings()" />
+          </div>
+          <div style="margin-bottom:12px;">
+            <label class="opt-label">สีข้อความ</label>
+            <div class="pill-group">
+              ${[
+                { v: 'auto', n: 'อัตโนมัติ' },
+                { v: '#2D2235', n: 'เข้ม' },
+                { v: '#FFFFFF', n: 'ขาว' },
+                { v: '#FF5D9E', n: 'ชมพู' }
+              ].map(c => `<button class="pill-btn ${state.captionColor === c.v ? 'active' : ''}" onclick="setCaptionColor('${c.v}')">${c.n}</button>`).join('')}
+            </div>
+          </div>
+          <div class="opt-box">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-size:13px;font-weight:700;">📅 วันที่ พ.ศ.</span>
+              <button class="pill-btn ${state.showDateStamp ? 'active' : ''}" onclick="toggleDateStamp()">${state.showDateStamp ? 'แสดง' : 'ซ่อน'}</button>
+            </div>
+            <div class="thai-date-wrap">
+              <input type="text" id="stamp-date-display" class="modern-input" readonly value="${curDate}" placeholder="วว/ดด/ปปปป" style="padding:9px;font-size:13px;width:100%;cursor:pointer;text-align:center;background:#fff;" onclick="openDatePicker('stamp-date-raw')" />
+              <input type="date" id="stamp-date-raw" class="thai-date-raw" onchange="onStampDateChange(this.value)" />
+            </div>
+          </div>`;
+      } else if (type === 'editor-retake') {
+        const count = LAYOUTS[state.layout].count;
+        body.innerHTML = `<div class="pill-group" style="justify-content:center;">
+          ${Array.from({ length: count }, (_, i) =>
+            `<button class="pill-btn" onclick="closeOptionPopup(); startCameraStage(${i});">🔄 ช่อง ${i + 1}</button>`
+          ).join('')}
+        </div>`;
+      }
     }
 
     function triggerUploadFlow() {
@@ -1644,11 +1582,9 @@
       if (!files.length) return;
       const needed = LAYOUTS[state.layout].count;
       state.shots = new Array(needed).fill(null);
-      state.burstFrames = [];
       state.recordedVideoBlob = null;
 
       let loaded = 0;
-      const toLoad = Math.min(files.length, needed);
       for (let i = 0; i < needed; i++) {
         const file = files[i % files.length];
         const reader = new FileReader();
@@ -1657,38 +1593,34 @@
           img.onload = () => {
             state.shots[i] = img;
             loaded++;
-            if (loaded === needed) {
-              openEditorStage();
-            }
+            if (loaded === needed) openEditorStage();
           };
           img.src = ev.target.result;
         };
         reader.readAsDataURL(file);
       }
-      showToast(`นำเข้ารูปภาพ ${toLoad} รูปเรียบร้อย`);
     }
 
     /* =====================================================================
-       5. CAMERA, LIVE FILTER, COUNTDOWN & MOTION CAPTURE
+       5. CAMERA, LIVE FILTER & COUNTDOWN
        ===================================================================== */
     async function startCameraStage(retakeIdx = null) {
       state.retakeSlotIndex = retakeIdx;
       const needed = LAYOUTS[state.layout].count;
       if (retakeIdx === null) {
         state.shots = new Array(needed).fill(null);
-        state.burstFrames = [];
         state.recordedVideoBlob = null;
       }
 
       setStudioStage(2);
-      renderLiveFilterBar();
+      updateTimerLabels();
       renderSlotThumbs();
       updateShotBadge();
 
       try {
         await initCameraStream();
       } catch (err) {
-        showToast('ไม่สามารถเปิดกล้องได้ — ลองอัปโหลดรูปแทนหรือเช็คสิทธิ์กล้อง');
+        showToast('เปิดกล้องไม่สำเร็จ ลองอัปโหลดรูปแทน');
       }
     }
 
@@ -1717,7 +1649,7 @@
 
     function switchCameraFacing() {
       state.facingMode = state.facingMode === 'user' ? 'environment' : 'user';
-      initCameraStream().catch(() => showToast('อุปกรณ์นี้มีกล้องเดียว'));
+      initCameraStream().catch(() => showToast('มีกล้องเดียว'));
     }
 
     function backToSetup() {
@@ -1725,18 +1657,12 @@
       setStudioStage(1);
     }
 
-    function renderLiveFilterBar() {
-      const bar = document.getElementById('live-filter-bar');
-      bar.innerHTML = FILTERS.map(f =>
-        `<button class="pill-btn ${state.filterId === f.id ? 'active' : ''}" onclick="setFilter('${f.id}')">${f.name}</button>`
-      ).join('');
-    }
-
     function setFilter(filterId) {
       state.filterId = filterId;
       applyLiveVideoFilter();
-      renderLiveFilterBar();
-      renderEditorFilterPills();
+      if (state.activePopupType === 'camera-filter' || state.activePopupType === 'editor-filters') {
+        renderPopupBody(state.activePopupType);
+      }
       if (!document.getElementById('stage-3').classList.contains('hidden')) {
         renderStripCanvas();
       }
@@ -1750,11 +1676,7 @@
     function renderSlotThumbs() {
       const wrap = document.getElementById('slot-thumbs');
       const needed = LAYOUTS[state.layout].count;
-      document.getElementById('sidebar-slot-desc').textContent =
-        state.retakeSlotIndex !== null
-          ? `กำลังถ่ายซ่อมเฉพาะช่องที่ ${state.retakeSlotIndex + 1}`
-          : `ถ่ายครบ ${needed} รูปแล้วเข้าสู่หน้าตกแต่งทันที`;
-
+      wrap.style.gridTemplateColumns = `repeat(${Math.min(needed, 4)}, 1fr)`;
       wrap.innerHTML = '';
       for (let i = 0; i < needed; i++) {
         const div = document.createElement('div');
@@ -1764,7 +1686,7 @@
           im.src = state.shots[i].src;
           div.appendChild(im);
         } else {
-          div.textContent = `ช่อง ${i + 1}`;
+          div.textContent = `${i + 1}`;
         }
         wrap.appendChild(div);
       }
@@ -1781,8 +1703,8 @@
       const idx = next === -1 ? needed : next + 1;
       document.getElementById('shot-progress-badge').textContent =
         state.retakeSlotIndex !== null
-          ? `ถ่ายซ่อม • ช่อง ${state.retakeSlotIndex + 1} / ${needed}`
-          : `ช่องที่ ${idx} / ${needed}`;
+          ? `ซ่อม ${state.retakeSlotIndex + 1}/${needed}`
+          : `${idx} / ${needed}`;
     }
 
     function startVideoSessionRecorder() {
@@ -1839,32 +1761,11 @@
           void numEl.offsetWidth;
           numEl.style.animation = 'popIn 0.45s ease';
           playBeep(t === 1 ? 1046 : 784, 0.1);
-          if (state.motionOn && t <= 2) {
-            grabBurstFrame();
-          }
           await sleep(1000);
         }
         overlay.classList.add('hidden');
       }
-
       await snapFrameToSlot(slotIdx);
-    }
-
-    function grabBurstFrame() {
-      const vid = document.getElementById('camera-video');
-      if (!vid.videoWidth) return;
-      const c = document.createElement('canvas');
-      c.width = 360;
-      c.height = 270;
-      const ctx = c.getContext('2d');
-      const f = FILTERS.find(x => x.id === state.filterId) || FILTERS[0];
-      ctx.filter = f.css;
-      if (state.mirror) {
-        ctx.translate(c.width, 0);
-        ctx.scale(-1, 1);
-      }
-      ctx.drawImage(vid, 0, 0, c.width, c.height);
-      state.burstFrames.push(c);
     }
 
     async function snapFrameToSlot(slotIdx) {
@@ -1900,9 +1801,7 @@
       state.isShooting = true;
       toggleShootButtons(true);
 
-      if (state.retakeSlotIndex === null) {
-        startVideoSessionRecorder();
-      }
+      if (state.retakeSlotIndex === null) startVideoSessionRecorder();
 
       while (true) {
         const nextIdx = getNextEmptySlot();
@@ -1913,7 +1812,7 @@
           state.retakeSlotIndex = null;
           break;
         }
-        await sleep(550);
+        await sleep(500);
       }
 
       await stopVideoSessionRecorder();
@@ -1951,22 +1850,21 @@
     }
 
     /* =====================================================================
-       6. SNAPPY EDITOR (CANVAS RENDERING, FRAMES, STICKERS, THAI DATE)
+       6. EDITOR, FILTER ENGINE (DESKTOP + iOS FALLBACK) & CANVAS RENDER
        ===================================================================== */
+    const SUPPORTS_CTX_FILTER = (() => {
+      try {
+        const c = document.createElement('canvas');
+        const x = c.getContext('2d');
+        x.filter = 'brightness(1.1)';
+        return x.filter === 'brightness(1.1)';
+      } catch (e) { return false; }
+    })();
+
     function openEditorStage() {
       stopCameraStream();
       setStudioStage(3);
-
-      // Initialize Thai Date Stamp to today in พ.ศ.
-      if (!state.stampDateBE) {
-        const now = new Date();
-        state.stampDateBE = formatDateToThaiBE(now);
-        document.getElementById('stamp-date-display').value = state.stampDateBE;
-        document.getElementById('stamp-date-raw').value = now.toISOString().slice(0, 10);
-      }
-
-      buildEditorControls();
-      renderRetakeRow();
+      if (!state.stampDateBE) state.stampDateBE = formatDateToThaiBE(new Date());
       renderStripCanvas();
     }
 
@@ -1974,91 +1872,33 @@
       startCameraStage(null);
     }
 
-    function switchEditorTab(panelName, btn) {
-      ['frames', 'filters', 'stickers', 'text'].forEach(p => {
-        document.getElementById(`ed-panel-${p}`).classList.toggle('hidden', p !== panelName);
-      });
-      document.querySelectorAll('.ed-tab').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-    }
-
-    function buildEditorControls() {
-      // Frame colors
-      const colorGrid = document.getElementById('frame-color-grid');
-      colorGrid.innerHTML = FRAME_COLORS.map(c =>
-        `<button class="swatch-btn ${state.frameColor === c.hex ? 'active' : ''}" onclick="setFrameColor('${c.hex}')">
-          <span class="swatch-color" style="background:${c.hex};"></span>
-          <span>${c.name}</span>
-        </button>`
-      ).join('');
-
-      // Frame patterns
-      document.getElementById('frame-pattern-pills').innerHTML = FRAME_PATTERNS.map(p =>
-        `<button class="pill-btn ${state.framePattern === p.id ? 'active' : ''}" onclick="setFramePattern('${p.id}')">${p.name}</button>`
-      ).join('');
-
-      renderEditorFilterPills();
-
-      // Stickers
-      document.getElementById('sticker-palette').innerHTML = STICKER_OPTIONS.map(st => {
-        if (st.startsWith('TEXT:')) {
-          const txt = st.slice(5);
-          return `<button class="sticker-btn sticker-text-btn" onclick="addSticker('${txt}', true)">${txt}</button>`;
-        }
-        return `<button class="sticker-btn" onclick="addSticker('${st}', false)">${st}</button>`;
-      }).join('');
-    }
-
-    function renderEditorFilterPills() {
-      document.getElementById('editor-filter-pills').innerHTML = FILTERS.map(f =>
-        `<button class="pill-btn ${state.filterId === f.id ? 'active' : ''}" onclick="setFilter('${f.id}')">${f.name}</button>`
-      ).join('');
-    }
-
-    function renderRetakeRow() {
-      const row = document.getElementById('retake-row');
-      const count = LAYOUTS[state.layout].count;
-      row.innerHTML = Array.from({ length: count }, (_, i) =>
-        `<button class="icon-btn" style="font-size:11.5px;padding:4px 9px;" onclick="startCameraStage(${i})">🔄 ถ่ายซ่อมช่อง ${i + 1}</button>`
-      ).join('');
-    }
-
     function setFrameColor(hex) {
       state.frameColor = hex;
-      document.getElementById('custom-frame-color').value = hex;
-      buildEditorControls();
-      renderStripCanvas();
-    }
-
-    function setCustomFrameColor(hex) {
-      state.frameColor = hex;
-      buildEditorControls();
+      if (state.activePopupType === 'editor-frames') renderPopupBody('editor-frames');
       renderStripCanvas();
     }
 
     function setFramePattern(patternId) {
       state.framePattern = patternId;
-      buildEditorControls();
+      if (state.activePopupType === 'editor-frames') renderPopupBody('editor-frames');
       renderStripCanvas();
     }
 
     function updateCaptionSettings() {
-      state.caption = document.getElementById('caption-input').value;
+      const inp = document.getElementById('caption-input');
+      if (inp) state.caption = inp.value;
       renderStripCanvas();
     }
 
-    function setCaptionColor(color, btn) {
+    function setCaptionColor(color) {
       state.captionColor = color;
-      document.querySelectorAll('#caption-color-pills .pill-btn').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
+      if (state.activePopupType === 'editor-text') renderPopupBody('editor-text');
       renderStripCanvas();
     }
 
     function toggleDateStamp() {
       state.showDateStamp = !state.showDateStamp;
-      const btn = document.getElementById('toggle-date-stamp-btn');
-      btn.textContent = `แสดงวันที่: ${state.showDateStamp ? 'เปิด' : 'ปิด'}`;
-      btn.classList.toggle('active', state.showDateStamp);
+      if (state.activePopupType === 'editor-text') renderPopupBody('editor-text');
       renderStripCanvas();
     }
 
@@ -2125,41 +1965,44 @@
       const pat = state.framePattern;
       if (pat === 'gingham') {
         ctx.fillStyle = 'rgba(255, 107, 157, 0.12)';
-        const cell = 42;
+        const cell = Math.max(24, Math.round(w / 14));
         for (let y = 0; y < h; y += cell) {
           for (let x = 0; x < w; x += cell) {
-            if (((x / cell) + (y / cell)) % 2 === 0) {
+            if (((Math.round(x / cell) + Math.round(y / cell)) % 2) === 0) {
               ctx.fillRect(x, y, cell, cell);
             }
           }
         }
       } else if (pat === 'hearts') {
-        ctx.font = '28px Mali, sans-serif';
+        ctx.font = `${Math.round(w * 0.045)}px Mali, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        for (let y = 30; y < h; y += 90) {
-          for (let x = 35; x < w; x += 95) {
+        const step = Math.round(w * 0.16);
+        for (let y = step / 2; y < h; y += step) {
+          for (let x = step / 2; x < w; x += step) {
             ctx.globalAlpha = 0.28;
-            ctx.fillText('💖', x + ((y % 180 === 30) ? 0 : 30), y);
+            ctx.fillText('💖', x, y);
           }
         }
         ctx.globalAlpha = 1;
       } else if (pat === 'daisy') {
-        ctx.font = '30px Mali, sans-serif';
+        ctx.font = `${Math.round(w * 0.048)}px Mali, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        for (let y = 38; y < h; y += 110) {
-          for (let x = 40; x < w; x += 110) {
+        const step = Math.round(w * 0.18);
+        for (let y = step / 2; y < h; y += step) {
+          for (let x = step / 2; x < w; x += step) {
             ctx.globalAlpha = 0.35;
-            ctx.fillText('🌼', x + ((y % 220 === 38) ? 0 : 40), y);
+            ctx.fillText('🌼', x, y);
           }
         }
         ctx.globalAlpha = 1;
       } else if (pat === 'sparkle') {
-        ctx.font = '26px Mali, sans-serif';
+        ctx.font = `${Math.round(w * 0.042)}px Mali, sans-serif`;
         ctx.textAlign = 'center';
-        for (let y = 40; y < h; y += 95) {
-          for (let x = 36; x < w; x += 88) {
+        const step = Math.round(w * 0.15);
+        for (let y = step / 2; y < h; y += step) {
+          for (let x = step / 2; x < w; x += step) {
             ctx.globalAlpha = 0.4;
             ctx.fillText((x + y) % 2 === 0 ? '✨' : '⭐', x, y);
           }
@@ -2169,10 +2012,13 @@
         ctx.fillStyle = '#14111D';
         ctx.fillRect(0, 0, w, h);
         ctx.fillStyle = '#FFFDF9';
-        for (let y = 24; y < h - 24; y += 54) {
+        const holeH = Math.max(12, Math.round(w * 0.04));
+        const holeW = Math.max(8, Math.round(w * 0.025));
+        const gapH = holeH * 2;
+        for (let y = 18; y < h - 18; y += gapH) {
           ctx.beginPath();
-          ctx.roundRect(12, y, 16, 26, 4);
-          ctx.roundRect(w - 28, y, 16, 26, 4);
+          ctx.roundRect(8, y, holeW, holeH, 3);
+          ctx.roundRect(w - 8 - holeW, y, holeW, holeH, 3);
           ctx.fill();
         }
       }
@@ -2187,6 +2033,63 @@
       const sx = (iw - sw) / 2;
       const sy = (ih - sh) / 2;
       ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+    }
+
+    function drawFilteredImageCover(ctx, img, x, y, w, h, filterObj) {
+      if (!filterObj || filterObj.id === 'original' || SUPPORTS_CTX_FILTER) {
+        ctx.filter = filterObj ? filterObj.css : 'none';
+        drawImageCover(ctx, img, x, y, w, h);
+        ctx.filter = 'none';
+        return;
+      }
+      // Pixel-level fallback for browsers without CanvasRenderingContext2D.filter (e.g. older iOS Safari)
+      const tmp = document.createElement('canvas');
+      const tw = Math.max(1, Math.round(w));
+      const th = Math.max(1, Math.round(h));
+      tmp.width = tw;
+      tmp.height = th;
+      const tctx = tmp.getContext('2d');
+      drawImageCover(tctx, img, 0, 0, tw, th);
+      const imd = tctx.getImageData(0, 0, tw, th);
+      const d = imd.data;
+      const br = filterObj.bright || 1;
+      const ct = filterObj.cont || 1;
+      const sat = filterObj.sat !== undefined ? filterObj.sat : 1;
+      const sep = filterObj.sep || 0;
+      const gray = filterObj.gray || 0;
+      const tint = filterObj.tint || [0, 0, 0];
+
+      for (let i = 0; i < d.length; i += 4) {
+        let r = d[i] * br;
+        let g = d[i + 1] * br;
+        let b = d[i + 2] * br;
+        r = (r - 128) * ct + 128;
+        g = (g - 128) * ct + 128;
+        b = (b - 128) * ct + 128;
+        const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+        r = lum + (r - lum) * sat;
+        g = lum + (g - lum) * sat;
+        b = lum + (b - lum) * sat;
+        if (sep > 0) {
+          const sr = r * 0.393 + g * 0.769 + b * 0.189;
+          const sg = r * 0.349 + g * 0.686 + b * 0.168;
+          const sb = r * 0.272 + g * 0.534 + b * 0.131;
+          r = r * (1 - sep) + sr * sep;
+          g = g * (1 - sep) + sg * sep;
+          b = b * (1 - sep) + sb * sep;
+        }
+        if (gray > 0) {
+          const gl = 0.299 * r + 0.587 * g + 0.114 * b;
+          r = r * (1 - gray) + gl * gray;
+          g = g * (1 - gray) + gl * gray;
+          b = b * (1 - gray) + gl * gray;
+        }
+        d[i] = Math.max(0, Math.min(255, r + tint[0]));
+        d[i + 1] = Math.max(0, Math.min(255, g + tint[1]));
+        d[i + 2] = Math.max(0, Math.min(255, b + tint[2]));
+      }
+      tctx.putImageData(imd, 0, 0);
+      ctx.drawImage(tmp, x, y, w, h);
     }
 
     function renderStripCanvas(includeSelectionRing = true) {
@@ -2207,7 +2110,6 @@
       const availH = cfg.h - padTop - footerH - gap * (cfg.rows - 1);
       const cellW = availW / cfg.cols;
       const cellH = availH / cfg.rows;
-
       const filterObj = FILTERS.find(f => f.id === state.filterId) || FILTERS[0];
 
       for (let i = 0; i < cfg.count; i++) {
@@ -2222,8 +2124,7 @@
         ctx.clip();
 
         if (state.shots[i]) {
-          ctx.filter = filterObj.css;
-          drawImageCover(ctx, state.shots[i], x, y, cellW, cellH);
+          drawFilteredImageCover(ctx, state.shots[i], x, y, cellW, cellH, filterObj);
         } else {
           ctx.fillStyle = '#E5D8E8';
           ctx.fillRect(x, y, cellW, cellH);
@@ -2231,7 +2132,6 @@
         ctx.restore();
       }
 
-      // Footer caption & Thai Date (พ.ศ.)
       let textColor = state.captionColor;
       if (textColor === 'auto') {
         const darkBg = state.framePattern === 'film' || isDarkColor(state.frameColor);
@@ -2254,7 +2154,6 @@
         ctx.globalAlpha = 1;
       }
 
-      // Draw Stickers
       state.stickers.forEach(st => {
         const sx = st.x * cfg.w;
         const sy = st.y * cfg.h;
@@ -2290,7 +2189,7 @@
       });
     }
 
-    // Canvas Sticker Dragging (Pointer Events)
+    // Canvas Sticker Dragging
     (function setupCanvasDragging() {
       const canvas = document.getElementById('strip-canvas');
       function getNormPos(e) {
@@ -2302,13 +2201,10 @@
       }
       canvas.addEventListener('pointerdown', (e) => {
         const pos = getNormPos(e);
-        // Hit test reverse order (topmost sticker first)
         let hit = null;
         for (let i = state.stickers.length - 1; i >= 0; i--) {
           const st = state.stickers[i];
-          const dx = Math.abs(pos.x - st.x);
-          const dy = Math.abs(pos.y - st.y);
-          if (dx < 0.1 && dy < 0.08) {
+          if (Math.abs(pos.x - st.x) < 0.1 && Math.abs(pos.y - st.y) < 0.08) {
             hit = st;
             break;
           }
@@ -2338,41 +2234,115 @@
     })();
 
     /* =====================================================================
-       7. PURE-JS GIF89A ENCODER & VIDEO GENERATOR
+       7. HIGH-QUALITY ADAPTIVE PALETTE GIF89A ENCODER (MEDIAN-CUT + FLOYD-STEINBERG)
        ===================================================================== */
-    function encodeGifFromCanvases(canvases, delayCs = 42) {
+    function buildAdaptivePalette(frameRgbaList) {
+      // Sample pixels evenly across all frames
+      const samples = [];
+      for (let f = 0; f < frameRgbaList.length; f++) {
+        const d = frameRgbaList[f];
+        const totalPx = d.length >> 2;
+        const step = Math.max(1, Math.floor(totalPx / 3500));
+        for (let p = 0; p < totalPx; p += step) {
+          const i = p << 2;
+          samples.push([d[i], d[i + 1], d[i + 2]]);
+        }
+      }
+      if (!samples.length) samples.push([255, 255, 255]);
+
+      // Median Cut into up to 256 buckets
+      let buckets = [samples];
+      while (buckets.length < 256) {
+        let splitIdx = -1;
+        let maxRange = -1;
+        let splitChan = 0;
+        for (let i = 0; i < buckets.length; i++) {
+          const b = buckets[i];
+          if (b.length < 2) continue;
+          let minR = 255, maxR = 0, minG = 255, maxG = 0, minB = 255, maxB = 0;
+          for (let j = 0; j < b.length; j++) {
+            const px = b[j];
+            if (px[0] < minR) minR = px[0]; if (px[0] > maxR) maxR = px[0];
+            if (px[1] < minG) minG = px[1]; if (px[1] > maxG) maxG = px[1];
+            if (px[2] < minB) minB = px[2]; if (px[2] > maxB) maxB = px[2];
+          }
+          const rR = maxR - minR, rG = maxG - minG, rB = maxB - minB;
+          const top = Math.max(rR, rG, rB);
+          if (top > maxRange) {
+            maxRange = top;
+            splitIdx = i;
+            splitChan = top === rR ? 0 : (top === rG ? 1 : 2);
+          }
+        }
+        if (splitIdx === -1 || maxRange === 0) break;
+        const target = buckets.splice(splitIdx, 1)[0];
+        target.sort((a, b) => a[splitChan] - b[splitChan]);
+        const mid = target.length >> 1;
+        buckets.push(target.slice(0, mid), target.slice(mid));
+      }
+
+      const palette = [];
+      for (let i = 0; i < buckets.length; i++) {
+        const b = buckets[i];
+        let sr = 0, sg = 0, sb = 0;
+        for (let j = 0; j < b.length; j++) {
+          sr += b[j][0]; sg += b[j][1]; sb += b[j][2];
+        }
+        const n = b.length || 1;
+        palette.push([Math.round(sr / n), Math.round(sg / n), Math.round(sb / n)]);
+      }
+      while (palette.length < 256) palette.push([0, 0, 0]);
+      return palette;
+    }
+
+    function encodeGifFromCanvases(canvases, delayCs = 45) {
       if (!canvases.length) return null;
       const width = canvases[0].width;
       const height = canvases[0].height;
+      const frameRgbaList = canvases.map(c => c.getContext('2d').getImageData(0, 0, width, height).data);
 
-      // Build uniform 6-6-6 RGB palette (216 colors) + padding to 256
-      const palette = [];
-      for (let r = 0; r < 6; r++) {
-        for (let g = 0; g < 6; g++) {
-          for (let b = 0; b < 6; b++) {
-            palette.push(Math.round(r * 51), Math.round(g * 51), Math.round(b * 51));
+      const palette = buildAdaptivePalette(frameRgbaList);
+      const lut = new Int16Array(32768).fill(-1);
+
+      function nearestColorIndex(r, g, b) {
+        const cr = r < 0 ? 0 : (r > 255 ? 255 : r | 0);
+        const cg = g < 0 ? 0 : (g > 255 ? 255 : g | 0);
+        const cb = b < 0 ? 0 : (b > 255 ? 255 : b | 0);
+        const key = ((cr >> 3) << 10) | ((cg >> 3) << 5) | (cb >> 3);
+        const cached = lut[key];
+        if (cached !== -1) return cached;
+
+        let best = 0;
+        let bestDist = 1e9;
+        for (let i = 0; i < 256; i++) {
+          const p = palette[i];
+          const dr = cr - p[0], dg = cg - p[1], db = cb - p[2];
+          const dist = dr * dr + dg * dg + db * db;
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = i;
           }
         }
+        lut[key] = best;
+        return best;
       }
-      while (palette.length < 256 * 3) palette.push(0, 0, 0);
 
       const bytes = [];
       const writeStr = (s) => { for (let i = 0; i < s.length; i++) bytes.push(s.charCodeAt(i)); };
       const writeU16 = (v) => { bytes.push(v & 0xff, (v >> 8) & 0xff); };
 
-      // Header + Logical Screen Descriptor
       writeStr('GIF89a');
       writeU16(width);
       writeU16(height);
-      bytes.push(0xF7, 0, 0); // Global Color Table Flag=1, 8-bit color, size=7 (256 colors)
-      for (let i = 0; i < palette.length; i++) bytes.push(palette[i]);
+      bytes.push(0xF7, 0, 0);
+      for (let i = 0; i < 256; i++) {
+        bytes.push(palette[i][0], palette[i][1], palette[i][2]);
+      }
 
-      // Netscape Looping Application Extension
       bytes.push(0x21, 0xFF, 0x0B);
       writeStr('NETSCAPE2.0');
       bytes.push(0x03, 0x01, 0x00, 0x00, 0x00);
 
-      // LZW encoder per frame
       function lzwEncode(indices, minCodeSize) {
         const clearCode = 1 << minCodeSize;
         const eoiCode = clearCode + 1;
@@ -2423,27 +2393,66 @@
         return out;
       }
 
-      canvases.forEach((cvs) => {
-        const imgData = cvs.getContext('2d').getImageData(0, 0, width, height).data;
+      // Reusable row buffers for Floyd-Steinberg dithering
+      let errCurr = new Float32Array(width * 3);
+      let errNext = new Float32Array(width * 3);
+
+      frameRgbaList.forEach((imgData) => {
         const indices = new Uint8Array(width * height);
-        for (let p = 0, j = 0; p < imgData.length; p += 4, j++) {
-          const r = Math.min(5, Math.round(imgData[p] / 51));
-          const g = Math.min(5, Math.round(imgData[p + 1] / 51));
-          const b = Math.min(5, Math.round(imgData[p + 2] / 51));
-          indices[j] = r * 36 + g * 6 + b;
+        errCurr.fill(0);
+        errNext.fill(0);
+
+        for (let y = 0; y < height; y++) {
+          for (let x = 0; x < width; x++) {
+            const p = (y * width + x) * 4;
+            const eIdx = x * 3;
+            const r = imgData[p] + errCurr[eIdx];
+            const g = imgData[p + 1] + errCurr[eIdx + 1];
+            const b = imgData[p + 2] + errCurr[eIdx + 2];
+
+            const idx = nearestColorIndex(r, g, b);
+            indices[y * width + x] = idx;
+
+            const chosen = palette[idx];
+            const er = Math.max(-64, Math.min(64, r - chosen[0]));
+            const eg = Math.max(-64, Math.min(64, g - chosen[1]));
+            const eb = Math.max(-64, Math.min(64, b - chosen[2]));
+
+            if (x + 1 < width) {
+              errCurr[(x + 1) * 3] += er * 0.4375;
+              errCurr[(x + 1) * 3 + 1] += eg * 0.4375;
+              errCurr[(x + 1) * 3 + 2] += eb * 0.4375;
+            }
+            if (y + 1 < height) {
+              if (x > 0) {
+                errNext[(x - 1) * 3] += er * 0.1875;
+                errNext[(x - 1) * 3 + 1] += eg * 0.1875;
+                errNext[(x - 1) * 3 + 2] += eb * 0.1875;
+              }
+              errNext[x * 3] += er * 0.3125;
+              errNext[x * 3 + 1] += eg * 0.3125;
+              errNext[x * 3 + 2] += eb * 0.3125;
+              if (x + 1 < width) {
+                errNext[(x + 1) * 3] += er * 0.0625;
+                errNext[(x + 1) * 3 + 1] += eg * 0.0625;
+                errNext[(x + 1) * 3 + 2] += eb * 0.0625;
+              }
+            }
+          }
+          const tmp = errCurr;
+          errCurr = errNext;
+          errNext = tmp;
+          errNext.fill(0);
         }
 
-        // Graphic Control Extension
         bytes.push(0x21, 0xF9, 0x04, 0x04);
         writeU16(delayCs);
         bytes.push(0x00, 0x00);
 
-        // Image Descriptor
         bytes.push(0x2C);
         writeU16(0); writeU16(0); writeU16(width); writeU16(height);
         bytes.push(0x00);
 
-        // Image Data
         const minCodeSize = 8;
         bytes.push(minCodeSize);
         const compressed = lzwEncode(indices, minCodeSize);
@@ -2451,43 +2460,55 @@
           const slice = compressed.slice(i, i + 255);
           bytes.push(slice.length, ...slice);
         }
-        bytes.push(0x00); // Block Terminator
+        bytes.push(0x00);
       });
 
-      bytes.push(0x3B); // GIF Trailer
+      bytes.push(0x3B);
       return new Blob([new Uint8Array(bytes)], { type: 'image/gif' });
     }
 
     function buildGifFrameCanvases() {
       const fObj = FILTERS.find(f => f.id === state.filterId) || FILTERS[0];
-      const frames = [];
-      const w = 360, h = 290;
-
       const sourceList = state.shots.filter(Boolean);
-      sourceList.forEach((img, idx) => {
+      if (!sourceList.length) return [];
+
+      // Match actual photo aspect ratio cleanly (portrait vs landscape)
+      const first = sourceList[0];
+      const iw = first.naturalWidth || first.width || 4;
+      const ih = first.naturalHeight || first.height || 3;
+      const isPortrait = ih > iw;
+      const w = isPortrait ? 360 : 440;
+      const h = isPortrait ? 490 : 370;
+      const pad = state.framePattern === 'film' ? 24 : 16;
+      const footerH = 52;
+
+      return sourceList.map((img, idx) => {
         const c = document.createElement('canvas');
         c.width = w;
         c.height = h;
         const ctx = c.getContext('2d');
-        ctx.fillStyle = state.frameColor;
-        ctx.fillRect(0, 0, w, h);
+
+        drawFrameBackground(ctx, w, h);
 
         ctx.save();
         ctx.beginPath();
-        ctx.roundRect(14, 14, w - 28, h - 54, 12);
+        ctx.roundRect(pad, pad, w - pad * 2, h - pad - footerH, 12);
         ctx.clip();
-        ctx.filter = fObj.css;
-        drawImageCover(ctx, img, 14, 14, w - 28, h - 54);
+        drawFilteredImageCover(ctx, img, pad, pad, w - pad * 2, h - pad - footerH, fObj);
         ctx.restore();
 
-        const dark = state.framePattern === 'film' || isDarkColor(state.frameColor);
-        ctx.fillStyle = dark ? '#FFFFFF' : '#2D2235';
-        ctx.font = '700 15px Mali, sans-serif';
+        let textColor = state.captionColor;
+        if (textColor === 'auto') {
+          const dark = state.framePattern === 'film' || isDarkColor(state.frameColor);
+          textColor = dark ? '#FFFFFF' : '#2D2235';
+        }
+        ctx.fillStyle = textColor;
+        ctx.font = '700 16px Mali, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(`${state.caption || 'WNTK Photos'} • ${idx + 1}/${sourceList.length}`, w / 2, h - 18);
-        frames.push(c);
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`${state.caption || 'WNTK Photos'} • ${idx + 1}/${sourceList.length}`, w / 2, h - footerH / 2);
+        return c;
       });
-      return frames;
     }
 
     function blobToDataUrl(blob) {
@@ -2500,25 +2521,22 @@
     }
 
     /* =====================================================================
-       8. FINALIZE, UPLOAD TO GOOGLE DRIVE & GENERATE QR CODE
+       8. FINALIZE, BACKGROUND DRIVE UPLOAD & DIRECT-DOWNLOAD QR
        ===================================================================== */
     async function finalizeAndGenerate() {
       const btn = document.getElementById('btn-save-finish');
       btn.disabled = true;
-      btn.textContent = '⏳ กำลังสร้างรูป, GIF และ QR Code...';
+      btn.textContent = '⏳ กำลังบันทึก...';
 
       try {
-        // Render final clean PNG without selection ring
         renderStripCanvas(false);
         const canvas = document.getElementById('strip-canvas');
         state.finalPngDataUrl = canvas.toDataURL('image/png');
 
-        // Build Animated GIF
         const gifFrames = buildGifFrameCanvases();
-        state.finalGifBlob = encodeGifFromCanvases(gifFrames, 45);
+        state.finalGifBlob = encodeGifFromCanvases(gifFrames, 48);
         state.finalGifDataUrl = await blobToDataUrl(state.finalGifBlob);
 
-        // Show Stage 4 immediately
         document.getElementById('result-png-img').src = state.finalPngDataUrl;
         document.getElementById('result-gif-img').src = state.finalGifDataUrl || state.finalPngDataUrl;
         document.getElementById('btn-dl-video').classList.toggle('hidden', !state.recordedVideoBlob);
@@ -2529,7 +2547,6 @@
         const dateStr = state.stampDateBE || formatDateToThaiBE(now);
         const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-        // Save locally first
         const localRecord = {
           id: sessionId,
           dateStr,
@@ -2547,15 +2564,12 @@
           timestamp: now.getTime()
         };
 
+        // Silent background upload to Google Drive
         const gasUrl = getGasUrl();
-        const statusEl = document.getElementById('save-cloud-status');
+        state.lastCloudResult = null;
+        document.getElementById('qr-link-caption').textContent = '⏳ กำลังสร้างลิงก์ QR Code...';
 
         if (gasUrl) {
-          statusEl.textContent = '☁️ กำลังอัปโหลดไปยังโฟลเดอร์ Photobooth ใน Google Drive...';
-          const mediaBase64 = state.finalGifDataUrl;
-          const mediaMime = 'image/gif';
-          const mediaName = `${sessionId}_motion.gif`;
-
           try {
             const resp = await fetch(gasUrl, {
               method: 'POST',
@@ -2572,9 +2586,9 @@
                 photoBase64: state.finalPngDataUrl,
                 photoMime: 'image/png',
                 photoName: `${sessionId}_strip.png`,
-                mediaBase64,
-                mediaMime,
-                mediaName,
+                mediaBase64: state.finalGifDataUrl,
+                mediaMime: 'image/gif',
+                mediaName: `${sessionId}_motion.gif`,
                 timestamp: now.getTime()
               })
             });
@@ -2585,23 +2599,15 @@
               localRecord.photoDownloadUrl = json.photoDownloadUrl;
               localRecord.mediaViewUrl = json.mediaViewUrl;
               localRecord.mediaDownloadUrl = json.mediaDownloadUrl;
-              statusEl.textContent = '✅ บันทึกเข้าโฟลเดอร์ Photobooth/Photos และ Videos_GIF บน Google Drive เรียบร้อย!';
-            } else {
-              statusEl.textContent = '⚠️ บันทึกลงเครื่องแล้ว (Drive error: ' + (json.message || 'unknown') + ')';
             }
-          } catch (cloudErr) {
-            statusEl.textContent = '⚠️ บันทึกลงเครื่องแล้ว (ไม่สามารถส่งขึ้น Drive ได้ชั่วคราว)';
-          }
-        } else {
-          state.lastCloudResult = null;
-          statusEl.textContent = '💾 บันทึกลงเครื่องเรียบร้อย (เชื่อมต่อ Google Drive ใน ⚙️ ตั้งค่า เพื่อสร้างลิงก์ QR Code ออนไลน์)';
+          } catch (e) {}
         }
 
         await saveSessionLocally(localRecord);
         switchQrMode('photo');
       } finally {
         btn.disabled = false;
-        btn.textContent = '✨ บันทึก & สร้าง QR Code';
+        btn.textContent = '✨ บันทึก & QR';
       }
     }
 
@@ -2630,11 +2636,6 @@
           return true;
         } catch (e) {}
       }
-
-      ctx.fillStyle = '#7B6D87';
-      ctx.font = '600 13px Mali, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('QR พร้อมใช้งานเมื่อเชื่อมต่อเน็ต', size / 2, size / 2);
       return false;
     }
 
@@ -2649,25 +2650,24 @@
       const cloud = state.lastCloudResult;
 
       if (cloud && (cloud.photoDownloadUrl || cloud.photoViewUrl)) {
-        const targetUrl = mode === 'photo'
-          ? (cloud.photoViewUrl || cloud.photoDownloadUrl)
-          : (cloud.mediaViewUrl || cloud.mediaDownloadUrl || cloud.photoViewUrl);
+        // Direct download URL so scanning immediately prompts file download!
         const dlUrl = mode === 'photo'
-          ? cloud.photoDownloadUrl
-          : (cloud.mediaDownloadUrl || cloud.photoDownloadUrl);
+          ? (cloud.photoDownloadUrl || cloud.photoViewUrl)
+          : (cloud.mediaDownloadUrl || cloud.mediaViewUrl || cloud.photoDownloadUrl);
+        const viewUrl = mode === 'photo'
+          ? (cloud.photoViewUrl || dlUrl)
+          : (cloud.mediaViewUrl || dlUrl);
 
-        renderQrToCanvas(canvas, targetUrl);
-        capEl.innerHTML = `สแกนด้วยกล้องมือถือเพื่อเปิด/ดาวน์โหลดทันที:<br><a href="${targetUrl}" target="_blank" rel="noopener">${targetUrl}</a>`;
+        renderQrToCanvas(canvas, dlUrl);
+        capEl.textContent = '📱 สแกนเพื่อดาวน์โหลดไฟล์ทันที';
         ctaEl.innerHTML = `
-          <a class="icon-btn" href="${dlUrl}" target="_blank" rel="noopener">⬇️ ลิงก์ดาวน์โหลดตรง</a>
-          ${cloud.folderUrl ? `<a class="icon-btn" href="${cloud.folderUrl}" target="_blank" rel="noopener">📁 เปิดโฟลเดอร์ Photobooth</a>` : ''}
+          <a class="icon-btn" href="${dlUrl}" target="_blank" rel="noopener">⬇️ โหลดตรง</a>
+          <a class="icon-btn" href="${viewUrl}" target="_blank" rel="noopener">👁️ ดูรูป</a>
         `;
       } else {
-        // Offline / No GAS URL connected yet: generate a helpful setup/preview QR or prompt
-        const gasSetupTip = window.location.href;
-        renderQrToCanvas(canvas, gasSetupTip);
-        capEl.innerHTML = '⚠️ <b>โหมดออฟไลน์:</b> ยังไม่ได้เชื่อมต่อ Google Apps Script<br>กรุณาวางลิงก์ GAS ในปุ่ม <b>ตั้งค่า ⚙️</b> เพื่อให้ QR Code สแกนโหลดรูป/GIF จาก Google Drive ได้จากมือถือทุกเครื่อง';
-        ctaEl.innerHTML = `<button class="btn-secondary" style="padding:8px 14px;font-size:12.5px;" onclick="openSettingsModal()">⚙️ เชื่อมต่อ Google Drive ตอนนี้</button>`;
+        renderQrToCanvas(canvas, window.location.href);
+        capEl.textContent = '💾 บันทึกในเครื่องแล้ว (สแกนออนไลน์ได้เมื่อต่อเน็ต)';
+        ctaEl.innerHTML = '';
       }
     }
 
@@ -2699,7 +2699,6 @@
 
     function resetForNewSession() {
       state.shots = [];
-      state.burstFrames = [];
       state.recordedVideoBlob = null;
       state.stickers = [];
       state.selectedStickerId = null;
@@ -2713,7 +2712,7 @@
     async function loadGalleryItems() {
       const grid = document.getElementById('gallery-grid');
       const emptyEl = document.getElementById('gallery-empty');
-      grid.innerHTML = '<div style="padding:20px;color:var(--muted);">กำลังโหลดคลังภาพ...</div>';
+      grid.innerHTML = '<div style="padding:20px;color:var(--muted);">⏳ กำลังโหลด...</div>';
 
       const gasUrl = getGasUrl();
       let items = [];
@@ -2729,7 +2728,6 @@
         } catch (e) {}
       }
 
-      // Merge with local sessions if needed or when offline
       const localItems = await getLocalSessions();
       const seenIds = new Set(items.map(i => i.id));
       localItems.forEach(loc => {
@@ -2757,14 +2755,14 @@
             </div>
             <div class="gallery-meta">
               <div style="font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(item.caption || 'WNTK Photos')}</div>
-              <div style="color:var(--muted);font-size:11.5px;margin:2px 0 8px;">📅 ${escapeHtml(item.dateStr || '')} • ${escapeHtml(item.timeStr || '')}</div>
-              <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button class="icon-btn" style="flex:1;justify-content:center;font-size:11.5px;" onclick="openItemQrModal('${item.id}')">📱 QR</button>
+              <div style="color:var(--muted);font-size:11px;margin:2px 0 6px;">${escapeHtml(item.dateStr || '')} ${escapeHtml(item.timeStr || '')}</div>
+              <div style="display:flex;gap:5px;">
+                <button class="icon-btn" style="flex:1;padding:4px 6px;min-height:30px;font-size:12px;" onclick="openItemQrModal('${item.id}')">📱 QR</button>
                 ${item.localPng
-                  ? `<button class="icon-btn" style="font-size:11.5px;" onclick="downloadGalleryLocal('${item.id}')">⬇️</button>`
-                  : `<a class="icon-btn" style="font-size:11.5px;" href="${item.photoDownloadUrl || item.photoViewUrl}" target="_blank" rel="noopener">⬇️</a>`
+                  ? `<button class="icon-btn" style="padding:4px 8px;min-height:30px;font-size:12px;" onclick="downloadGalleryLocal('${item.id}')">⬇️</button>`
+                  : `<a class="icon-btn" style="padding:4px 8px;min-height:30px;font-size:12px;" href="${item.photoDownloadUrl || item.photoViewUrl}" target="_blank" rel="noopener">⬇️</a>`
                 }
-                <button class="icon-btn" style="font-size:11.5px;color:#DC2626;" onclick="deleteGalleryItem('${item.id}')">🗑️</button>
+                <button class="icon-btn" style="padding:4px 8px;min-height:30px;font-size:12px;color:#DC2626;" onclick="deleteGalleryItem('${item.id}')">🗑️</button>
               </div>
             </div>
           </div>
@@ -2790,7 +2788,7 @@
           });
         } catch (e) {}
       }
-      showToast('ลบรายการเรียบร้อยแล้ว');
+      showToast('ลบแล้ว');
       loadGalleryItems();
     }
 
@@ -2816,19 +2814,19 @@
       const cap = document.getElementById('modal-qr-caption');
       const links = document.getElementById('modal-qr-links');
 
-      const url = mode === 'photo'
-        ? (item.photoViewUrl || item.photoDownloadUrl)
-        : (item.mediaViewUrl || item.mediaDownloadUrl || item.photoViewUrl);
+      const dlUrl = mode === 'photo'
+        ? (item.photoDownloadUrl || item.photoViewUrl)
+        : (item.mediaDownloadUrl || item.mediaViewUrl || item.photoDownloadUrl);
 
-      if (url) {
-        renderQrToCanvas(canvas, url);
-        cap.textContent = url;
-        links.innerHTML = `<a class="btn-primary" style="padding:8px 16px;font-size:13px;" href="${mode === 'photo' ? (item.photoDownloadUrl || url) : (item.mediaDownloadUrl || url)}" target="_blank" rel="noopener">⬇️ ดาวน์โหลดจาก Drive</a>`;
+      if (dlUrl) {
+        renderQrToCanvas(canvas, dlUrl);
+        cap.textContent = '📱 สแกนเพื่อดาวน์โหลดทันที';
+        links.innerHTML = `<a class="btn-primary" style="padding:8px 16px;font-size:13px;min-height:38px;" href="${dlUrl}" target="_blank" rel="noopener">⬇️ ดาวน์โหลด</a>`;
       } else {
         renderQrToCanvas(canvas, window.location.href);
-        cap.textContent = 'รายการนี้ถูกบันทึกแบบออฟไลน์ (เชื่อมต่อ Google Drive ในตั้งค่าเพื่อให้มีลิงก์ QR)';
+        cap.textContent = '💾 ไฟล์บันทึกเฉพาะในเครื่องนี้';
         links.innerHTML = item.localPng
-          ? `<button class="btn-secondary" style="padding:8px 14px;font-size:12.5px;" onclick="downloadGalleryLocal('${item.id}')">⬇️ ดาวน์โหลดไฟล์ในเครื่อง</button>`
+          ? `<button class="btn-secondary" style="padding:8px 14px;font-size:12.5px;min-height:38px;" onclick="downloadGalleryLocal('${item.id}')">⬇️ ดาวน์โหลด</button>`
           : '';
       }
     }
@@ -2864,7 +2862,7 @@
     }
 
     /* =====================================================================
-       10. SETTINGS & GOOGLE DRIVE CONNECTION TEST
+       10. SETTINGS & BACKGROUND DRIVE SYNC
        ===================================================================== */
     function openSettingsModal() {
       document.getElementById('setting-booth-name').value = localStorage.getItem(STORAGE_KEYS.BOOTH_NAME) || 'WNTK Photos';
@@ -2883,53 +2881,26 @@
       localStorage.setItem(STORAGE_KEYS.BOOTH_NAME, name);
       localStorage.setItem(STORAGE_KEYS.GAS_URL, url);
       document.getElementById('staff-display').textContent = name;
-      updateDrivePill();
 
       const resBox = document.getElementById('drive-test-result');
+      resBox.classList.remove('hidden');
       if (!url) {
-        resBox.classList.remove('hidden');
-        resBox.innerHTML = '💾 บันทึกชื่อบูธแล้ว (โหมดออฟไลน์ — ยังไม่ได้ใส่ URL Google Apps Script)';
+        resBox.innerHTML = '💾 บันทึกแล้ว';
         return;
       }
 
-      resBox.classList.remove('hidden');
-      resBox.innerHTML = '⏳ กำลังเชื่อมต่อและสร้างโฟลเดอร์ <b>Photobooth</b> ใน Google Drive...';
+      resBox.innerHTML = '⏳ กำลังทดสอบ...';
       try {
         const res = await fetch(`${url}?action=init`);
         const json = await res.json();
         if (json.status === 'success') {
           localStorage.setItem(STORAGE_KEYS.DRIVE_LINKS, JSON.stringify(json));
-          resBox.innerHTML = `
-            <div style="color:#065F46;font-weight:700;margin-bottom:6px;">✅ เชื่อมต่อ Google Drive สำเร็จ!</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
-              <a class="icon-btn" href="${json.folderUrl}" target="_blank" rel="noopener">📁 โฟลเดอร์ Photobooth</a>
-              <a class="icon-btn" href="${json.photosFolderUrl}" target="_blank" rel="noopener">🖼️ โฟลเดอร์ Photos</a>
-              <a class="icon-btn" href="${json.mediaFolderUrl}" target="_blank" rel="noopener">🎞️ โฟลเดอร์ Videos_GIF</a>
-              <a class="icon-btn" href="${json.spreadsheetUrl}" target="_blank" rel="noopener">📊 Photobooth_Database</a>
-            </div>
-          `;
-          updateDrivePill(true);
+          resBox.innerHTML = `✅ เชื่อมต่อ Drive สำเร็จ <a href="${json.folderUrl}" target="_blank" rel="noopener">📁 เปิดโฟลเดอร์</a>`;
         } else {
-          resBox.innerHTML = `❌ เชื่อมต่อไม่สำเร็จ: ${escapeHtml(json.message || 'Unknown error')}`;
+          resBox.innerHTML = `❌ ${escapeHtml(json.message || 'Error')}`;
         }
       } catch (e) {
-        resBox.innerHTML = '❌ ไม่สามารถเชื่อมต่อ URL นี้ได้ กรุณาตรวจสอบสิทธิ์ Deploy Web App เป็น "ทุกคน (Anyone)"';
-      }
-    }
-
-    function updateDrivePill(forceOk = false) {
-      const hasUrl = Boolean(getGasUrl());
-      const pill = document.getElementById('drive-status-pill');
-      const icon = document.getElementById('drive-dot-icon');
-      const txt = document.getElementById('drive-dot-text');
-      if (hasUrl || forceOk) {
-        pill.classList.add('connected');
-        icon.textContent = '🟢';
-        txt.textContent = 'Drive: พร้อมเชื่อมต่อ';
-      } else {
-        pill.classList.remove('connected');
-        icon.textContent = '⚪';
-        txt.textContent = 'Drive: ออฟไลน์';
+        resBox.innerHTML = '❌ เชื่อมต่อไม่สำเร็จ';
       }
     }
 
@@ -2948,16 +2919,19 @@
       const savedName = localStorage.getItem(STORAGE_KEYS.BOOTH_NAME) || 'WNTK Photos';
       document.getElementById('staff-display').textContent = savedName;
 
-      // Support ?gas=<url> quick link parameter
       const params = new URLSearchParams(window.location.search);
       if (params.get('gas')) {
         localStorage.setItem(STORAGE_KEYS.GAS_URL, params.get('gas'));
       }
-      updateDrivePill();
 
-      // Default gallery date display
-      const now = new Date();
-      state.stampDateBE = formatDateToThaiBE(now);
+      state.stampDateBE = formatDateToThaiBE(new Date());
+      updateTimerLabels();
+
+      // Silent background warm-up with Google Drive
+      const gasUrl = getGasUrl();
+      if (gasUrl) {
+        fetch(`${gasUrl}?action=init`).catch(() => {});
+      }
 
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
