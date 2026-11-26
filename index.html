@@ -831,6 +831,11 @@
       padding: 24px; text-align: center;
     }
 
+    /* Keep Admin PIN & Settings modal above the Maintenance Lock Screen */
+    #settings-modal {
+      z-index: 115;
+    }
+
     /* ============ Cute Dreamy Polaroid Slideshow ============ */
     .slideshow-overlay {
       position: fixed; inset: 0; z-index: 105;
@@ -3171,6 +3176,9 @@
       const lockScreen = document.getElementById('maintenance-screen');
       document.getElementById('maintenance-msg-display').textContent = state.maintenanceMsg;
       lockScreen.classList.toggle('hidden', !state.maintenanceMode);
+      if (state.maintenanceMode && !document.getElementById('slideshow-overlay').classList.contains('hidden')) {
+        stopSlideshow();
+      }
 
       const tglBtn = document.getElementById('admin-maint-toggle-btn');
       if (tglBtn) {
@@ -3247,6 +3255,8 @@
           });
           const json = await res.json();
           if (json.status !== 'success') {
+            document.getElementById('admin-pin-input').value = '';
+            document.getElementById('admin-pin-input').focus();
             showToast(json.message || 'รหัสผ่านไม่ถูกต้อง');
             return;
           }
@@ -3395,7 +3405,8 @@
 
     document.addEventListener('keydown', (e) => {
       if (!document.getElementById('cute-loading-popup').classList.contains('hidden')) return;
-      if (!document.getElementById('maintenance-screen').classList.contains('hidden')) return;
+      if (!document.getElementById('maintenance-screen').classList.contains('hidden') &&
+          document.getElementById('settings-modal').classList.contains('hidden')) return;
 
       // Slideshow controls
       if (!document.getElementById('slideshow-overlay').classList.contains('hidden')) {
