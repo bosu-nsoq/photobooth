@@ -1325,7 +1325,7 @@
     <div style="font-size:64px;margin-bottom:10px;">🛠️</div>
     <h2 style="margin:0 0 8px;color:var(--primary-dark);">กำลังปรับปรุงระบบ</h2>
     <p id="maintenance-msg-display" style="margin:0 0 24px;color:var(--muted);max-width:340px;">ระบบกำลังปรับปรุงชั่วคราว กรุณารอสักครู่</p>
-    <button class="icon-btn" style="font-size:12.5px;" onclick="openSettingsModal()">🔑 Admin</button>
+    <button class="icon-btn" style="font-size:12.5px;" onclick="openAdminPinFromMaintenance()">🔑 Admin</button>
   </div>
 
   <!-- ==================== CUTE POLAROID SLIDESHOW OVERLAY ==================== -->
@@ -3187,6 +3187,12 @@
       }
       const msgInp = document.getElementById('admin-maint-msg-input');
       if (msgInp && !msgInp.value) msgInp.value = state.maintenanceMsg;
+    }
+
+    function openAdminPinFromMaintenance() {
+      sessionStorage.removeItem(STORAGE_KEYS.ADMIN_PIN_SESSION);
+      state.adminLoggedIn = false;
+      openSettingsModal();
     }
 
     function openSettingsModal() {
