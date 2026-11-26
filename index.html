@@ -682,10 +682,10 @@
       min-height: 0;
       overflow-y: auto;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
       align-content: start;
-      padding-right: 2px;
+      padding-right: 4px;
     }
 
     .gallery-item {
@@ -757,7 +757,8 @@
     }
 
     .gallery-thumb {
-      aspect-ratio: 3 / 4;
+      aspect-ratio: 2 / 3;
+      min-height: 240px;
       background: var(--bg);
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
@@ -1066,7 +1067,8 @@
       #stage-4 .qr-panel { grid-column: 2; grid-row: 1; margin-bottom: 0; padding: 18px; }
       #stage-4 .cta-row { grid-column: 2; grid-row: 2; }
 
-      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 14px; }
+      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 16px; }
+      .gallery-thumb { min-height: 310px; }
       .gallery-item { transition: transform 0.14s, box-shadow 0.14s; }
       .gallery-item:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(255, 93, 158, 0.14); }
 
@@ -1345,21 +1347,23 @@
         <div class="opt-box" style="margin-bottom:10px;">
           <div style="font-weight:700;font-size:13px;margin-bottom:8px;">🏪 ตั้งค่าบูธ</div>
           <label class="opt-label">ชื่อบูธ</label>
-          <input type="text" id="setting-booth-name" class="modern-input" placeholder="WNTK Photos" style="margin-bottom:8px;" />
-          <button class="btn-primary" style="width:100%;padding:9px;font-size:13.5px;min-height:40px;max-width:none;" onclick="saveAndTestGas()">💾 บันทึกชื่อบูธ</button>
-          <div id="drive-test-result" class="hidden" style="margin-top:8px;font-size:12px;"></div>
+          <input type="text" id="setting-booth-name" class="modern-input" placeholder="WNTK Photos" />
         </div>
 
-        <div class="opt-box">
+        <div class="opt-box" style="margin-bottom:12px;">
           <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
             <span style="font-size:13px;font-weight:700;">🛠️ โหมดปรับปรุงระบบ</span>
             <label class="toggle-switch" title="เปิด/ปิดโหมดปรับปรุงระบบ">
-              <input type="checkbox" id="admin-maint-switch" onchange="toggleMaintenanceFromAdmin()" />
+              <input type="checkbox" id="admin-maint-switch" />
               <span class="toggle-slider"></span>
             </label>
           </div>
+          <label class="opt-label">คำอธิบาย (ข้อความแจ้งผู้ใช้)</label>
           <input type="text" id="admin-maint-msg-input" class="modern-input" placeholder="ข้อความแจ้งผู้ใช้" />
         </div>
+
+        <button class="btn-primary" style="width:100%;padding:10px;font-size:14px;min-height:44px;max-width:none;" onclick="saveAdminChanges()">💾 บันทึกการเปลี่ยนแปลง</button>
+        <div id="drive-test-result" class="hidden" style="margin-top:8px;font-size:12px;text-align:center;"></div>
       </div>
     </div>
   </div>
@@ -1534,6 +1538,8 @@
       soundOn: true,
       motionOn: true,
       facingMode: 'user',
+      cameraDevices: [],
+      selectedCameraId: '',
       stream: null,
       camAnimId: null,
       shots: [],
@@ -1920,6 +1926,7 @@
       const titles = {
         'setup-timer': '⏱️ เวลานับถอยหลัง',
         'setup-cam': '🎛️ ตั้งค่ากล้อง',
+        'camera-picker': '📷 เลือกกล้องที่ต้องการใช้งาน',
         'camera-filter': '🌈 เลือกฟิลเตอร์ (เห็นภาพสด)',
         'editor-frames': '🎨 เลือกเฟรม & เทศกาล',
         'editor-filters': '🌈 เลือกฟิลเตอร์',
@@ -1958,6 +1965,17 @@
           <button class="pill-btn ${state.soundOn ? 'active' : ''}" onclick="toggleSoundOption()">🔊 เสียง: ${state.soundOn ? 'เปิด' : 'ปิด'}</button>
           <button class="pill-btn ${state.motionOn ? 'active' : ''}" onclick="toggleMotionOption()">🎞️ GIF/วิดีโอ: ${state.motionOn ? 'เปิด' : 'ปิด'}</button>
         </div>`;
+      } else if (type === 'camera-picker') {
+        const cams = state.cameraDevices || [];
+        body.innerHTML = cams.length
+          ? `<div style="display:flex;flex-direction:column;gap:8px;">
+              ${cams.map((d, idx) => {
+                const label = d.label || `กล้อง ${idx + 1}`;
+                const active = state.selectedCameraId ? state.selectedCameraId === d.deviceId : idx === 0;
+                return `<button class="pill-btn ${active ? 'active' : ''}" style="text-align:left;padding:10px 14px;" onclick="selectCameraDevice('${d.deviceId}')">📷 ${escapeHtml(label)}</button>`;
+              }).join('')}
+            </div>`
+          : '<div style="text-align:center;color:var(--muted);font-size:13px;">ไม่พบกล้องอื่นเพิ่มเติม</div>';
       } else if (type === 'camera-filter' || type === 'editor-filters') {
         body.innerHTML = `<div class="filter-grid">
           ${FILTERS.map(f => `<button class="pill-btn ${state.filterId === f.id ? 'active' : ''}" onclick="setFilter('${f.id}');">${f.name}</button>`).join('')}
@@ -2068,18 +2086,43 @@
 
       try {
         await initCameraStream();
+        if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+          const devs = await navigator.mediaDevices.enumerateDevices();
+          state.cameraDevices = devs.filter(d => d.kind === 'videoinput');
+          // Ask desktop user if other cameras exist besides the primary camera
+          if (window.innerWidth >= 769 && state.cameraDevices.length > 1 && retakeIdx === null) {
+            openOptionPopup('camera-picker');
+          }
+        }
       } catch (err) {
         showToast('เปิดกล้องไม่สำเร็จ ลองอัปโหลดรูปแทน');
       }
     }
 
+    async function selectCameraDevice(deviceId) {
+      state.selectedCameraId = deviceId;
+      closeOptionPopup();
+      try {
+        await initCameraStream();
+      } catch (e) {
+        showToast('สลับกล้องไม่สำเร็จ');
+      }
+    }
+
     async function initCameraStream() {
       stopCameraStream();
+      const videoConstraints = state.selectedCameraId
+        ? { deviceId: { exact: state.selectedCameraId }, width: { ideal: 1280 }, height: { ideal: 960 } }
+        : { facingMode: state.facingMode, width: { ideal: 1280 }, height: { ideal: 960 } };
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: state.facingMode, width: { ideal: 1280 }, height: { ideal: 960 } },
+        video: videoConstraints,
         audio: false
       });
       state.stream = stream;
+      const track = stream.getVideoTracks()[0];
+      if (track && track.getSettings && track.getSettings().deviceId) {
+        state.selectedCameraId = track.getSettings().deviceId;
+      }
       const vid = document.getElementById('camera-video');
       vid.srcObject = stream;
       await vid.play().catch(() => {});
@@ -2134,6 +2177,11 @@
     }
 
     function switchCameraFacing() {
+      if (window.innerWidth >= 769 && state.cameraDevices.length > 1) {
+        openOptionPopup('camera-picker');
+        return;
+      }
+      state.selectedCameraId = '';
       state.facingMode = state.facingMode === 'user' ? 'environment' : 'user';
       initCameraStream().catch(() => showToast('มีกล้องเดียว'));
     }
@@ -3401,6 +3449,9 @@
 
     function openSettingsModal() {
       document.getElementById('setting-booth-name').value = localStorage.getItem(STORAGE_KEYS.BOOTH_NAME) || 'WNTK Photos';
+      document.getElementById('admin-maint-msg-input').value = state.maintenanceMsg || '';
+      const resBox = document.getElementById('drive-test-result');
+      if (resBox) resBox.classList.add('hidden');
       renderModeUI();
       renderMaintenanceUI();
       document.getElementById('settings-modal').classList.remove('hidden');
@@ -3415,26 +3466,50 @@
       document.getElementById('settings-modal').classList.add('hidden');
     }
 
-    async function saveAndTestGas() {
+    async function saveAdminChanges() {
       if (!state.adminLoggedIn) return;
       const name = document.getElementById('setting-booth-name').value.trim() || 'WNTK Photos';
+      const maintSwitch = document.getElementById('admin-maint-switch');
+      const nextMode = maintSwitch ? maintSwitch.checked : state.maintenanceMode;
+      const msg = document.getElementById('admin-maint-msg-input').value.trim() || 'ระบบกำลังปรับปรุงชั่วคราว กรุณารอสักครู่ 🛠️';
+      const pin = sessionStorage.getItem(STORAGE_KEYS.ADMIN_PIN_SESSION) || '';
       const url = getGasUrl();
+
       localStorage.setItem(STORAGE_KEYS.BOOTH_NAME, name);
       renderModeUI();
 
       const resBox = document.getElementById('drive-test-result');
       resBox.classList.remove('hidden');
-      if (!url) { resBox.innerHTML = '💾 บันทึกแล้ว'; return; }
 
-      showCuteLoader('กำลังบันทึกชื่อบูธ...');
+      showCuteLoader('กำลังบันทึกการเปลี่ยนแปลง...');
       try {
-        await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'saveSettings', settings: { booth_name: name } })
-        });
-        resBox.innerHTML = '✅ บันทึกชื่อบูธเรียบร้อยแล้ว';
+        if (url) {
+          await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'saveSettings', settings: { booth_name: name } })
+          });
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'adminSetMaintenance', pin, enabled: nextMode, message: msg })
+          });
+          const json = await res.json();
+          if (json.status !== 'success') {
+            if (maintSwitch) maintSwitch.checked = state.maintenanceMode;
+            resBox.innerHTML = `❌ ${escapeHtml(json.message || 'บันทึกไม่สำเร็จ')}`;
+            return;
+          }
+          if (json.settings) applyServerSettings(json.settings);
+        } else {
+          state.maintenanceMode = nextMode;
+          state.maintenanceMsg = msg;
+          renderMaintenanceUI();
+        }
+        resBox.innerHTML = '✅ บันทึกการเปลี่ยนแปลงเรียบร้อยแล้ว';
+        showToast('✅ บันทึกการเปลี่ยนแปลงแล้ว');
       } catch (e) {
+        if (maintSwitch) maintSwitch.checked = state.maintenanceMode;
         resBox.innerHTML = '❌ บันทึกไม่สำเร็จ';
       } finally {
         hideCuteLoader();
@@ -3477,46 +3552,12 @@
       }
     }
 
-    async function toggleMaintenanceFromAdmin() {
-      const pin = sessionStorage.getItem(STORAGE_KEYS.ADMIN_PIN_SESSION) || '';
-      const maintSwitch = document.getElementById('admin-maint-switch');
-      const nextMode = maintSwitch ? maintSwitch.checked : !state.maintenanceMode;
-      const msg = document.getElementById('admin-maint-msg-input').value.trim() || state.maintenanceMsg;
-      const gasUrl = getGasUrl();
-
-      showCuteLoader('กำลังอัปเดตสถานะระบบ...');
-      try {
-        if (gasUrl) {
-          const res = await fetch(gasUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'adminSetMaintenance', pin, enabled: nextMode, message: msg })
-          });
-          const json = await res.json();
-          if (json.status !== 'success') {
-            if (maintSwitch) maintSwitch.checked = state.maintenanceMode;
-            showToast(json.message || 'อัปเดตไม่สำเร็จ');
-            return;
-          }
-          if (json.settings) applyServerSettings(json.settings);
-        } else {
-          state.maintenanceMode = nextMode;
-          state.maintenanceMsg = msg;
-          renderMaintenanceUI();
-        }
-        showToast(state.maintenanceMode ? '🛠️ เปิดโหมดปรับปรุงระบบแล้ว' : '✅ เปิดใช้งานระบบปกติแล้ว');
-      } catch (e) {
-        if (maintSwitch) maintSwitch.checked = state.maintenanceMode;
-        showToast('เชื่อมต่อไม่สำเร็จ');
-      } finally {
-        hideCuteLoader();
-      }
-    }
-
     function adminLogout() {
       sessionStorage.removeItem(STORAGE_KEYS.ADMIN_PIN_SESSION);
       state.adminLoggedIn = false;
       renderModeUI();
+      closeSettingsModal();
+      switchAppView('studio');
       showToast('👤 สลับเป็นโหมดผู้ใช้ทั่วไปแล้ว');
     }
 
