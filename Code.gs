@@ -217,6 +217,7 @@ function upsertSettings(ss, updates) {
       sheet.appendRow([key, updates[key]]);
     }
   });
+  SpreadsheetApp.flush();
 }
 
 /**

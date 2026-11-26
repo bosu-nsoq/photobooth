@@ -836,6 +836,20 @@
       z-index: 115;
     }
 
+    /* Initial Boot Loading Screen (shown before any app/maintenance screen) */
+    .boot-splash-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 125;
+      background: linear-gradient(160deg, #FFEBF4 0%, #FFF8FC 50%, #F4F0FF 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+
     /* ============ Cute Dreamy Polaroid Slideshow ============ */
     .slideshow-overlay {
       position: fixed; inset: 0; z-index: 105;
@@ -1308,6 +1322,16 @@
       </div>
       <div id="modal-qr-caption" style="font-size:12px;color:var(--muted);margin-bottom:8px;"></div>
       <div id="modal-qr-links" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"></div>
+    </div>
+  </div>
+
+  <!-- ==================== INITIAL BOOT LOADING SCREEN ==================== -->
+  <div id="boot-splash-screen" class="boot-splash-overlay">
+    <div class="cute-loader-card">
+      <img src="https://i.postimg.cc/Hx10w2k6/Photobooth.png" alt="WNTK Photos" style="width:62px;height:62px;border-radius:16px;box-shadow:0 6px 16px rgba(255,93,158,0.28);margin-bottom:8px;" class="cute-bounce" />
+      <div style="font-weight:700;font-size:16px;color:var(--primary-dark);">WNTK Photos</div>
+      <div style="font-size:12.5px;color:var(--muted);margin-top:4px;">กำลังโหลดข้อมูลระบบ...</div>
+      <div class="cute-dots"><span></span><span></span><span></span></div>
     </div>
   </div>
 
@@ -3410,6 +3434,7 @@
     }
 
     document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('boot-splash-screen').classList.contains('hidden')) return;
       if (!document.getElementById('cute-loading-popup').classList.contains('hidden')) return;
       if (!document.getElementById('maintenance-screen').classList.contains('hidden') &&
           document.getElementById('settings-modal').classList.contains('hidden')) return;
@@ -3472,17 +3497,36 @@
         .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    async function syncServerStatus() {
+    let _isSyncingStatus = false;
+    async function syncServerStatus(isInitial = false) {
+      if (_isSyncingStatus && !isInitial) return;
       const gasUrl = getGasUrl();
-      if (!gasUrl) return;
+      if (!gasUrl) {
+        if (isInitial) document.getElementById('boot-splash-screen').classList.add('hidden');
+        return;
+      }
+      _isSyncingStatus = true;
+      const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = ctrl ? setTimeout(() => ctrl.abort(), 8000) : null;
       try {
-        const res = await fetch(`${gasUrl}?action=init`);
+        const sep = gasUrl.includes('?') ? '&' : '?';
+        const res = await fetch(`${gasUrl}${sep}action=init&_t=${Date.now()}`, {
+          cache: 'no-store',
+          signal: ctrl ? ctrl.signal : undefined
+        });
         const json = await res.json();
         if (json.status === 'success' && json.settings) applyServerSettings(json.settings);
-      } catch (e) {}
+      } catch (e) {
+      } finally {
+        if (timer) clearTimeout(timer);
+        _isSyncingStatus = false;
+        if (isInitial) {
+          document.getElementById('boot-splash-screen').classList.add('hidden');
+        }
+      }
     }
 
-    window.addEventListener('load', () => {
+    window.addEventListener('load', async () => {
       const savedName = localStorage.getItem(STORAGE_KEYS.BOOTH_NAME) || 'WNTK Photos';
       document.getElementById('staff-display').textContent = savedName;
 
@@ -3501,8 +3545,12 @@
       });
       resetIdleTimer();
 
-      syncServerStatus();
-      setInterval(syncServerStatus, 30000);
+      await syncServerStatus(true);
+      setInterval(() => syncServerStatus(false), 8000);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') syncServerStatus(false);
+      });
+      window.addEventListener('focus', () => syncServerStatus(false));
 
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
