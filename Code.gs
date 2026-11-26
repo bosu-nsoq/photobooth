@@ -119,7 +119,10 @@ function ensureWorkspace() {
       ["folder_id", rootFolder.getId()],
       ["photos_folder_id", photosFolder.getId()],
       ["media_folder_id", mediaFolder.getId()],
-      ["folder_url", rootFolder.getUrl()]
+      ["folder_url", rootFolder.getUrl()],
+      ["maintenance_mode", "false"],
+      ["maintenance_msg", "ระบบกำลังปรับปรุงชั่วคราว กรุณารอสักครู่ 🛠️"],
+      ["admin_pin", "1234"]
     ];
     settingsSheet.getRange(2, 1, defaults.length, 2).setValues(defaults);
   }
@@ -135,18 +138,49 @@ function ensureWorkspace() {
 }
 
 /**
- * อ่านค่า Settings เป็น Object
+ * อ่านค่า Settings เป็น Object (ไม่ส่ง admin_pin ออกไปยังหน้าเว็บ)
  */
 function getSettingsMap(ss) {
   const sheet = ss.getSheetByName(SHEET_SETTINGS);
   if (!sheet) return {};
   const data = sheet.getDataRange().getValues();
-  const map = {};
+  const map = {
+    maintenance_mode: "false",
+    maintenance_msg: "ระบบกำลังปรับปรุงชั่วคราว กรุณารอสักครู่ 🛠️"
+  };
   for (let i = 1; i < data.length; i++) {
     const k = String(data[i][0] || "").trim();
-    if (k) map[k] = data[i][1];
+    if (k && k !== "admin_pin") map[k] = data[i][1];
   }
   return map;
+}
+
+/**
+ * ดึง Admin PIN ภายในฝั่งเซิร์ฟเวอร์ (ค่าเริ่มต้น 1234)
+ */
+function getAdminPin(ss) {
+  const sheet = ss.getSheetByName(SHEET_SETTINGS);
+  if (!sheet) return "1234";
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0] || "").trim() === "admin_pin") {
+      return String(data[i][1] || "1234").trim();
+    }
+  }
+  return "1234";
+}
+
+/**
+ * แปลงเวลาให้เหลือเฉพาะ HH:mm ไม่มี Timezone
+ */
+function formatTimeClean(val) {
+  if (!val) return "";
+  if (Object.prototype.toString.call(val) === "[object Date]" && !isNaN(val.getTime())) {
+    return Utilities.formatDate(val, "Asia/Bangkok", "HH:mm");
+  }
+  const s = String(val).trim();
+  const m = s.match(/(\d{1,2}:\d{2})/);
+  return m ? m[1] : s;
 }
 
 /**
@@ -251,7 +285,7 @@ function doGet(e) {
         items.push({
           id: String(r[0]),
           dateStr: (rowDate instanceof Date) ? formatThaiDateBE(rowDate) : String(rowDate || ""),
-          timeStr: String(r[2] || ""),
+          timeStr: formatTimeClean(r[2]),
           layout: String(r[3] || ""),
           frame: String(r[4] || ""),
           filter: String(r[5] || ""),
@@ -354,7 +388,7 @@ function doPost(e) {
       const row = [
         id,
         dateStr,
-        timeStr,
+        "'" + timeStr,
         payload.layout || "1x4",
         payload.frame || "cream",
         payload.filter || "original",
@@ -409,11 +443,55 @@ function doPost(e) {
     }
 
     if (action === "saveSettings") {
-      upsertSettings(ctx.ss, payload.settings || {});
+      const incoming = payload.settings || {};
+      delete incoming.admin_pin;
+      upsertSettings(ctx.ss, incoming);
       return createJsonResponse({
         status: "success",
         settings: getSettingsMap(ctx.ss)
       });
+    }
+
+    if (action === "adminLogin") {
+      const pin = String(payload.pin || "").trim();
+      if (pin !== getAdminPin(ctx.ss)) {
+        return createJsonResponse({ status: "error", message: "รหัสผ่าน Admin ไม่ถูกต้อง" });
+      }
+      return createJsonResponse({
+        status: "success",
+        settings: getSettingsMap(ctx.ss)
+      });
+    }
+
+    if (action === "adminSetMaintenance") {
+      const pin = String(payload.pin || "").trim();
+      if (pin !== getAdminPin(ctx.ss)) {
+        return createJsonResponse({ status: "error", message: "รหัสผ่าน Admin ไม่ถูกต้อง" });
+      }
+      const updates = {
+        maintenance_mode: payload.enabled ? "true" : "false"
+      };
+      if (payload.message !== undefined) {
+        updates.maintenance_msg = String(payload.message || "").trim() || "ระบบกำลังปรับปรุงชั่วคราว กรุณารอสักครู่ 🛠️";
+      }
+      upsertSettings(ctx.ss, updates);
+      return createJsonResponse({
+        status: "success",
+        settings: getSettingsMap(ctx.ss)
+      });
+    }
+
+    if (action === "adminChangePin") {
+      const oldPin = String(payload.oldPin || "").trim();
+      const newPin = String(payload.newPin || "").trim();
+      if (oldPin !== getAdminPin(ctx.ss)) {
+        return createJsonResponse({ status: "error", message: "รหัสผ่านเดิมไม่ถูกต้อง" });
+      }
+      if (!newPin || newPin.length < 4) {
+        return createJsonResponse({ status: "error", message: "รหัสผ่านใหม่ต้องมีอย่างน้อย 4 ตัว" });
+      }
+      upsertSettings(ctx.ss, { admin_pin: newPin });
+      return createJsonResponse({ status: "success" });
     }
 
     return createJsonResponse({ status: "error", message: "Unknown action: " + action });
