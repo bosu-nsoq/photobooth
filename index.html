@@ -927,6 +927,73 @@
       font-size: 12.5px; font-weight: 600; z-index: 130;
     }
 
+    /* ============ Desktop Widescreen Studio Layout ============ */
+    @media (min-width: 769px) {
+      .app-header { padding: 10px 24px; }
+      .brand-title { font-size: 18.5px; }
+      .container { max-width: 1020px; padding: 14px 24px 20px; }
+      .stepper { max-width: 660px; margin: 0 auto 12px; gap: 10px; }
+      .step-chip { font-size: 12.5px; padding: 7px 10px; }
+      .card { padding: 20px 24px; border-radius: 26px; }
+
+      #stage-1 .layout-grid {
+        max-width: 820px; width: 100%; margin: 0 auto 14px; gap: 14px;
+      }
+      #stage-1 .layout-card { padding: 18px 10px; gap: 10px; }
+      #stage-1 .layout-card:hover { transform: translateY(-3px); border-color: #FFB3D1; }
+
+      #stage-2 .viewfinder-wrap { max-width: 720px; margin: 0 auto; }
+      #stage-2 .slot-thumb { width: 42px; height: 54px; }
+
+      #stage-3 {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        grid-template-rows: 1fr auto;
+        gap: 16px;
+        align-items: stretch;
+      }
+      #stage-3 .canvas-stage {
+        grid-column: 1; grid-row: 1 / 3;
+        margin-bottom: 0; padding: 14px;
+      }
+      #stage-3 .editor-dock {
+        grid-column: 2; grid-row: 1;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        align-content: start;
+        margin-bottom: 0;
+      }
+      #stage-3 .dock-btn { min-height: 76px; font-size: 12.5px; gap: 4px; border-radius: 16px; }
+      #stage-3 .dock-btn:hover { background: var(--primary-soft); border-color: #FFB3D1; }
+      #stage-3 .dock-btn .dock-ico { font-size: 24px; }
+      #stage-3 .cta-row { grid-column: 2; grid-row: 2; }
+
+      #stage-4 {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        grid-template-rows: 1fr auto;
+        gap: 18px;
+        align-items: stretch;
+      }
+      #stage-4 .result-top-bar {
+        grid-column: 1; grid-row: 1 / 3;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 0;
+        padding: 16px;
+      }
+      #stage-4 .mini-result-frame { width: 170px; height: 226px; border-radius: 14px; }
+      #stage-4 .result-dl-col { width: 100%; flex: 0 0 auto; }
+      #stage-4 .qr-panel { grid-column: 2; grid-row: 1; margin-bottom: 0; padding: 18px; }
+      #stage-4 .cta-row { grid-column: 2; grid-row: 2; }
+
+      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 14px; }
+      .gallery-item { transition: transform 0.14s, box-shadow 0.14s; }
+      .gallery-item:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(255, 93, 158, 0.14); }
+
+      .modal-backdrop.tray-mode .modal-card { max-width: 760px; }
+    }
+
     /* ============ Formal Print Area (Sarabun Font) ============ */
     #print-report-area { display: none; font-family: 'Sarabun', sans-serif; }
     @media print {
@@ -959,8 +1026,8 @@
       <button class="icon-btn" id="nav-gallery-btn" onclick="switchAppView('gallery')" title="คลังภาพ">
         🖼️ <span class="btn-label">คลังภาพ</span>
       </button>
-      <button class="icon-btn" id="nav-settings-btn" onclick="openSettingsModal()" title="โหมด / ตั้งค่า">
-        ⚙️
+      <button class="icon-btn" id="nav-settings-btn" onclick="openSettingsModal()" title="โหมด Admin">
+        🔑
       </button>
     </div>
   </header>
@@ -1174,23 +1241,23 @@
   <div id="settings-modal" class="modal-backdrop sheet-mode hidden" onclick="if(event.target===this) closeSettingsModal()">
     <div class="modal-card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <h3 style="margin:0;font-size:16.5px;">⚙️ โหมดการใช้งาน</h3>
+        <h3 id="settings-modal-title" style="margin:0;font-size:16.5px;">🔑 เข้าสู่โหมด Admin</h3>
         <button class="icon-btn" style="min-height:32px;padding:4px 10px;" onclick="closeSettingsModal()">✕</button>
       </div>
 
-      <!-- Current Mode Indicator -->
-      <div class="opt-box" style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
-        <span style="font-size:13px;font-weight:700;" id="current-mode-label">👤 โหมดผู้ใช้ทั่วไป (ใช้งานปกติ)</span>
-        <button class="pill-btn active hidden" id="btn-switch-normal" onclick="adminLogout()">กลับโหมดทั่วไป</button>
+      <!-- Current Mode Indicator (Shown when Admin is logged in) -->
+      <div id="current-mode-box" class="opt-box hidden" style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;font-weight:700;" id="current-mode-label">👑 โหมด Admin (เข้าถึงเชิงลึก)</span>
+        <button class="pill-btn active" id="btn-switch-normal" onclick="adminLogout()">กลับโหมดทั่วไป</button>
       </div>
 
-      <!-- Admin Login Box (Shown in Normal User Mode) -->
-      <div id="admin-login-box" class="opt-box">
-        <div style="font-weight:700;font-size:13px;margin-bottom:8px;">👑 เข้าสู่โหมด Admin (สำหรับจัดการระบบเชิงลึก)</div>
-        <div style="display:flex;gap:8px;">
-          <input type="password" id="admin-pin-input" class="modern-input" placeholder="กรอกรหัสผ่าน Admin" inputmode="numeric" />
-          <button class="icon-btn active" onclick="adminLoginSubmit()">เข้าสู่ระบบ</button>
-        </div>
+      <!-- 4-Digit Admin PIN Popup Box (Shown on clicking 🔑) -->
+      <div id="admin-login-box" class="opt-box" style="text-align:center;">
+        <div style="font-weight:700;font-size:13.5px;margin-bottom:10px;">กรอกรหัส PIN 4 หลัก</div>
+        <input type="password" id="admin-pin-input" class="modern-input" maxlength="4" placeholder="••••" inputmode="numeric" autocomplete="off"
+          style="text-align:center;font-size:24px;font-weight:700;letter-spacing:12px;max-width:190px;margin:0 auto 10px;display:block;"
+          oninput="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length===4) adminLoginSubmit();" />
+        <button class="btn-primary" style="width:100%;max-width:190px;min-height:40px;padding:8px 16px;font-size:14px;" onclick="adminLoginSubmit()">🔓 ยืนยัน</button>
       </div>
 
       <!-- Admin Deep Controls (Hidden in Normal User Mode, Shown ONLY in Admin Mode) -->
@@ -1253,7 +1320,7 @@
     <div style="font-size:64px;margin-bottom:10px;">🛠️</div>
     <h2 style="margin:0 0 8px;color:var(--primary-dark);">กำลังปรับปรุงระบบ</h2>
     <p id="maintenance-msg-display" style="margin:0 0 24px;color:var(--muted);max-width:340px;">ระบบกำลังปรับปรุงชั่วคราว กรุณารอสักครู่</p>
-    <button class="icon-btn" style="font-size:12.5px;" onclick="openSettingsModal()">👑 Admin</button>
+    <button class="icon-btn" style="font-size:12.5px;" onclick="openSettingsModal()">🔑 Admin</button>
   </div>
 
   <!-- ==================== CUTE POLAROID SLIDESHOW OVERLAY ==================== -->
@@ -3091,9 +3158,9 @@
       const isAdmin = state.adminLoggedIn;
       const boothName = localStorage.getItem(STORAGE_KEYS.BOOTH_NAME) || 'WNTK Photos';
       document.getElementById('staff-display').textContent = isAdmin ? `👑 ${boothName}` : boothName;
-      document.getElementById('nav-settings-btn').textContent = isAdmin ? '👑' : '⚙️';
-      document.getElementById('current-mode-label').textContent = isAdmin ? '👑 โหมด Admin (เข้าถึงเชิงลึก)' : '👤 โหมดผู้ใช้ทั่วไป (ใช้งานปกติ)';
-      document.getElementById('btn-switch-normal').classList.toggle('hidden', !isAdmin);
+      document.getElementById('nav-settings-btn').textContent = isAdmin ? '🔓' : '🔑';
+      document.getElementById('settings-modal-title').textContent = isAdmin ? '👑 ตั้งค่าผู้ดูแลระบบ (Admin)' : '🔑 เข้าสู่โหมด Admin';
+      document.getElementById('current-mode-box').classList.toggle('hidden', !isAdmin);
       document.getElementById('admin-login-box').classList.toggle('hidden', isAdmin);
       document.getElementById('admin-panel-box').classList.toggle('hidden', !isAdmin);
       document.getElementById('btn-print-report').classList.toggle('hidden', !isAdmin);
@@ -3120,6 +3187,11 @@
       renderModeUI();
       renderMaintenanceUI();
       document.getElementById('settings-modal').classList.remove('hidden');
+      if (!state.adminLoggedIn) {
+        const pinEl = document.getElementById('admin-pin-input');
+        pinEl.value = '';
+        setTimeout(() => pinEl.focus(), 60);
+      }
     }
 
     function closeSettingsModal() {
