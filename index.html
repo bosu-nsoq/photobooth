@@ -277,20 +277,20 @@
       flex: 1;
       min-height: 0;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
       margin-bottom: 10px;
       align-content: center;
     }
 
     @media (min-width: 600px) {
-      .layout-grid { grid-template-columns: repeat(4, 1fr); }
+      .layout-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
     }
 
     .layout-card {
       border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 10px 6px;
+      border-radius: 14px;
+      padding: 8px 4px;
       text-align: center;
       cursor: pointer;
       background: #FFFDFE;
@@ -298,7 +298,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 4px;
       transition: transform 0.12s, border-color 0.12s;
     }
     .layout-card:active { transform: scale(0.97); }
@@ -309,15 +309,20 @@
     }
 
     .mini-strip {
-      width: 34px; height: 50px;
+      width: 28px; height: 42px;
       background: #fff; border: 1.5px solid #E5C7D8;
       border-radius: 6px; padding: 3px;
-      display: grid; gap: 2.5px;
+      display: grid; gap: 2px;
     }
     .mini-strip.l-1x4 { grid-template-columns: 1fr; grid-template-rows: repeat(4, 1fr); }
     .mini-strip.l-1x3 { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); }
-    .mini-strip.l-2x2 { width: 46px; height: 46px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    .mini-strip.l-1x1 { width: 44px; height: 50px; grid-template-columns: 1fr; grid-template-rows: 1fr 9px; }
+    .mini-strip.l-1x2 { grid-template-columns: 1fr; grid-template-rows: repeat(2, 1fr); }
+    .mini-strip.l-2x2 { width: 38px; height: 38px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    .mini-strip.l-2x3 { width: 36px; height: 42px; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); }
+    .mini-strip.l-3x1 { width: 46px; height: 28px; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; align-self: center; margin: 7px 0; }
+    .mini-strip.l-big3 { width: 38px; height: 42px; grid-template-columns: repeat(3, 1fr); grid-template-rows: 2fr 1fr; }
+    .mini-strip.l-big3 .mini-cell:first-child { grid-column: 1 / -1; }
+    .mini-strip.l-1x1 { width: 36px; height: 42px; grid-template-columns: 1fr; grid-template-rows: 1fr 8px; }
     .mini-cell { background: linear-gradient(135deg, #FFC2DA, #D8CCFF); border-radius: 2px; }
 
     .quick-chips-row {
@@ -467,8 +472,8 @@
     }
 
     .slot-thumb {
-      width: 30px;
-      height: 38px;
+      width: 26px;
+      height: 34px;
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.22);
       border: 1.5px dashed rgba(255, 255, 255, 0.65);
@@ -757,13 +762,21 @@
     }
 
     .gallery-thumb {
-      aspect-ratio: 2 / 3;
-      min-height: 240px;
+      height: 290px;
+      padding: 10px;
       background: var(--bg);
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
+      cursor: zoom-in;
     }
-    .gallery-thumb img { width: 100%; height: 100%; object-fit: contain; }
+    .gallery-thumb img {
+      max-width: 100%; max-height: 100%;
+      width: auto; height: auto;
+      object-fit: contain;
+      display: block;
+      border-radius: 6px;
+      box-shadow: 0 3px 10px rgba(45, 34, 53, 0.12);
+    }
     .gallery-meta { padding: 7px 9px; font-size: 11.5px; }
 
     /* ============ Popups & Non-Blocking Live Tray ============ */
@@ -856,10 +869,30 @@
     .opt-label { font-size: 12.5px; font-weight: 700; margin-bottom: 6px; display: block; color: var(--text); }
     .opt-box { background: var(--bg); border: 1.5px solid var(--border); border-radius: 14px; padding: 11px; }
 
-    .thai-date-wrap { position: relative; flex: 1; display: flex; align-items: center; }
-    .thai-date-raw { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+    .thai-date-wrap { position: relative; flex: 1; display: flex; align-items: center; cursor: pointer; }
+    .thai-date-raw { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2; border: 0; }
     .thai-date-raw::-webkit-calendar-picker-indicator {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
+    }
+
+    #gallery-lightbox-modal { z-index: 95; }
+    .lightbox-img-wrap {
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 12px;
+      max-height: 68vh;
+      overflow: hidden;
+    }
+    .lightbox-img-wrap img {
+      max-width: 100%; max-height: 63vh;
+      width: auto; height: auto;
+      object-fit: contain;
+      display: block;
+      border-radius: 8px;
+      box-shadow: 0 8px 22px rgba(45, 34, 53, 0.16);
     }
 
     /* ============ Cute Loading Popup ============ */
@@ -1068,7 +1101,7 @@
       #stage-4 .cta-row { grid-column: 2; grid-row: 2; }
 
       .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 16px; }
-      .gallery-thumb { min-height: 310px; }
+      .gallery-thumb { height: 350px; padding: 12px; }
       .gallery-item { transition: transform 0.14s, box-shadow 0.14s; }
       .gallery-item:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(255, 93, 158, 0.14); }
 
@@ -1135,21 +1168,21 @@
             <div class="mini-strip l-1x4">
               <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
             </div>
-            <div style="font-weight:700;font-size:13px;">4 ช่อง</div>
+            <div style="font-weight:700;font-size:11.5px;">4 ช่อง</div>
           </div>
 
           <div class="layout-card" data-layout="1x3" tabindex="0" onclick="selectLayout('1x3')">
             <div class="mini-strip l-1x3">
               <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
             </div>
-            <div style="font-weight:700;font-size:13px;">3 ช่อง</div>
+            <div style="font-weight:700;font-size:11.5px;">3 ช่อง</div>
           </div>
 
-          <div class="layout-card" data-layout="2x2" tabindex="0" onclick="selectLayout('2x2')">
-            <div class="mini-strip l-2x2">
-              <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
+          <div class="layout-card" data-layout="1x2" tabindex="0" onclick="selectLayout('1x2')">
+            <div class="mini-strip l-1x2">
+              <div class="mini-cell"></div><div class="mini-cell"></div>
             </div>
-            <div style="font-weight:700;font-size:13px;">ตาราง 2x2</div>
+            <div style="font-weight:700;font-size:11.5px;">2 ช่อง</div>
           </div>
 
           <div class="layout-card" data-layout="1x1" tabindex="0" onclick="selectLayout('1x1')">
@@ -1157,7 +1190,36 @@
               <div class="mini-cell"></div>
               <div style="background:#FFE4F0;border-radius:2px;"></div>
             </div>
-            <div style="font-weight:700;font-size:13px;">โพลารอยด์</div>
+            <div style="font-weight:700;font-size:11.5px;">โพลารอยด์</div>
+          </div>
+
+          <div class="layout-card" data-layout="2x2" tabindex="0" onclick="selectLayout('2x2')">
+            <div class="mini-strip l-2x2">
+              <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
+            </div>
+            <div style="font-weight:700;font-size:11.5px;">ตาราง 2x2</div>
+          </div>
+
+          <div class="layout-card" data-layout="2x3" tabindex="0" onclick="selectLayout('2x3')">
+            <div class="mini-strip l-2x3">
+              <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
+              <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
+            </div>
+            <div style="font-weight:700;font-size:11.5px;">ตาราง 2x3</div>
+          </div>
+
+          <div class="layout-card" data-layout="3x1" tabindex="0" onclick="selectLayout('3x1')">
+            <div class="mini-strip l-3x1">
+              <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
+            </div>
+            <div style="font-weight:700;font-size:11.5px;">แนวนอน 3</div>
+          </div>
+
+          <div class="layout-card" data-layout="big3" tabindex="0" onclick="selectLayout('big3')">
+            <div class="mini-strip l-big3">
+              <div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div><div class="mini-cell"></div>
+            </div>
+            <div style="font-weight:700;font-size:11.5px;">1 ใหญ่ + 3</div>
           </div>
         </div>
 
@@ -1288,9 +1350,9 @@
       <div class="gallery-toolbar">
         <div style="font-weight:700;font-size:16px;">🖼️ คลังภาพ</div>
         <div style="display:flex;flex-wrap:wrap;gap:5px;align-items:center;">
-          <div class="thai-date-wrap" style="width:116px;">
-            <input type="text" id="gallery-date-display" class="modern-input" readonly placeholder="📅 วันที่ พ.ศ." style="padding:6px;font-size:11.5px;width:100%;cursor:pointer;text-align:center;background:#fff;" onclick="openDatePicker('gallery-date-raw')" />
-            <input type="date" id="gallery-date-raw" class="thai-date-raw" onchange="onGalleryDateChange(this.value)" />
+          <div class="thai-date-wrap" style="width:124px;" onclick="openDatePicker('gallery-date-raw', event)">
+            <input type="text" id="gallery-date-display" class="modern-input" readonly placeholder="📅 วันที่ พ.ศ." style="padding:6px 8px;font-size:11.5px;width:100%;cursor:pointer;text-align:center;background:#fff;" />
+            <input type="date" id="gallery-date-raw" class="thai-date-raw" tabindex="-1" onclick="openDatePicker('gallery-date-raw', event)" onchange="onGalleryDateChange(this.value)" />
           </div>
           <button class="icon-btn" style="padding:5px 8px;min-height:32px;font-size:12px;" onclick="clearGalleryDateFilter()">ทั้งหมด</button>
           <button class="icon-btn" style="padding:5px 8px;min-height:32px;" onclick="startGallerySlideshow()" title="สไลด์โชว์">🎞️</button>
@@ -1433,6 +1495,23 @@
     <div style="color:#7B6D87;font-size:11.5px;margin-top:14px;z-index:2;font-weight:600;">แตะหน้าจอเพื่อกลับสู่แอป</div>
   </div>
 
+  <!-- ==================== GALLERY FULL-VIEW LIGHTBOX ==================== -->
+  <div id="gallery-lightbox-modal" class="modal-backdrop hidden" onclick="if(event.target===this) closeGalleryLightbox()">
+    <div class="modal-card" style="max-width:520px;text-align:center;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="text-align:left;min-width:0;padding-right:8px;">
+          <div id="lightbox-caption" style="font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">WNTK Photos</div>
+          <div id="lightbox-meta" style="font-size:11.5px;color:var(--muted);"></div>
+        </div>
+        <button class="icon-btn" style="min-height:32px;padding:4px 10px;" onclick="closeGalleryLightbox()">✕</button>
+      </div>
+      <div class="lightbox-img-wrap">
+        <img id="lightbox-img" alt="Full Photo" />
+      </div>
+      <div id="lightbox-actions" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"></div>
+    </div>
+  </div>
+
   <!-- Formal Print Report Container (Sarabun Font) -->
   <div id="print-report-area"></div>
 
@@ -1472,8 +1551,12 @@
     const LAYOUTS = {
       '1x4': { label: '4 ช่อง', count: 4, w: 600, h: 1800, cols: 1, rows: 4 },
       '1x3': { label: '3 ช่อง', count: 3, w: 600, h: 1420, cols: 1, rows: 3 },
+      '1x2': { label: '2 ช่อง', count: 2, w: 600, h: 1040, cols: 1, rows: 2 },
+      '1x1': { label: 'โพลารอยด์', count: 1, w: 720, h: 880, cols: 1, rows: 1 },
       '2x2': { label: 'ตาราง 2x2', count: 4, w: 1000, h: 1260, cols: 2, rows: 2 },
-      '1x1': { label: 'โพลารอยด์', count: 1, w: 720, h: 880, cols: 1, rows: 1 }
+      '2x3': { label: 'ตาราง 2x3', count: 6, w: 1000, h: 1580, cols: 2, rows: 3 },
+      '3x1': { label: 'แนวนอน 3', count: 3, w: 1500, h: 660, cols: 3, rows: 1 },
+      'big3': { label: '1 ใหญ่ + 3', count: 4, w: 1000, h: 1360, cols: 3, rows: 2 }
     };
 
     const FILTERS = [
@@ -1499,7 +1582,9 @@
       { id: 'cream', name: 'ครีม', hex: '#FFFDF9' },
       { id: 'noir', name: 'ดำ', hex: '#1F1A2E' },
       { id: 'pink', name: 'ชมพู', hex: '#FFD6E7' },
+      { id: 'peach', name: 'พีช', hex: '#FFE4D6' },
       { id: 'mint', name: 'มิ้นต์', hex: '#D8F3DC' },
+      { id: 'sage', name: 'เขียวชา', hex: '#DCFCE7' },
       { id: 'sky', name: 'ฟ้า', hex: '#DBEAFE' },
       { id: 'lavender', name: 'ม่วง', hex: '#EDE9FE' },
       { id: 'butter', name: 'เหลือง', hex: '#FEF3C7' },
@@ -1511,8 +1596,14 @@
     const FRAME_PATTERNS = [
       { id: 'none', name: 'สีเรียบ' },
       { id: 'hearts', name: '💖 หัวใจ' },
+      { id: 'ribbon', name: '🎀 โบว์หวาน' },
       { id: 'daisy', name: '🌼 ดอกไม้' },
+      { id: 'strawberry', name: '🍓 สตรอว์เบอร์รี' },
+      { id: 'cloud', name: '☁️ ก้อนเมฆ' },
+      { id: 'bear', name: '🧸 หมีน้อย' },
+      { id: 'rainbow', name: '🌈 สายรุ้ง' },
       { id: 'film', name: '🎞️ ฟิล์ม' },
+      { id: 'y2k', name: '💿 Y2K ป๊อป' },
       { id: 'gingham', name: '🏁 ตาราง' },
       { id: 'sparkle', name: '✨ วิ้งค์' },
       { id: 'christmas', name: '🎄 คริสต์มาส', defaultBg: '#B91C1C', defaultCaption: 'Merry Christmas 🎄' },
@@ -1656,14 +1747,27 @@
       return s;
     }
 
-    function openDatePicker(rawId) {
+    function thaiBEToIso(beStr) {
+      const m = String(beStr || '').trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (!m) return '';
+      const d = m[1].padStart(2, '0'), mo = m[2].padStart(2, '0');
+      let y = parseInt(m[3], 10);
+      if (y > 2400) y -= 543;
+      return `${y}-${mo}-${d}`;
+    }
+
+    function openDatePicker(rawId, ev) {
       const el = document.getElementById(rawId);
       if (!el) return;
       if (typeof el.showPicker === 'function') {
-        try { el.showPicker(); return; } catch (e) {}
+        try {
+          el.showPicker();
+          if (ev) ev.preventDefault();
+          return;
+        } catch (e) {}
       }
       el.focus();
-      el.click();
+      try { el.click(); } catch (e) {}
     }
 
     function onStampDateChange(val) {
@@ -2024,9 +2128,9 @@
           </div>
           <div style="display:flex;gap:8px;align-items:center;">
             <button class="pill-btn ${state.showDateStamp ? 'active' : ''}" onclick="toggleDateStamp()">📅 ${state.showDateStamp ? 'แสดงวันที่' : 'ซ่อนวันที่'}</button>
-            <div class="thai-date-wrap">
-              <input type="text" id="stamp-date-display" class="modern-input" readonly value="${curDate}" placeholder="วว/ดด/ปปปป" style="padding:8px;font-size:13px;width:100%;cursor:pointer;text-align:center;background:#fff;" onclick="openDatePicker('stamp-date-raw')" />
-              <input type="date" id="stamp-date-raw" class="thai-date-raw" onchange="onStampDateChange(this.value)" />
+            <div class="thai-date-wrap" onclick="openDatePicker('stamp-date-raw', event)">
+              <input type="text" id="stamp-date-display" class="modern-input" readonly value="${curDate}" placeholder="วว/ดด/ปปปป" style="padding:8px;font-size:13px;width:100%;cursor:pointer;text-align:center;background:#fff;" />
+              <input type="date" id="stamp-date-raw" class="thai-date-raw" tabindex="-1" value="${thaiBEToIso(curDate)}" onclick="openDatePicker('stamp-date-raw', event)" onchange="onStampDateChange(this.value)" />
             </div>
           </div>`;
       } else if (type === 'editor-retake') {
@@ -2616,6 +2720,35 @@
       } else if (pat === 'songkran') {
         ctx.strokeStyle = '#38BDF8'; ctx.lineWidth = Math.max(6, w * 0.016); ctx.strokeRect(10, 10, w - 20, h - 20);
         drawScatterEmojis(ctx, w, h, ['💦', '🌸', '🌺', '💧'], 0.38, 0.05);
+      } else if (pat === 'ribbon') {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255, 93, 158, 0.45)';
+        ctx.lineWidth = 4;
+        ctx.setLineDash([12, 8]);
+        ctx.strokeRect(14, 14, w - 28, h - 28);
+        ctx.restore();
+        drawScatterEmojis(ctx, w, h, ['🎀', '🩷', '🤍'], 0.34, 0.046);
+      } else if (pat === 'strawberry') {
+        drawScatterEmojis(ctx, w, h, ['🍓', '🍰', '🌷', '💕'], 0.34, 0.046);
+      } else if (pat === 'cloud') {
+        drawScatterEmojis(ctx, w, h, ['☁️', '🫧', '🌙', '⭐'], 0.36, 0.048);
+      } else if (pat === 'bear') {
+        drawScatterEmojis(ctx, w, h, ['🧸', '🍪', '🤍', '✨'], 0.34, 0.046);
+      } else if (pat === 'rainbow') {
+        const g = ctx.createLinearGradient(0, 0, w, h);
+        g.addColorStop(0, '#FF7EB3'); g.addColorStop(0.25, '#FBBF24');
+        g.addColorStop(0.5, '#6EE7B7'); g.addColorStop(0.75, '#60A5FA');
+        g.addColorStop(1, '#C084FC');
+        ctx.strokeStyle = g;
+        ctx.lineWidth = Math.max(8, w * 0.018);
+        ctx.strokeRect(ctx.lineWidth / 2, ctx.lineWidth / 2, w - ctx.lineWidth, h - ctx.lineWidth);
+        drawScatterEmojis(ctx, w, h, ['🌈', '☁️', '✨'], 0.32, 0.046);
+      } else if (pat === 'y2k') {
+        ctx.strokeStyle = '#60A5FA'; ctx.lineWidth = Math.max(6, w * 0.014);
+        ctx.strokeRect(10, 10, w - 20, h - 20);
+        ctx.strokeStyle = '#EC4899'; ctx.lineWidth = 2.5;
+        ctx.strokeRect(20, 20, w - 40, h - 40);
+        drawScatterEmojis(ctx, w, h, ['💿', '⚡', '🦋', '✨'], 0.34, 0.046);
       } else if (pat === 'graduation') {
         ctx.strokeStyle = '#F59E0B'; ctx.lineWidth = Math.max(5, w * 0.014); ctx.strokeRect(12, 12, w - 24, h - 24);
         drawScatterEmojis(ctx, w, h, ['🎓', '📜', '✨', '🌟'], 0.34, 0.05);
@@ -2629,6 +2762,31 @@
       ctx.drawImage(img, (iw - sw) / 2, (ih - sh) / 2, sw, sh, x, y, w, h);
     }
 
+    function getLayoutSlotRects(layoutId, cfg, padX, padTop, footerH, gap) {
+      if (layoutId === 'big3') {
+        const fullW = cfg.w - padX * 2;
+        const availH = cfg.h - padTop - footerH - gap;
+        const heroH = Math.round(availH * 0.65);
+        const subH = availH - heroH;
+        const subW = (fullW - gap * 2) / 3;
+        return [
+          { x: padX, y: padTop, w: fullW, h: heroH },
+          { x: padX, y: padTop + heroH + gap, w: subW, h: subH },
+          { x: padX + subW + gap, y: padTop + heroH + gap, w: subW, h: subH },
+          { x: padX + (subW + gap) * 2, y: padTop + heroH + gap, w: subW, h: subH }
+        ];
+      }
+      const availW = cfg.w - padX * 2 - gap * (cfg.cols - 1);
+      const availH = cfg.h - padTop - footerH - gap * (cfg.rows - 1);
+      const cellW = availW / cfg.cols, cellH = availH / cfg.rows;
+      const rects = [];
+      for (let i = 0; i < cfg.count; i++) {
+        const r = Math.floor(i / cfg.cols), c = i % cfg.cols;
+        rects.push({ x: padX + c * (cellW + gap), y: padTop + r * (cellH + gap), w: cellW, h: cellH });
+      }
+      return rects;
+    }
+
     function renderStripCanvas(includeSelectionRing = true) {
       const cfg = LAYOUTS[state.layout];
       const canvas = document.getElementById('strip-canvas');
@@ -2639,14 +2797,11 @@
 
       const padX = state.framePattern === 'film' ? 46 : 36;
       const padTop = 36, footerH = 140, gap = 22;
-      const availW = cfg.w - padX * 2 - gap * (cfg.cols - 1);
-      const availH = cfg.h - padTop - footerH - gap * (cfg.rows - 1);
-      const cellW = availW / cfg.cols, cellH = availH / cfg.rows;
+      const slotRects = getLayoutSlotRects(state.layout, cfg, padX, padTop, footerH, gap);
       const filterObj = FILTERS.find(f => f.id === state.filterId) || FILTERS[0];
 
-      for (let i = 0; i < cfg.count; i++) {
-        const r = Math.floor(i / cfg.cols), c = i % cfg.cols;
-        const x = padX + c * (cellW + gap), y = padTop + r * (cellH + gap);
+      for (let i = 0; i < slotRects.length; i++) {
+        const { x, y, w: cellW, h: cellH } = slotRects[i];
 
         ctx.save();
         ctx.beginPath(); ctx.roundRect(x, y, cellW, cellH, 16); ctx.clip();
@@ -3187,7 +3342,7 @@
         return `
           <div class="gallery-item ${inSelect ? 'select-mode' : ''} ${isChecked ? 'selected' : ''}" ${inSelect ? `onclick="toggleGalleryItemSelection('${item.id}')"` : ''}>
             ${inSelect ? `<div class="gallery-select-badge">${isChecked ? '✓' : ''}</div>` : ''}
-            <div class="gallery-thumb">
+            <div class="gallery-thumb" ${inSelect ? '' : `onclick="openGalleryLightbox('${item.id}')"`}>
               <img src="${thumb}" alt="Photo" loading="lazy" />
             </div>
             <div class="gallery-meta">
@@ -3270,6 +3425,40 @@
       hideCuteLoader();
       showToast('ลบแล้ว');
       loadGalleryItems();
+    }
+
+    function openGalleryLightbox(id) {
+      const item = state.galleryItems.find(x => x.id === id);
+      if (!item) return;
+      const img = document.getElementById('lightbox-img');
+      const fb = item.photoThumbUrl || 'https://i.postimg.cc/Hx10w2k6/Photobooth.png';
+      img.dataset.fb = fb;
+      img.onerror = () => {
+        if (img.dataset.fb && img.src !== img.dataset.fb) img.src = img.dataset.fb;
+      };
+      img.src = item.localPng || item.photoViewUrl || fb;
+
+      document.getElementById('lightbox-caption').textContent = item.caption || 'WNTK Photos';
+      const cleanTime = cleanTimeDisplay(item.timeStr);
+      document.getElementById('lightbox-meta').textContent = `${item.dateStr || ''}${cleanTime ? ' • ' + cleanTime : ''}`;
+
+      const dlBtn = item.localPng
+        ? `<button class="btn-primary" style="padding:8px 16px;font-size:13px;min-height:38px;max-width:none;" onclick="downloadGalleryLocal('${item.id}')">📲 บันทึกรูปภาพ</button>`
+        : `<a class="btn-primary" style="padding:8px 16px;font-size:13px;min-height:38px;max-width:none;" href="${item.photoDownloadUrl || item.photoViewUrl}" target="_blank" rel="noopener">⬇️ ดาวน์โหลด</a>`;
+      const adminDel = state.adminLoggedIn
+        ? `<button class="btn-secondary" style="padding:8px 14px;font-size:13px;min-height:38px;color:#DC2626;" onclick="closeGalleryLightbox(); deleteGalleryItem('${item.id}')">🗑️ ลบภาพ</button>`
+        : '';
+
+      document.getElementById('lightbox-actions').innerHTML = `
+        <button class="btn-secondary" style="padding:8px 14px;font-size:13px;min-height:38px;" onclick="closeGalleryLightbox(); openItemQrModal('${item.id}')">📱 QR Code</button>
+        ${dlBtn}
+        ${adminDel}
+      `;
+      document.getElementById('gallery-lightbox-modal').classList.remove('hidden');
+    }
+
+    function closeGalleryLightbox() {
+      document.getElementById('gallery-lightbox-modal').classList.add('hidden');
     }
 
     function openItemQrModal(id) {
