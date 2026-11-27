@@ -2220,6 +2220,7 @@
       if (retakeIdx === null) {
         state.shots = new Array(needed).fill(null);
         state.recordedVideoBlob = null;
+        clearDraftTracking();
       }
 
       setStudioStage(2);
@@ -2253,10 +2254,10 @@
 
     async function initCameraStream() {
       stopCameraStream();
-      const hiRes = { width: { ideal: 3840 }, height: { ideal: 2160 }, frameRate: { ideal: 30 } };
+      const smoothHd = { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } };
       const videoConstraints = state.selectedCameraId
-        ? { deviceId: { exact: state.selectedCameraId }, ...hiRes }
-        : { facingMode: state.facingMode, ...hiRes };
+        ? { deviceId: { exact: state.selectedCameraId }, ...smoothHd }
+        : { facingMode: state.facingMode, ...smoothHd };
       const stream = await navigator.mediaDevices.getUserMedia({
         video: videoConstraints,
         audio: false
@@ -2267,18 +2268,11 @@
         if (track.getSettings && track.getSettings().deviceId) {
           state.selectedCameraId = track.getSettings().deviceId;
         }
-        // Push sensor to its maximum native resolution and continuous focus if supported
+        // Keep autofocus/exposure continuous without forcing 4K/slow sensor modes
         if (typeof track.getCapabilities === 'function' && typeof track.applyConstraints === 'function') {
           try {
             const caps = track.getCapabilities();
-            const cur = track.getSettings ? track.getSettings() : {};
             const adv = {};
-            if (caps.width && caps.width.max && (!cur.width || caps.width.max > cur.width)) {
-              adv.width = { ideal: caps.width.max };
-            }
-            if (caps.height && caps.height.max && (!cur.height || caps.height.max > cur.height)) {
-              adv.height = { ideal: caps.height.max };
-            }
             if (Array.isArray(caps.focusMode) && caps.focusMode.includes('continuous')) adv.focusMode = 'continuous';
             if (Array.isArray(caps.exposureMode) && caps.exposureMode.includes('continuous')) adv.exposureMode = 'continuous';
             if (Array.isArray(caps.whiteBalanceMode) && caps.whiteBalanceMode.includes('continuous')) adv.whiteBalanceMode = 'continuous';
@@ -2292,39 +2286,62 @@
       startCameraPreviewLoop();
     }
 
+    let _camFilterCvs = null;
     function startCameraPreviewLoop() {
       cancelAnimationFrame(state.camAnimId);
       const vid = document.getElementById('camera-video');
       const cvs = document.getElementById('camera-canvas');
-      const ctx = cvs.getContext('2d', { willReadFrequently: true });
+      const ctx = cvs.getContext('2d');
+      let lastVidTime = -1;
+      let lastFilterId = '';
+      let lastMirror = null;
 
       function tick() {
         if (!state.stream) return;
         if (vid.readyState >= 2 && vid.videoWidth > 0) {
           const fObj = FILTERS.find(f => f.id === state.filterId) || FILTERS[0];
           const isFiltered = fObj.id !== 'original';
-          const targetW = isFiltered ? Math.min(720, vid.videoWidth) : Math.min(1920, vid.videoWidth);
-          const targetH = Math.max(1, Math.round(targetW * (vid.videoHeight / vid.videoWidth)));
+          const vidTime = vid.currentTime;
 
-          if (cvs.width !== targetW || cvs.height !== targetH) {
-            cvs.width = targetW;
-            cvs.height = targetH;
-            updateCameraCropGuide();
-          } else if (document.getElementById('camera-crop-guide').classList.contains('hidden')) {
-            updateCameraCropGuide();
-          }
+          if (vidTime !== lastVidTime || fObj.id !== lastFilterId || state.mirror !== lastMirror) {
+            lastVidTime = vidTime;
+            lastFilterId = fObj.id;
+            lastMirror = state.mirror;
 
-          ctx.save();
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
-          if (state.mirror) { ctx.translate(cvs.width, 0); ctx.scale(-1, 1); }
-          ctx.drawImage(vid, 0, 0, cvs.width, cvs.height);
-          ctx.restore();
+            const targetW = isFiltered ? Math.min(360, vid.videoWidth) : Math.min(960, vid.videoWidth);
+            const targetH = Math.max(1, Math.round(targetW * (vid.videoHeight / vid.videoWidth)));
 
-          if (isFiltered) {
-            const imd = ctx.getImageData(0, 0, cvs.width, cvs.height);
-            applyPixelFilterToImageData(imd, fObj);
-            ctx.putImageData(imd, 0, 0);
+            if (cvs.width !== targetW || cvs.height !== targetH) {
+              cvs.width = targetW;
+              cvs.height = targetH;
+              updateCameraCropGuide();
+            } else if (document.getElementById('camera-crop-guide').classList.contains('hidden')) {
+              updateCameraCropGuide();
+            }
+
+            if (isFiltered) {
+              if (!_camFilterCvs) _camFilterCvs = document.createElement('canvas');
+              if (_camFilterCvs.width !== targetW || _camFilterCvs.height !== targetH) {
+                _camFilterCvs.width = targetW;
+                _camFilterCvs.height = targetH;
+              }
+              const fctx = _camFilterCvs.getContext('2d', { willReadFrequently: true });
+              fctx.save();
+              if (state.mirror) { fctx.translate(targetW, 0); fctx.scale(-1, 1); }
+              fctx.drawImage(vid, 0, 0, targetW, targetH);
+              fctx.restore();
+
+              const imd = fctx.getImageData(0, 0, targetW, targetH);
+              applyPixelFilterToImageData(imd, fObj);
+              fctx.putImageData(imd, 0, 0);
+
+              ctx.drawImage(_camFilterCvs, 0, 0, targetW, targetH);
+            } else {
+              ctx.save();
+              if (state.mirror) { ctx.translate(cvs.width, 0); ctx.scale(-1, 1); }
+              ctx.drawImage(vid, 0, 0, cvs.width, cvs.height);
+              ctx.restore();
+            }
           }
         }
         state.camAnimId = requestAnimationFrame(tick);
@@ -2445,7 +2462,8 @@
         const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp8')
           ? 'video/webm;codecs=vp8'
           : (MediaRecorder.isTypeSupported('video/webm') ? 'video/webm' : '');
-        state.mediaRecorder = mime ? new MediaRecorder(state.stream, { mimeType: mime }) : new MediaRecorder(state.stream);
+        const recOpts = mime ? { mimeType: mime, videoBitsPerSecond: 2500000 } : { videoBitsPerSecond: 2500000 };
+        state.mediaRecorder = new MediaRecorder(state.stream, recOpts);
         state.mediaRecorder.ondataavailable = (ev) => { if (ev.data && ev.data.size > 0) state.recordedChunks.push(ev.data); };
         state.mediaRecorder.onstop = () => {
           if (state.recordedChunks.length > 0) state.recordedVideoBlob = new Blob(state.recordedChunks, { type: 'video/webm' });
@@ -2504,7 +2522,7 @@
       if (state.mirror) { ctx.translate(c.width, 0); ctx.scale(-1, 1); }
       ctx.drawImage(vid, 0, 0, c.width, c.height);
 
-      const dataUrl = c.toDataURL('image/png');
+      const dataUrl = c.toDataURL('image/jpeg', 0.95);
       const img = new Image();
       await new Promise(res => { img.onload = res; img.src = dataUrl; });
       state.shots[slotIdx] = img;
@@ -2540,11 +2558,113 @@
     /* =====================================================================
        8. EDITOR, FESTIVAL FRAMES, MAGIC AUTO-DECORATE & CANVAS
        ===================================================================== */
+    function clearDraftTracking() {
+      state.draftSessionId = null;
+      state.draftDirty = false;
+      state.draftRecord = null;
+      state.autoUploadPromise = null;
+      state.autoUploadedId = null;
+      state.autoCloudResult = null;
+    }
+
+    async function deleteSessionEverywhere(id) {
+      if (!id) return;
+      await deleteLocalSession(id);
+      state.galleryItems = (state.galleryItems || []).filter(x => x.id !== id);
+      const gasUrl = getGasUrl();
+      if (gasUrl) {
+        try {
+          await fetch(gasUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'deleteSession', id })
+          });
+        } catch (e) {}
+      }
+    }
+
+    function autoSyncDraftToGallery() {
+      const prevPromise = state.autoUploadPromise;
+      const prevDraftId = state.draftSessionId;
+      const now = new Date();
+      const sessionId = 'PB_' + now.getTime();
+      state.draftSessionId = sessionId;
+      state.autoCloudResult = null;
+
+      state.autoUploadPromise = (async () => {
+        try {
+          if (prevPromise) await prevPromise.catch(() => {});
+          if (prevDraftId) await deleteSessionEverywhere(prevDraftId);
+
+          await sleep(40);
+          state._suppressDraftDirty = true;
+          renderStripCanvas(false);
+          state._suppressDraftDirty = false;
+
+          const canvas = document.getElementById('strip-canvas');
+          const pngDataUrl = canvas.toDataURL('image/png');
+          const gifFrames = buildGifFrameCanvases();
+          const gifBlob = encodeGifFromCanvases(gifFrames, 48);
+          const gifDataUrl = await blobToDataUrl(gifBlob);
+
+          const dateStr = state.stampDateBE || formatDateToThaiBE(now);
+          const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+          const localRecord = {
+            id: sessionId, dateStr, timeStr, layout: state.layout,
+            frame: `${state.framePattern}:${state.frameColor}`,
+            filter: state.filterId, caption: state.caption,
+            localPng: pngDataUrl, localGif: gifDataUrl,
+            photoViewUrl: '', photoDownloadUrl: '', photoThumbUrl: '', photoFileId: '',
+            mediaViewUrl: '', mediaDownloadUrl: '',
+            timestamp: now.getTime()
+          };
+          state.draftRecord = localRecord;
+
+          await saveSessionLocally(localRecord);
+          state.galleryItems = [localRecord, ...(state.galleryItems || []).filter(x => x.id !== sessionId)];
+          if (state.currentView === 'gallery') renderGalleryGrid();
+
+          const gasUrl = getGasUrl();
+          if (gasUrl) {
+            const resp = await fetch(gasUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({
+                action: 'uploadSession',
+                id: sessionId, dateStr, timeStr, layout: state.layout,
+                frame: localRecord.frame, filter: state.filterId, caption: state.caption,
+                photoBase64: pngDataUrl, photoMime: 'image/png', photoName: `${sessionId}_strip.png`,
+                mediaBase64: gifDataUrl, mediaMime: 'image/gif', mediaName: `${sessionId}_motion.gif`,
+                timestamp: now.getTime()
+              })
+            });
+            const json = await resp.json();
+            if (json.status === 'success') {
+              state.autoUploadedId = sessionId;
+              state.autoCloudResult = json;
+              localRecord.photoViewUrl = json.photoViewUrl;
+              localRecord.photoDownloadUrl = json.photoDownloadUrl;
+              localRecord.photoThumbUrl = json.photoThumbUrl || '';
+              localRecord.photoFileId = json.photoFileId || '';
+              localRecord.mediaViewUrl = json.mediaViewUrl;
+              localRecord.mediaDownloadUrl = json.mediaDownloadUrl;
+              await saveSessionLocally(localRecord);
+              if (state.currentView === 'gallery') renderGalleryGrid();
+            }
+          }
+        } catch (e) {}
+      })();
+    }
+
     function openEditorStage() {
       stopCameraStream();
       setStudioStage(3);
       if (!state.stampDateBE) state.stampDateBE = formatDateToThaiBE(new Date());
+      state._suppressDraftDirty = true;
       renderStripCanvas();
+      state._suppressDraftDirty = false;
+      state.draftDirty = false;
+      autoSyncDraftToGallery();
     }
 
     function setFrameColor(hex) {
@@ -2895,6 +3015,9 @@
     }
 
     function renderStripCanvas(includeSelectionRing = true) {
+      if (state.currentStage === 3 && !state._suppressDraftDirty) {
+        state.draftDirty = true;
+      }
       const cfg = LAYOUTS[state.layout];
       const canvas = document.getElementById('strip-canvas');
       canvas.width = cfg.w; canvas.height = cfg.h;
@@ -3230,14 +3353,51 @@
       btn.disabled = true;
 
       try {
-        await sleep(60);
-        renderStripCanvas(false);
-        const canvas = document.getElementById('strip-canvas');
-        state.finalPngDataUrl = canvas.toDataURL('image/png');
+        if (state.autoUploadPromise) {
+          await state.autoUploadPromise.catch(() => {});
+        }
 
-        const gifFrames = buildGifFrameCanvases();
-        state.finalGifBlob = encodeGifFromCanvases(gifFrames, 48);
-        state.finalGifDataUrl = await blobToDataUrl(state.finalGifBlob);
+        const reuseDraft = !state.draftDirty && state.draftRecord;
+        let localRecord;
+
+        if (reuseDraft) {
+          localRecord = state.draftRecord;
+          state.finalPngDataUrl = localRecord.localPng;
+          state.finalGifDataUrl = localRecord.localGif;
+          state.finalGifBlob = localRecord.localGif ? dataUrlToBlob(localRecord.localGif) : null;
+        } else {
+          await sleep(60);
+          state._suppressDraftDirty = true;
+          renderStripCanvas(false);
+          state._suppressDraftDirty = false;
+          const canvas = document.getElementById('strip-canvas');
+          state.finalPngDataUrl = canvas.toDataURL('image/png');
+
+          const gifFrames = buildGifFrameCanvases();
+          state.finalGifBlob = encodeGifFromCanvases(gifFrames, 48);
+          state.finalGifDataUrl = await blobToDataUrl(state.finalGifBlob);
+
+          const now = new Date();
+          const sessionId = 'PB_' + now.getTime();
+          const dateStr = state.stampDateBE || formatDateToThaiBE(now);
+          const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+          localRecord = {
+            id: sessionId, dateStr, timeStr, layout: state.layout,
+            frame: `${state.framePattern}:${state.frameColor}`,
+            filter: state.filterId, caption: state.caption,
+            localPng: state.finalPngDataUrl, localGif: state.finalGifDataUrl,
+            photoViewUrl: '', photoDownloadUrl: '', photoThumbUrl: '', photoFileId: '',
+            mediaViewUrl: '', mediaDownloadUrl: '',
+            timestamp: now.getTime()
+          };
+
+          if (state.draftSessionId) {
+            await deleteSessionEverywhere(state.draftSessionId);
+          }
+          await saveSessionLocally(localRecord);
+          state.galleryItems = [localRecord, ...(state.galleryItems || []).filter(x => x.id !== sessionId)];
+        }
 
         document.getElementById('result-png-img').src = state.finalPngDataUrl;
         document.getElementById('btn-dl-video').classList.toggle('hidden', !state.recordedVideoBlob);
@@ -3251,35 +3411,22 @@
         qrLoader.classList.remove('hidden');
         document.getElementById('qr-link-caption').textContent = '⏳ กำลังสร้าง QR Code...';
 
-        const now = new Date();
-        const sessionId = 'PB_' + now.getTime();
-        const dateStr = state.stampDateBE || formatDateToThaiBE(now);
-        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-
-        const localRecord = {
-          id: sessionId, dateStr, timeStr, layout: state.layout,
-          frame: `${state.framePattern}:${state.frameColor}`,
-          filter: state.filterId, caption: state.caption,
-          localPng: state.finalPngDataUrl, localGif: state.finalGifDataUrl,
-          photoViewUrl: '', photoDownloadUrl: '', mediaViewUrl: '', mediaDownloadUrl: '',
-          timestamp: now.getTime()
-        };
-
         const gasUrl = getGasUrl();
-        state.lastCloudResult = null;
+        state.lastCloudResult = reuseDraft ? state.autoCloudResult : null;
 
-        if (gasUrl) {
+        if (!state.lastCloudResult && gasUrl) {
           try {
             const resp = await fetch(gasUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'text/plain;charset=utf-8' },
               body: JSON.stringify({
                 action: 'uploadSession',
-                id: sessionId, dateStr, timeStr, layout: state.layout,
-                frame: localRecord.frame, filter: state.filterId, caption: state.caption,
-                photoBase64: state.finalPngDataUrl, photoMime: 'image/png', photoName: `${sessionId}_strip.png`,
-                mediaBase64: state.finalGifDataUrl, mediaMime: 'image/gif', mediaName: `${sessionId}_motion.gif`,
-                timestamp: now.getTime()
+                id: localRecord.id, dateStr: localRecord.dateStr, timeStr: localRecord.timeStr,
+                layout: localRecord.layout, frame: localRecord.frame,
+                filter: localRecord.filter, caption: localRecord.caption,
+                photoBase64: state.finalPngDataUrl, photoMime: 'image/png', photoName: `${localRecord.id}_strip.png`,
+                mediaBase64: state.finalGifDataUrl, mediaMime: 'image/gif', mediaName: `${localRecord.id}_motion.gif`,
+                timestamp: localRecord.timestamp
               })
             });
             const json = await resp.json();
@@ -3291,11 +3438,12 @@
               localRecord.photoFileId = json.photoFileId || '';
               localRecord.mediaViewUrl = json.mediaViewUrl;
               localRecord.mediaDownloadUrl = json.mediaDownloadUrl;
+              await saveSessionLocally(localRecord);
             }
           } catch (e) {}
         }
 
-        await saveSessionLocally(localRecord);
+        clearDraftTracking();
         qrLoader.classList.add('hidden');
         qrCanvas.classList.remove('hidden');
         switchQrMode('photo');
@@ -3353,6 +3501,7 @@
       state.stickers = [];
       state.selectedStickerId = null;
       state.retakeSlotIndex = null;
+      clearDraftTracking();
       applySeasonalDefaultFrame(new Date());
       setStudioStage(1);
     }
@@ -3700,7 +3849,7 @@
         if (!state.isShooting && !inLock && !inSlide) {
           startGallerySlideshow(true);
         }
-      }, 60000);
+      }, 30000);
     }
 
     function printGalleryReport() {
