@@ -2540,6 +2540,10 @@
       popup.classList.toggle('sheet-mode', !isTray);
       document.body.classList.toggle('tray-open', isTray);
       popup.classList.remove('hidden');
+      if (state.currentStage === 2) {
+        updateCameraCropGuide();
+        setTimeout(updateCameraCropGuide, 230);
+      }
     }
 
     function closeOptionPopup() {
@@ -2547,6 +2551,10 @@
       state.activePopupType = null;
       document.body.classList.remove('tray-open');
       document.getElementById('option-popup').classList.add('hidden');
+      if (state.currentStage === 2) {
+        updateCameraCropGuide();
+        setTimeout(updateCameraCropGuide, 230);
+      }
     }
 
     function renderPopupBody(type) {
@@ -2742,17 +2750,31 @@
     }
 
     let _camFilterCvs = null;
+    let _camResizeObserver = null;
     function startCameraPreviewLoop() {
       cancelAnimationFrame(state.camAnimId);
       const vid = document.getElementById('camera-video');
       const cvs = document.getElementById('camera-canvas');
+      const wrap = cvs ? cvs.parentElement : null;
       const ctx = cvs.getContext('2d');
       let lastVidTime = -1;
       let lastFilterId = '';
       let lastMirror = null;
+      let lastVw = 0;
+      let lastVh = 0;
+
+      if (wrap && typeof ResizeObserver !== 'undefined' && !_camResizeObserver) {
+        _camResizeObserver = new ResizeObserver(() => updateCameraCropGuide());
+        _camResizeObserver.observe(wrap);
+      }
 
       function tick() {
         if (!state.stream) return;
+        if (wrap && (wrap.clientWidth !== lastVw || wrap.clientHeight !== lastVh)) {
+          lastVw = wrap.clientWidth;
+          lastVh = wrap.clientHeight;
+          updateCameraCropGuide();
+        }
         if (vid.readyState >= 2 && vid.videoWidth > 0) {
           const fObj = FILTERS.find(f => f.id === state.filterId) || FILTERS[0];
           const isFiltered = fObj.id !== 'original';
@@ -2806,6 +2828,7 @@
 
     function updateCameraCropGuide() {
       const guide = document.getElementById('camera-crop-guide');
+      const vid = document.getElementById('camera-video');
       const cvs = document.getElementById('camera-canvas');
       const wrap = cvs ? cvs.parentElement : null;
       if (!guide || !cvs || !wrap || !state.stream || state.currentView !== 'studio' || state.currentStage !== 2) {
@@ -2813,7 +2836,8 @@
         return;
       }
       const vw = wrap.clientWidth, vh = wrap.clientHeight;
-      const cw = cvs.width, ch = cvs.height;
+      const cw = (vid && vid.videoWidth) || cvs.width;
+      const ch = (vid && vid.videoHeight) || cvs.height;
       if (!vw || !vh || !cw || !ch) return;
 
       const cfg = LAYOUTS[state.layout];
@@ -2832,9 +2856,11 @@
       let guideW = camAR > slotAR ? dispCamH * slotAR : dispCamW;
       let guideH = camAR > slotAR ? dispCamH : dispCamW / slotAR;
 
+      // Scale proportionally so crop guide always preserves exact slot aspect ratio
       const maxW = vw - 6, maxH = vh - 6;
-      if (guideW > maxW) guideW = maxW;
-      if (guideH > maxH) guideH = maxH;
+      const fit = Math.min(1, maxW / guideW, maxH / guideH);
+      guideW *= fit;
+      guideH *= fit;
 
       guide.style.width = `${Math.max(40, Math.round(guideW))}px`;
       guide.style.height = `${Math.max(40, Math.round(guideH))}px`;
