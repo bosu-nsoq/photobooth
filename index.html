@@ -686,6 +686,8 @@
     /* ============ Gallery (Pinned Toolbar, Internal Scroll Grid) ============ */
     #view-gallery {
       justify-content: flex-start;
+      height: 100%;
+      overflow: hidden;
     }
 
     .gallery-toolbar {
@@ -699,19 +701,21 @@
       flex: 1;
       min-height: 0;
       overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      touch-action: pan-y;
+      scrollbar-width: thin;
+      scrollbar-color: #FFB3D1 transparent;
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
       align-content: start;
-      padding: 2px 4px 6px 2px;
+      padding: 2px 6px 16px 2px;
     }
 
-    @media (min-width: 600px) {
-      .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-        gap: 14px;
-      }
-    }
+    .gallery-grid::-webkit-scrollbar { width: 6px; }
+    .gallery-grid::-webkit-scrollbar-thumb { background: #FFB3D1; border-radius: 999px; }
 
     .gallery-item {
       border: 1.5px solid var(--border);
@@ -719,6 +723,8 @@
       background: #fff;
       overflow: hidden;
       display: flex; flex-direction: column;
+      flex-shrink: 0;
+      min-width: 0;
       position: relative;
       transition: border-color 0.14s, transform 0.14s;
     }
@@ -782,10 +788,10 @@
     }
 
     .gallery-thumb {
-      height: 220px;
+      height: 290px;
       flex-shrink: 0;
       box-sizing: border-box;
-      padding: 8px;
+      padding: 10px;
       background: var(--bg);
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
@@ -1135,8 +1141,8 @@
       #stage-4 .qr-panel { grid-column: 2; grid-row: 1; margin-bottom: 0; padding: 18px; }
       #stage-4 .cta-row { grid-column: 2; grid-row: 2; }
 
-      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
-      .gallery-thumb { height: 320px; padding: 12px; }
+      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 16px; }
+      .gallery-thumb { height: 350px; padding: 12px; }
       .gallery-item { transition: transform 0.14s, box-shadow 0.14s; }
       .gallery-item:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(255, 93, 158, 0.14); }
 
@@ -1758,21 +1764,53 @@
     /* =====================================================================
        3. THAI DATE HELPERS, CUTE LOADER & AUDIO
        ===================================================================== */
-    function formatDateToThaiBE(dateObj) {
-      const dt = dateObj || new Date();
-      const d = String(dt.getDate()).padStart(2, '0');
-      const m = String(dt.getMonth() + 1).padStart(2, '0');
-      const y = dt.getFullYear() + 543;
-      return `${d}/${m}/${y}`;
+    const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    function parseDateParts(input) {
+      if (!input) return null;
+      if ((input instanceof Date || Object.prototype.toString.call(input) === '[object Date]') && !isNaN(input.getTime())) {
+        return { d: input.getDate(), m: input.getMonth() + 1, yAD: input.getFullYear() };
+      }
+      const s = String(input).trim();
+      let m;
+      if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) {
+        let y = parseInt(m[1], 10); if (y > 2400) y -= 543;
+        return { d: parseInt(m[3], 10), m: parseInt(m[2], 10), yAD: y };
+      }
+      if ((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/))) {
+        let y = parseInt(m[3], 10); if (y > 2400) y -= 543;
+        return { d: parseInt(m[1], 10), m: parseInt(m[2], 10), yAD: y };
+      }
+      if ((m = s.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{2,4})$/))) {
+        const mo = SHORT_MONTHS.findIndex(x => x.toLowerCase() === m[2].toLowerCase()) + 1;
+        if (mo >= 1 && mo <= 12) {
+          let y = parseInt(m[3], 10);
+          if (y < 100) y = (2500 + y) - 543;
+          else if (y > 2400) y -= 543;
+          return { d: parseInt(m[1], 10), m: mo, yAD: y };
+        }
+      }
+      return null;
+    }
+
+    function formatDateToThaiBE(dateInput) {
+      const p = parseDateParts(dateInput || new Date());
+      if (!p) return dateInput ? String(dateInput) : '';
+      const d = String(p.d).padStart(2, '0');
+      const mon = SHORT_MONTHS[p.m - 1] || 'Jan';
+      const yBE = String(p.yAD + 543).slice(-2);
+      return `${d} ${mon} ${yBE}`;
+    }
+
+    function formatDateToSlashBE(dateInput) {
+      const p = parseDateParts(dateInput || new Date());
+      if (!p) return '';
+      return `${String(p.d).padStart(2, '0')}/${String(p.m).padStart(2, '0')}/${p.yAD + 543}`;
     }
 
     function isoToThaiBE(isoVal) {
       if (!isoVal) return '';
-      const parts = isoVal.split('-');
-      if (parts.length !== 3) return '';
-      let y = parseInt(parts[0], 10);
-      if (y <= 2400) y += 543;
-      return `${parts[2].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${y}`;
+      return formatDateToThaiBE(isoVal);
     }
 
     function cleanTimeDisplay(rawTime) {
@@ -1784,12 +1822,9 @@
     }
 
     function thaiBEToIso(beStr) {
-      const m = String(beStr || '').trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-      if (!m) return '';
-      const d = m[1].padStart(2, '0'), mo = m[2].padStart(2, '0');
-      let y = parseInt(m[3], 10);
-      if (y > 2400) y -= 543;
-      return `${y}-${mo}-${d}`;
+      const p = parseDateParts(beStr);
+      if (!p) return '';
+      return `${p.yAD}-${String(p.m).padStart(2, '0')}-${String(p.d).padStart(2, '0')}`;
     }
 
     function openDatePicker(rawId, ev) {
@@ -2607,7 +2642,7 @@
           const gifBlob = encodeGifFromCanvases(gifFrames, 48);
           const gifDataUrl = await blobToDataUrl(gifBlob);
 
-          const dateStr = state.stampDateBE || formatDateToThaiBE(now);
+          const dateStr = formatDateToSlashBE(state.stampDateBE || now);
           const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
           const localRecord = {
             id: sessionId, dateStr, timeStr, layout: state.layout,
@@ -3054,7 +3089,7 @@
       if (state.showDateStamp) {
         ctx.globalAlpha = 0.85;
         ctx.font = '600 22px Mali, sans-serif';
-        ctx.fillText(state.stampDateBE || formatDateToThaiBE(new Date()), cfg.w / 2, state.caption ? footerCenterY + 24 : footerCenterY);
+        ctx.fillText(formatDateToThaiBE(state.stampDateBE || new Date()), cfg.w / 2, state.caption ? footerCenterY + 24 : footerCenterY);
         ctx.globalAlpha = 1;
       }
 
@@ -3379,7 +3414,7 @@
 
           const now = new Date();
           const sessionId = 'PB_' + now.getTime();
-          const dateStr = state.stampDateBE || formatDateToThaiBE(now);
+          const dateStr = formatDateToSlashBE(state.stampDateBE || now);
           const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
           localRecord = {
@@ -3643,7 +3678,7 @@
             </div>
             <div class="gallery-meta">
               <div class="gallery-caption">${escapeHtml(item.caption || 'WNTK Photos')}</div>
-              <div style="color:var(--muted);font-size:10.5px;margin-bottom:4px;">${escapeHtml(item.dateStr || '')}${cleanTime ? ' • ' + escapeHtml(cleanTime) : ''}</div>
+              <div style="color:var(--muted);font-size:10.5px;margin-bottom:4px;">${escapeHtml(formatDateToThaiBE(item.dateStr) || '')}${cleanTime ? ' • ' + escapeHtml(cleanTime) : ''}</div>
               ${inSelect ? '' : `
               <div style="display:flex;gap:5px;margin-top:auto;padding-top:2px;">
                 <button class="icon-btn" style="flex:1;padding:4px 6px;min-height:30px;font-size:12px;" onclick="openItemQrModal('${item.id}')">📱 QR</button>
@@ -3681,7 +3716,7 @@
       const seenIds = new Set(items.map(i => i.id));
       localItems.forEach(loc => {
         if (!seenIds.has(loc.id)) {
-          if (!state.galleryDateFilter || loc.dateStr === isoToThaiBE(state.galleryDateFilter)) {
+          if (!state.galleryDateFilter || thaiBEToIso(loc.dateStr) === state.galleryDateFilter) {
             items.push(loc);
           }
         }
@@ -3735,7 +3770,7 @@
 
       document.getElementById('lightbox-caption').textContent = item.caption || 'WNTK Photos';
       const cleanTime = cleanTimeDisplay(item.timeStr);
-      document.getElementById('lightbox-meta').textContent = `${item.dateStr || ''}${cleanTime ? ' • ' + cleanTime : ''}`;
+      document.getElementById('lightbox-meta').textContent = `${formatDateToThaiBE(item.dateStr) || ''}${cleanTime ? ' • ' + cleanTime : ''}`;
 
       const dlBtn = item.localPng
         ? `<button class="btn-primary" style="padding:8px 16px;font-size:13px;min-height:38px;max-width:none;" onclick="downloadGalleryLocal('${item.id}')">📲 บันทึกรูปภาพ</button>`
@@ -3815,7 +3850,7 @@
       imgEl.src = candidates[0];
       document.getElementById('slideshow-caption').textContent = cur.caption || 'WNTK Photos ✨';
       const cleanTime = cleanTimeDisplay(cur.timeStr);
-      document.getElementById('slideshow-meta').textContent = `📅 ${cur.dateStr || ''}${cleanTime ? ' • ' + cleanTime : ''}`;
+      document.getElementById('slideshow-meta').textContent = `📅 ${formatDateToThaiBE(cur.dateStr) || ''}${cleanTime ? ' • ' + cleanTime : ''}`;
     }
 
     async function startGallerySlideshow(isAuto = false) {
@@ -3858,7 +3893,7 @@
       const rows = state.galleryItems.map((it, idx) => `
         <tr>
           <td>${idx + 1}</td>
-          <td>${escapeHtml(it.dateStr || '-')}</td>
+          <td>${escapeHtml(formatDateToThaiBE(it.dateStr) || '-')}</td>
           <td>${escapeHtml(cleanTimeDisplay(it.timeStr) || '-')}</td>
           <td>${escapeHtml(it.layout || '-')}</td>
           <td>${escapeHtml(it.filter || '-')}</td>
