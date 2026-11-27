@@ -114,7 +114,7 @@ function ensureWorkspace() {
     settingsSheet.setFrozenRows(1);
 
     const defaults = [
-      ["booth_name", "WNTK Photos"],
+      ["booth_name", "Photos by Bosu"],
       ["default_countdown", "3"],
       ["folder_id", rootFolder.getId()],
       ["photos_folder_id", photosFolder.getId()],
@@ -332,7 +332,7 @@ function doGet(e) {
 
     return createJsonResponse({
       status: "success",
-      message: "WNTK Photos Backend is running"
+      message: "Photos by Bosu Backend is running"
     });
   } catch (err) {
     return createJsonResponse({

@@ -1,6 +1,6 @@
 {
-  "name": "WNTK Photos",
-  "short_name": "WNTK Photos",
+  "name": "Photos by Bosu",
+  "short_name": "Photos by Bosu",
   "description": "แอปสำหรับเก็บภาพความทรงจำของทุกช่วงเวลา",
   "start_url": "./",
   "scope": "./",
